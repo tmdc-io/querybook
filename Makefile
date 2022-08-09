@@ -1,6 +1,12 @@
 SHELL := /bin/bash
 .PHONY: bundled_off prod_web prod_worker prod_scheduler docs remove_running_dev_image clean
 
+bundled_pg: dev_image
+	docker-compose -f docker-compose.pg.yml up
+
+bundled_pg_off:
+	docker-compose -f docker-compose.pg.yml down
+
 bundled: dev_image
 	docker-compose up
 
