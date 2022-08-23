@@ -66,6 +66,7 @@ class MinervaClusterMetadataLoader(BaseMetastoreLoader):
             apikey=FormField(
                 required=True,
                 regex=apikey_regex,
+                hidden=True,
                 helper="<p>Apikey to connect with Minerva query engine</p>",
             ),
             cluster=FormField(
