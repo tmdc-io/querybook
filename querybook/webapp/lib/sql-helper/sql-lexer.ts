@@ -288,6 +288,10 @@ function sanitizeTable(tableToken: IToken, defaultSchema: string) {
     } else if (parts.length === 2) {
         schema = parts[0];
         table = parts[1];
+    } else if (parts.length === 3) {
+        // DataOS: catalog.schema.table
+        schema = parts[0] + '.' + parts[1];
+        table = parts[2];
     } else {
         console.error('Erroneous Input');
         console.error(tableToken);
