@@ -22,10 +22,6 @@ LOG = get_logger(__file__)
 
 OIDC_CALLBACK_PATH = "/querybook/auth/oidc/callback"
 
-CONST_OIDC_CLIENT_ID = "OIDC_CLIENT_ID"
-CONST_OIDC_CLIENT_SECRET = "OIDC_CLIENT_SECRET"
-CONST_DATAOS_BASE_URL = "DATAOS_BASE_URL"
-
 """
 AUTH_BACKEND: 'auth_plugin.heimdall_auth'
 OIDC_CLIENT_ID: '...'
@@ -82,7 +78,7 @@ class HeimdallLoginManager(OAuthLoginManager):
         return user
 
     def get_oidc_urls(self):
-        dataos_base_url = get_env_config_strip_slash(CONST_DATAOS_BASE_URL)
+        dataos_base_url = QuerybookSettings.DATAOS_BASE_URL
         authorization_url = f"{dataos_base_url}/oidc/auth"
         token_url = f"{dataos_base_url}/oidc/token"
         profile_url = f"{dataos_base_url}/oidc/userinfo"
@@ -90,8 +86,8 @@ class HeimdallLoginManager(OAuthLoginManager):
         return authorization_url, token_url, profile_url
 
     def get_oidc_secrets(self):
-        client_id = get_env_config(CONST_OIDC_CLIENT_ID)
-        client_secret = get_env_config(CONST_OIDC_CLIENT_SECRET)
+        client_id = QuerybookSettings.DATAOS_OIDC_CLIENT_ID
+        client_secret = QuerybookSettings.DATAOS_OIDC_CLIENT_SECRET
 
         return client_id, client_secret
 
@@ -113,7 +109,7 @@ class HeimdallLoginManager(OAuthLoginManager):
         }
 
     def _get_user_profile(self, access_token):
-        dataos_base_url = get_env_config_strip_slash(CONST_DATAOS_BASE_URL)
+        dataos_base_url = QuerybookSettings.CONST_DATAOS_BASE_URL
         heimdall_base_url = f"{dataos_base_url}/heimdall"
 
         # Authorize
@@ -156,7 +152,7 @@ class HeimdallLoginManager(OAuthLoginManager):
         return user["id"], user["email"], user["name"]
 
     def _get_heimdall_apikey(self, user_id, access_token):
-        dataos_base_url = get_env_config_strip_slash(CONST_DATAOS_BASE_URL)
+        dataos_base_url = QuerybookSettings.DATAOS_BASE_URL
         heimdall_base_url = f"{dataos_base_url}/heimdall"
         heimdall_apikey_url = f"{heimdall_base_url}/api/v1/users/{user_id}/tokens"
 

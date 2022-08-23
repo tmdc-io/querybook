@@ -21,7 +21,6 @@ from lib.logger import get_logger
 
 LOG = get_logger(__file__)
 
-CONST_MINERVA_QUERY_URL = "MINERVA_QUERY_URL"
 connection_regex = r"^(http|https):\/\/([\w.-]+(?:\:\d+)?(?:,[\w.-]+(?:\:\d+)?)*)(\/\w+)?(\/\w+)?(\?[\w.-]+=[\w.-]+(?:&[\w.-]+=[\w.-]+)*)?$"
 apikey_regex = r"^[A-Za-z0-9=]+$"
 cluster_regex = r"^[A-Za-z0-9]+$"
@@ -56,7 +55,7 @@ class MinervaClusterMetadataLoader(BaseMetastoreLoader):
 
     @classmethod
     def get_metastore_params_template(cls):
-        def_minerva_query_url = get_env_config_strip_slash(CONST_MINERVA_QUERY_URL)
+        def_minerva_query_url = QuerybookSettings.DATAOS_MINERVA_QUERY_URL
         return StructFormField(
             connection=FormField(
                 required=True,

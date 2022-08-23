@@ -44,6 +44,14 @@ def get_env_config_strip_slash(name, optional=True):
     return val
 
 
+def get_user_agent():
+    source = "{0}/{1}".format(
+        get_env_config("QUERYBOOK_APPNAME") or "Querybook",
+        get_env_config("QUERYBOOK_VERSION") or "dev",
+    )
+    return source
+
+
 class QuerybookSettings(object):
     # Core
     PRODUCTION = os.environ.get("production", "false") == "true"
@@ -132,3 +140,8 @@ class QuerybookSettings(object):
     TABLE_UPLOAD_S3_PATH = get_env_config("TABLE_UPLOAD_S3_PATH")
     if TABLE_UPLOAD_S3_PATH and not TABLE_UPLOAD_S3_PATH.endswith("/"):
         TABLE_UPLOAD_S3_PATH += "/"
+
+    DATAOS_OIDC_CLIENT_ID = get_env_config("OIDC_CLIENT_ID")
+    DATAOS_OIDC_CLIENT_SECRET = get_env_config("OIDC_CLIENT_SECRET")
+    DATAOS_BASE_URL = get_env_config_strip_slash("DATAOS_BASE_URL")
+    DATAOS_MINERVA_QUERY_URL = get_env_config_strip_slash("MINERVA_QUERY_URL")
