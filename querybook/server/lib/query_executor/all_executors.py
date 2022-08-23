@@ -24,7 +24,7 @@ ALL_PLUGIN_EXECUTORS = import_module_with_default(
     "executor_plugin", "ALL_PLUGIN_EXECUTORS", default=[]
 )
 ALL_EXECUTORS = (
-    [GenericSqlAlchemyQueryExecutor] + PROVIDED_EXECUTORS + ALL_PLUGIN_EXECUTORS
+    ALL_PLUGIN_EXECUTORS + [GenericSqlAlchemyQueryExecutor] + PROVIDED_EXECUTORS
 )
 
 
