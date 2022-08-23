@@ -40,7 +40,7 @@ def get_env_config_strip_slash(name, optional=True):
     This method fetches a value from Env and strip the trailing /
     """
     val = get_env_config(name, optional)
-    val = val.removesuffix("/")
+    val = val.rstrip("/")
     return val
 
 

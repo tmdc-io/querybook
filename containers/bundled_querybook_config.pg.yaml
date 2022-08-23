@@ -13,3 +13,6 @@ OIDC_CLIENT_ID: 'dataos_generic'
 OIDC_CLIENT_SECRET: '665CAF977DA1ED77456B7CD3F3FD4'
 DATAOS_BASE_URL: https://main-lamb.dataos.app/
 PUBLIC_URL: http://127.0.0.1:3000
+
+# MINERVA
+MINERVA_QUERY_URL: https://tcp.main-lamb.dataos.app:7432
