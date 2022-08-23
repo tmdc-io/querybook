@@ -52,7 +52,7 @@ class MinervaClusterMetadataLoader(BaseMetastoreLoader):
         self.cluster = metastore_dict.get("metastore_params").get("cluster")
         self.apikey = metastore_dict.get("metastore_params").get("apikey")
 
-        super(MinervaMetadataLoader, self).__init__(metastore_dict)
+        super(MinervaClusterMetadataLoader, self).__init__(metastore_dict)
 
     @classmethod
     def get_metastore_params_template(cls):
