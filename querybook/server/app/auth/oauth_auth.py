@@ -64,6 +64,7 @@ class OAuthLoginManager(object):
     def login(self, request):
         oauth_url, _ = self._get_authn_url()
         flask_session["next"] = request.path
+        LOG.debug(f"[Heimdall] oauth_url: {oauth_url}")
         return redirect(oauth_url)
 
     def _get_authn_url(self):

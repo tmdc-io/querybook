@@ -28,8 +28,10 @@ services:
         command: './querybook/scripts/bundled_docker_run_web --initdb --initweb'
         ports:
             - '${PORT:-10001}:${PORT:-10001}'
+            - '${APIPORT-3000}:${APIPORT-3000}'
         expose:
             - '${PORT:-10001}'
+            - '${APIPORT-3000}'
         environment:
             PORT: '${PORT:-10001}'
             APIPORT: '${APIPORT:-3000}'

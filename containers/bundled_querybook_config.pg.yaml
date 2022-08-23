@@ -6,3 +6,10 @@ REDIS_URL: redis://redis:6379/0
 ELASTICSEARCH_HOST: elasticsearch:9200
 # Uncomment for email
 # EMAILER_CONN: dockerhostforward
+
+# HEIMDALL AUTH
+AUTH_BACKEND: 'auth_plugin.heimdall_auth'
+OIDC_CLIENT_ID: 'dataos_generic'
+OIDC_CLIENT_SECRET: '665CAF977DA1ED77456B7CD3F3FD4'
+DATAOS_BASE_URL: https://main-lamb.dataos.app/
+PUBLIC_URL: http://127.0.0.1:3000
