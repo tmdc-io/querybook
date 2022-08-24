@@ -109,7 +109,7 @@ class HeimdallLoginManager(OAuthLoginManager):
         }
 
     def _get_user_profile(self, access_token):
-        dataos_base_url = QuerybookSettings.CONST_DATAOS_BASE_URL
+        dataos_base_url = QuerybookSettings.DATAOS_BASE_URL
         heimdall_base_url = f"{dataos_base_url}/heimdall"
 
         # Authorize
