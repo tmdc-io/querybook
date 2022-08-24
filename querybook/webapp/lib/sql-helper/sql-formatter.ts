@@ -1,6 +1,6 @@
 import { getQueryLinePosition, IToken, tokenize } from './sql-lexer';
 import { find, invert, uniqueId } from 'lodash';
-import sqlFormatter from 'sql-formatter';
+import { format as sql_format } from 'sql-formatter';
 
 const skipTokenType = new Set(['TEMPLATED_TAG', 'TEMPLATED_BLOCK', 'URL']);
 
@@ -133,9 +133,15 @@ export function format(
                 firstKeyWord &&
                 allowedStatement.has(firstKeyWord.text.toLocaleLowerCase())
             ) {
-                formattedStatement = sqlFormatter.format(statementText, {
+                formattedStatement = sql_format(statementText, {
                     indent: options.indent,
                     language: getLanguageForSqlFormatter(language),
+                    // Prettier formatting
+                    keywordCase: 'upper',
+                    linesBetweenQueries: 2,
+                    tabWidth: 2,
+                    denseOperators: true,
+                    tabulateAlias: true,
                 });
             }
 
