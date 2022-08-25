@@ -17,6 +17,9 @@ from logic.user import (
     get_user_by_name,
     get_user_by_id,
     create_user,
+    create_user_role,
+    delete_user_role,
+    get_all_admin_user_roles_by_user_id,
     # update_user_properties,
 )
 from env import QuerybookSettings
@@ -99,8 +102,8 @@ def load_user_with_api_access_token(request):
         user_id = authorize_with_heimdall(token_string)
         with DBSession() as session:
             user = get_user_by_name(user_id, session=session)
+            username, email, fullname, tags = get_dataos_user_profile(token_string)
             if not user:
-                username, email, fullname, tags = get_dataos_user_profile(token_string)
                 user_apikey = get_or_create_dataos_user_apikey(username, token_string)
                 user = create_user(
                     username=username,
@@ -109,6 +112,10 @@ def load_user_with_api_access_token(request):
                     session=session,
                     properties={"heimdall": user_apikey, "tags": tags},
                 )
+
+            update_admin_user_role_by_dataos_tags(
+                user.id, username, tags or [], session
+            )
             return AuthUser(user)
 
     return None
@@ -124,6 +131,25 @@ def abort_unauthorized():
 
 def abort_forbidden():
     abort(ACCESS_RESTRICTED_STATUS_CODE)
+
+
+def update_admin_user_role_by_dataos_tags(uid, username, tags=[], session=None):
+    admin_tags = ["dataos:u:querybook", "dataos:u:operator"]
+
+    can_be_admin = tags and any(tag in admin_tags for tag in tags)
+    existing_admin_user_roles = get_all_admin_user_roles_by_user_id(uid)
+    is_already_admin = len(existing_admin_user_roles) > 0
+    LOG.info(
+        f"user:{uid}:{username} can_be_admin:{can_be_admin} => is_already_admin:{is_already_admin}"
+    )
+
+    if can_be_admin and not is_already_admin:
+        LOG.info(f"*** Assigning ADMIN role to {username}")
+        create_user_role(uid=uid, role=UserRoleType.ADMIN, session=session)
+    elif is_already_admin and not can_be_admin:
+        LOG.info(f"*** Removing ADMIN role from {username}")
+        for r in existing_admin_user_roles:
+            delete_user_role(r.id, session)
 
 
 def authorize_with_heimdall(access_token):

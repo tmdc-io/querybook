@@ -211,6 +211,16 @@ def get_all_admin_user_roles(session=None):
 
 
 @with_session
+def get_all_admin_user_roles_by_user_id(uid, session=None):
+    return (
+        session.query(UserRole)
+        .filter(UserRole.uid == uid)
+        .filter(UserRole.role == UserRoleType.ADMIN)
+        .all()
+    )
+
+
+@with_session
 def get_user_role_by_id(id, session=None):
     return session.query(UserRole).get(id)
 

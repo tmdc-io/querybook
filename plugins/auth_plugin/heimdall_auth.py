@@ -12,7 +12,8 @@ from app.auth.utils import (
     abort_unauthorized,
     AuthenticationError,
     get_dataos_user_profile,
-    get_or_create_dataos_user_apikey
+    get_or_create_dataos_user_apikey,
+    update_admin_user_role_by_dataos_tags
 )
 from app.auth.oauth_auth import OAuthLoginManager
 from env import QuerybookSettings, get_env_config, get_env_config_strip_slash
@@ -66,6 +67,8 @@ class HeimdallLoginManager(OAuthLoginManager):
 
     @with_session
     def login_user(self, username, email, user_apikey, tags, session=None, fullname=None):
+        """ creates a user (if necessary) and logs him in """
+        # TODO: 1/ Update fullname, 2/ Fetch avatar
         user = get_user_by_name(username, session=session)
         if not user:
             user = create_user(
@@ -76,13 +79,13 @@ class HeimdallLoginManager(OAuthLoginManager):
                 properties={'heimdall': user_apikey, 'tags': tags},
             )
         else:
-            # TODO: Update user's fullname if that has changed
             update_user_properties(
                 user.id,
                 heimdall=user_apikey,
                 tags=tags
            )
 
+        update_admin_user_role_by_dataos_tags(user.id, username, tags or [], session)
         return user
 
     @property
