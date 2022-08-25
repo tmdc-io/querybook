@@ -23,5 +23,5 @@ MAIL_PORT: 587
 MAIL_USE_TLS: true
 MAIL_USE_SSL: true
 MAIL_USERNAME: postmaster@dataos.animesh.org
-MAIL_PASSWORD: e43c55a4ec1bca1a1b4ad4e7ba50a1e5-f7d0b107-e3325356
+MAIL_PASSWORD: REDACTED
 MAIL_DEFAULT_SENDER: "DataOS Querybook <querybook@dataos.animesh.org>"
