@@ -19,7 +19,7 @@ class EmailNotifier(BaseNotifier):
         return "html"
 
     def notify(self, user, message):
-        from_email = QuerybookSettings.QUERYBOOK_EMAIL_ADDRESS
+        from_email = QuerybookSettings.MAIL_DEFAULT_SENDER
         subject = message.split("\n")[0]
         message = self._convert_markdown(message)
         try:
@@ -31,8 +31,20 @@ class EmailNotifier(BaseNotifier):
             msg["From"] = from_email
             msg["To"] = user.email
             msg.attach(MIMEText(message, "html"))
+            LOG.debug(f"Deliver email ({subject}) to {user.email}")
 
-            smtp = smtplib.SMTP(QuerybookSettings.EMAILER_CONN)
+            smtp = smtplib.SMTP(
+                QuerybookSettings.MAIL_SERVER, QuerybookSettings.MAIL_PORT
+            )
+            if QuerybookSettings.MAIL_USE_SSL:
+                smtp = smtplib.SMTP_SSL(
+                    QuerybookSettings.MAIL_SERVER, QuerybookSettings.MAIL_PORT
+                )
+            if QuerybookSettings.MAIL_USE_TLS:
+                smtp.starttls()
+
+            smtp.login(QuerybookSettings.MAIL_USERNAME, QuerybookSettings.MAIL_PASSWORD)
             smtp.sendmail(msg["From"], msg["To"], msg.as_string())
+            smtp.quit()
         except Exception as e:
-            LOG.info(e)
+            LOG.error(e)

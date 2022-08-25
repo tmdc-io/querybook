@@ -74,9 +74,9 @@ class QuerybookSettings(object):
     DATABASE_POOL_RECYCLE = int(get_env_config("DATABASE_POOL_RECYCLE"))
 
     # Communications
-    EMAILER_CONN = get_env_config("EMAILER_CONN")
+    # EMAILER_CONN = get_env_config("EMAILER_CONN")
     QUERYBOOK_SLACK_TOKEN = get_env_config("QUERYBOOK_SLACK_TOKEN")
-    QUERYBOOK_EMAIL_ADDRESS = get_env_config("QUERYBOOK_EMAIL_ADDRESS")
+    # QUERYBOOK_EMAIL_ADDRESS = get_env_config("QUERYBOOK_EMAIL_ADDRESS")
 
     # Authentication
     AUTH_BACKEND = get_env_config("AUTH_BACKEND")
@@ -141,7 +141,19 @@ class QuerybookSettings(object):
     if TABLE_UPLOAD_S3_PATH and not TABLE_UPLOAD_S3_PATH.endswith("/"):
         TABLE_UPLOAD_S3_PATH += "/"
 
+    # DataOS
     DATAOS_OIDC_CLIENT_ID = get_env_config("OIDC_CLIENT_ID")
     DATAOS_OIDC_CLIENT_SECRET = get_env_config("OIDC_CLIENT_SECRET")
     DATAOS_BASE_URL = get_env_config_strip_slash("DATAOS_BASE_URL")
     DATAOS_MINERVA_QUERY_URL = get_env_config_strip_slash("MINERVA_QUERY_URL")
+
+    # EMail
+    MAIL_SERVER = get_env_config("MAIL_SERVER")
+    MAIL_PORT = int(get_env_config("MAIL_PORT"))
+    MAIL_USE_TLS = get_env_config("MAIL_USE_TLS") == "true"
+    MAIL_USE_SSL = get_env_config("MAIL_USE_SSL") == "true"
+    MAIL_USERNAME = get_env_config("MAIL_USERNAME")
+    MAIL_PASSWORD = get_env_config("MAIL_PASSWORD")
+    MAIL_DEFAULT_SENDER = get_env_config("MAIL_DEFAULT_SENDER")
+    MAIL_MAX_EMAILS = get_env_config("MAIL_MAX_EMAILS")
+    MAIL_ASCII_ATTACHMENTS = get_env_config("MAIL_ASCII_ATTACHMENTS") == "true"
