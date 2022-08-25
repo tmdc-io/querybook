@@ -21,10 +21,10 @@ function getDevServerSettings(env) {
         hot: true,
 
         historyApiFallback: {
-            index: '/build/index.html',
+            index: '/querybook/index.html',
         },
         proxy: {
-            '/ds/*': {
+            '/querybook/ds/*': {
                 target: QUERYBOOK_UPSTREAM,
                 changeOrigin: true,
                 secure: false,
@@ -49,7 +49,7 @@ function getDevServerSettings(env) {
                 changeOrigin: true,
             },
         },
-        publicPath: '/build/',
+        publicPath: '/querybook/',
         onListening: (server) => {
             let firstTimeBuildComplete = true;
             const port = server.listeningApp.address().port;
@@ -131,7 +131,7 @@ module.exports = (env, options) => {
         output: {
             filename: '[name].[fullhash].js',
             path: OUTPUT_PATH,
-            publicPath: '/build/',
+            publicPath: '/querybook/',
             clean: true,
         },
 

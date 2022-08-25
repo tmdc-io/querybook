@@ -1,7 +1,7 @@
 import os
 
 PROJECT_ROOT_PATH = os.path.join(os.path.dirname(__file__), "../../../")
-BUILD_PATH = "/build"
+BUILD_PATH = "/querybook"
 STATIC_PATH = os.path.join(PROJECT_ROOT_PATH, "./querybook/static")
 CONFIG_PATH = os.path.join(PROJECT_ROOT_PATH, "./querybook/config")
 WEBAPP_DIR_PATH = os.path.join(PROJECT_ROOT_PATH, "./dist/webapp/")

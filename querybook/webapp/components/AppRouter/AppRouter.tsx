@@ -1,5 +1,10 @@
 import React from 'react';
-import { Redirect, Route, Router, Switch } from 'react-router-dom';
+import {
+    Redirect,
+    Route,
+    BrowserRouter as Router,
+    Switch,
+} from 'react-router-dom';
 
 import { AppLayout } from 'components/AppLayout/AppLayout';
 import { ConfirmationManager } from 'components/ConfirmationManager/ConfirmationManager';
@@ -15,7 +20,7 @@ const EnvironmentsRouter = React.lazy(
 );
 
 export const AppRouter: React.FunctionComponent = () => (
-    <Router history={history}>
+    <Router basename="querybook" history={history}>
         <UserLoader>
             <AppLayout>
                 <React.Suspense fallback={<Loading fullHeight />}>
