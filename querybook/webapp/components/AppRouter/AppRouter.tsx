@@ -2,7 +2,7 @@ import React from 'react';
 import {
     Redirect,
     Route,
-    BrowserRouter as Router,
+    Router,
     Switch,
 } from 'react-router-dom';
 
@@ -20,7 +20,7 @@ const EnvironmentsRouter = React.lazy(
 );
 
 export const AppRouter: React.FunctionComponent = () => (
-    <Router basename="querybook" history={history}>
+    <Router history={history}>
         <UserLoader>
             <AppLayout>
                 <React.Suspense fallback={<Loading fullHeight />}>
