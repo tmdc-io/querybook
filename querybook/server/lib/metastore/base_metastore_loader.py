@@ -42,6 +42,9 @@ class DataTable(NamedTuple):
     type: str = None
     owner: str = None
 
+    # description from metastore, expect HTML format
+    description: str = None
+
     # Expected in UTC seconds
     table_created_at: int = None
     table_updated_at: int = None
@@ -58,11 +61,19 @@ class DataTable(NamedTuple):
     # Store the raw info here
     raw_description: str = None
 
+    # Arrays of partition keys
+    partition_keys: List[str] = []
+
 
 class DataColumn(NamedTuple):
     name: str
     type: str
+
+    # column comment from sql query when creating the table
     comment: str = None
+
+    # user edited description from metastore, expect HTML format
+    description: str = None
 
 
 class BaseMetastoreLoader(metaclass=ABCMeta):
@@ -153,6 +164,18 @@ class BaseMetastoreLoader(metaclass=ABCMeta):
             # trying to fetch all tables under schema
             return False
 
+    def check_if_schema_exists(self, schema_name: str) -> bool:
+        """Similar to above, but only checks if schema exists in DB
+
+        Args:
+            schema_name (str): Name of schema
+
+        Returns:
+            bool: True if exists
+        """
+        schema_names = self.get_all_schema_names()
+        return schema_name in schema_names
+
     def load(self):
         schema_tables = []
         schema_names = set(self._get_all_filtered_schema_names())
@@ -237,9 +260,11 @@ class BaseMetastoreLoader(metaclass=ABCMeta):
             ).id
             create_table_information(
                 data_table_id=table_id,
+                description=table.description,
                 latest_partitions=json.dumps((table.partitions or [])[-10:]),
                 earliest_partitions=json.dumps((table.partitions or [])[:10]),
                 hive_metastore_description=table.raw_description,
+                partition_keys=table.partition_keys,
                 session=session,
             )
             delete_column_not_in_metastore(
@@ -251,6 +276,7 @@ class BaseMetastoreLoader(metaclass=ABCMeta):
                     name=column.name,
                     type=column.type,
                     comment=column.comment,
+                    description=column.description,
                     table_id=table_id,
                     commit=False,
                     session=session,

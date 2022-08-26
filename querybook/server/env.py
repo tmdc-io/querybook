@@ -77,9 +77,9 @@ class QuerybookSettings(object):
     DATABASE_POOL_RECYCLE = int(get_env_config("DATABASE_POOL_RECYCLE"))
 
     # Communications
-    # EMAILER_CONN = get_env_config("EMAILER_CONN")
+    EMAILER_CONN = get_env_config("EMAILER_CONN")
     QUERYBOOK_SLACK_TOKEN = get_env_config("QUERYBOOK_SLACK_TOKEN")
-    # QUERYBOOK_EMAIL_ADDRESS = get_env_config("QUERYBOOK_EMAIL_ADDRESS")
+    QUERYBOOK_EMAIL_ADDRESS = get_env_config("QUERYBOOK_EMAIL_ADDRESS")
 
     # Authentication
     AUTH_BACKEND = get_env_config("AUTH_BACKEND")

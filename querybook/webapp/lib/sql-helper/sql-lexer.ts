@@ -70,6 +70,8 @@ const contextSensitiveKeyWord = {
     // delete: 'table',
 
     limit: 'none',
+    fetch: 'none',
+    offset: 'none',
 };
 
 type TokenType =
@@ -906,3 +908,6 @@ export const getQueryKeywords = (query: string) => {
 
     return Array.from(new Set(statements.map(getStatementType)));
 };
+
+export const containsKeyword = (statement: IToken[], keyword: string) =>
+    statement.some((token) => isKeywordToken(token) && token.text === keyword);
