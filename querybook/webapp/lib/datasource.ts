@@ -34,7 +34,7 @@ function syncDatasource<T>(
     let cancel: Canceler;
     const defaultConfig: AxiosRequestConfig = {
         url,
-        baseURL: '/ds',
+        baseURL: '/querybook/ds',
         headers: {
             'Content-Type': 'application/json; charset=utf-8',
         },

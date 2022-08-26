@@ -37,8 +37,16 @@ export function getShareUrl(
         executionId != null ? `executionId=${executionId}` : null;
     const cellParam = cellId != null ? `cellId=${cellId}` : null;
     const params = [cellParam, executionParam].filter((p) => p).join('&');
+    return stripBasenamePrefixFromUrl(
+        `${hostpart}${location.pathname}?` + params
+    );
+}
 
-    return `${hostpart}${location.pathname}?` + params;
+export function stripBasenamePrefixFromUrl(url: string) {
+    // remove /querybook from beginning
+    return url && url.startsWith('/querybook')
+        ? url.substring('/querybook'.length)
+        : url;
 }
 
 // from: https://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/

@@ -9,7 +9,7 @@ from flask_limiter.util import get_remote_address
 from flask_caching import Cache
 
 
-from const.path import BUILD_PATH, STATIC_PATH, WEBAPP_DIR_PATH
+from const.path import STATIC_PATH, WEBAPP_DIR_PATH
 from env import QuerybookSettings
 from lib.utils.json import JSONEncoder
 
@@ -32,7 +32,7 @@ def validate_db():
 
 
 def make_flask_app():
-    app = Flask(__name__, static_folder=STATIC_PATH)
+    app = Flask(__name__, static_folder=STATIC_PATH, root_path="/querybook")
     app.json_encoder = JSONEncoder
     app.secret_key = QuerybookSettings.FLASK_SECRET_KEY
 
@@ -127,7 +127,7 @@ def make_limiter(app):
 def make_socketio(app):
     socketio = SocketIO(
         app,
-        path="-/socket.io",
+        path=f"{QuerybookSettings.BASE_PATH}/socket.io",
         message_queue=QuerybookSettings.REDIS_URL,
         json=flask_json,
         cors_allowed_origins="*",
@@ -142,7 +142,7 @@ def make_blue_print(app, limiter):
         "static_build_files",
         __name__,
         static_folder=WEBAPP_DIR_PATH,
-        static_url_path=BUILD_PATH,
+        static_url_path=QuerybookSettings.BASE_PATH,
     )
     app.register_blueprint(blueprint)
     limiter.exempt(blueprint)

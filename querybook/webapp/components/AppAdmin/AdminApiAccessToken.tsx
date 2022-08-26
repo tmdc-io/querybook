@@ -111,7 +111,7 @@ export const AdminApiAccessToken: React.FunctionComponent = () => {
     return (
         <div className="AdminApiAccessToken">
             <div className="AdminLanding-top">
-                <div className="AdminLanding-title">API Acess Tokens</div>
+                <div className="AdminLanding-title">API Access Tokens</div>
                 <div className="AdminLanding-desc">
                     Access Tokens can be created by any user and used to make
                     API calls.

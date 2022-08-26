@@ -22,7 +22,7 @@ from lib.utils.decorators import in_mem_memoized
 
 LOG = get_logger(__file__)
 
-OIDC_CALLBACK_PATH = "/querybook/auth/oidc/callback"
+OIDC_CALLBACK_PATH = f"{QuerybookSettings.BASE_PATH}/auth/oidc/callback"
 
 """
 AUTH_BACKEND: 'auth_plugin.heimdall_auth'
@@ -123,3 +123,7 @@ def init_app(app):
 
 def login(request):
     return login_manager.login(request)
+
+
+def oauth_authorization_url():
+    return login_manager._get_authn_url()

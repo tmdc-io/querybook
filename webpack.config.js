@@ -21,10 +21,10 @@ function getDevServerSettings(env) {
         hot: true,
 
         historyApiFallback: {
-            index: '/build/index.html',
+            index: '/querybook/index.html',
         },
         proxy: {
-            '/ds/*': {
+            '/querybook/ds/*': {
                 target: QUERYBOOK_UPSTREAM,
                 changeOrigin: true,
                 secure: false,
@@ -35,21 +35,21 @@ function getDevServerSettings(env) {
                 pathRewrite: function (req) {},
                 bypass: function (req, res, proxyOptions) {},
             },
-            '/-/socket.io/*': {
+            '/querybook/socket.io/*': {
                 target: QUERYBOOK_UPSTREAM,
                 changeOrigin: true,
                 ws: true,
             },
-            '/static/*': {
+            '/querybook/static/*': {
                 target: QUERYBOOK_UPSTREAM,
                 changeOrigin: true,
             },
-            '/oauth2callback': {
+            '/querybook/auth/oidc/callback': {
                 target: QUERYBOOK_UPSTREAM,
                 changeOrigin: true,
             },
         },
-        publicPath: '/build/',
+        publicPath: '/querybook/',
         onListening: (server) => {
             let firstTimeBuildComplete = true;
             const port = server.listeningApp.address().port;
@@ -131,7 +131,7 @@ module.exports = (env, options) => {
         output: {
             filename: '[name].[fullhash].js',
             path: OUTPUT_PATH,
-            publicPath: '/build/',
+            publicPath: '/querybook/',
             clean: true,
         },
 
@@ -211,6 +211,19 @@ module.exports = (env, options) => {
                     test: /\.md$/i,
                     type: 'asset/source',
                 },
+//                {
+//                    test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+//                    use: [
+//                      {
+//                        loader: "file-loader",
+//                        options: {
+//                          context: path.resolve(__dirname, "./querybook/webapp/images/"),
+//                          outputPath: "hello/",
+//                          name: "[path][name].[ext]"
+//                        }
+//                      }
+//                    ]
+//                },
             ],
         },
 

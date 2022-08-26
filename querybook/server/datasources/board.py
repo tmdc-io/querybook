@@ -322,7 +322,7 @@ def send_board_transfer_notification(board_id, next_owner_id, session=None):
     board = Board.get(id=board_id, session=session)
     environment = board.environment
 
-    board_url = f"{QuerybookSettings.PUBLIC_URL}/{environment.name}/board/{board_id}/"
+    board_url = f"{QuerybookSettings.PUBLIC_URL}/{QuerybookSettings.BASE_NAME}/{environment.name}/board/{board_id}/"
 
     notify_user(
         user=invited_user,
@@ -342,7 +342,7 @@ def send_board_access_request_notification(board_id, uid, session=None):
     board = Board.get(id=board_id, session=session)
     environment = board.environment
 
-    board_url = f"{QuerybookSettings.PUBLIC_URL}/{environment.name}/list/{board_id}/"
+    board_url = f"{QuerybookSettings.PUBLIC_URL}/{QuerybookSettings.BASE_NAME}/{environment.name}/list/{board_id}/"
 
     owner = user_logic.get_user_by_id(board.owner_uid, session=session)
     doc_editors = [owner]
@@ -372,7 +372,7 @@ def send_add_board_editor_notification(board_id, uid, read, write, session=None)
 
     permission_type = "edit" if write else "view"
 
-    board_url = f"{QuerybookSettings.PUBLIC_URL}/{environment.name}/list/{board_id}/"
+    board_url = f"{QuerybookSettings.PUBLIC_URL}/{QuerybookSettings.BASE_NAME}/{environment.name}/list/{board_id}/"
 
     notify_user(
         user=invited_user,

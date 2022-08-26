@@ -483,7 +483,7 @@ def send_datadoc_access_request_notification(doc_id, uid, session=None):
     data_doc = logic.get_data_doc_by_id(doc_id, session=session)
     environment = data_doc.environment
     data_doc_title = data_doc.title or "Untitled"
-    doc_url = f"{QuerybookSettings.PUBLIC_URL}/{environment.name}/datadoc/{doc_id}/"
+    doc_url = f"{QuerybookSettings.PUBLIC_URL}/{QuerybookSettings.BASE_NAME}/{environment.name}/datadoc/{doc_id}/"
 
     owner = user_logic.get_user_by_id(data_doc.owner_uid, session=session)
     doc_editors = [owner]
@@ -514,7 +514,7 @@ def send_add_datadoc_editor_email(doc_id, uid, read, write, session=None):
     read_or_write = "edit" if write else "view"
     data_doc_title = data_doc.title or "Untitled"
 
-    doc_url = f"{QuerybookSettings.PUBLIC_URL}/{environment.name}/datadoc/{doc_id}/"
+    doc_url = f"{QuerybookSettings.PUBLIC_URL}/{QuerybookSettings.BASE_NAME}/{environment.name}/datadoc/{doc_id}/"
 
     notify_user(
         user=invited_user,
@@ -655,7 +655,7 @@ def send_datadoc_transfer_notification(doc_id, next_owner_id, session=None):
 
     data_doc_title = data_doc.title or "Untitled"
 
-    doc_url = f"{QuerybookSettings.PUBLIC_URL}/{environment.name}/datadoc/{doc_id}/"
+    doc_url = f"{QuerybookSettings.PUBLIC_URL}/{QuerybookSettings.BASE_NAME}/{environment.name}/datadoc/{doc_id}/"
 
     notify_user(
         user=invited_user,

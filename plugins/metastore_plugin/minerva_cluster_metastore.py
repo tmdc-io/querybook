@@ -16,7 +16,7 @@ from lib.metastore.base_metastore_loader import (
     DataColumn,
 )
 
-from env import QuerybookSettings, get_env_config, get_env_config_strip_slash
+from env import QuerybookSettings, get_env_config, get_env_config_strip_slash, get_user_agent
 from lib.logger import get_logger
 
 LOG = get_logger(__file__)
@@ -24,7 +24,7 @@ LOG = get_logger(__file__)
 connection_regex = r"^(http|https):\/\/([\w.-]+(?:\:\d+)?(?:,[\w.-]+(?:\:\d+)?)*)(\/\w+)?(\/\w+)?(\?[\w.-]+=[\w.-]+(?:&[\w.-]+=[\w.-]+)*)?$"
 apikey_regex = r"^[A-Za-z0-9=]+$"
 cluster_regex = r"^[A-Za-z0-9]+$"
-
+def_minerva_query_url = QuerybookSettings.DATAOS_MINERVA_QUERY_URL
 
 def _parse_connection(connection_string: str):
     match = re.search(connection_regex, connection_string, )
@@ -39,15 +39,12 @@ def _parse_connection(connection_string: str):
 
 class MinervaClusterMetadataLoader(BaseMetastoreLoader):
     def __init__(self, metastore_dict: Dict):
-        connection = metastore_dict.get("metastore_params").get("connection")
+        connection = metastore_dict.get("metastore_params").get("connection") or def_minerva_query_url
         protocol, hostname, port = _parse_connection(connection)
         self.protocol = protocol
         self.hostname = hostname
         self.port = port
-        self.source = "{0}/{1}".format(
-            get_env_config("QUERYBOOK_APPNAME") or "Querybook",
-            get_env_config("QUERYBOOK_VERSION") or "dev"
-        )
+        self.source = get_user_agent()
         self.cluster = metastore_dict.get("metastore_params").get("cluster")
         self.apikey = metastore_dict.get("metastore_params").get("apikey")
 
@@ -55,14 +52,7 @@ class MinervaClusterMetadataLoader(BaseMetastoreLoader):
 
     @classmethod
     def get_metastore_params_template(cls):
-        def_minerva_query_url = QuerybookSettings.DATAOS_MINERVA_QUERY_URL
         return StructFormField(
-            connection=FormField(
-                required=True,
-                regex=connection_regex,
-                description=def_minerva_query_url,
-                helper=f"<p>Connection to minerva query engine. It should look like this: <br/><code>{def_minerva_query_url}</code></p>",
-            ),
             apikey=FormField(
                 required=True,
                 regex=apikey_regex,
@@ -73,7 +63,13 @@ class MinervaClusterMetadataLoader(BaseMetastoreLoader):
                 required=True,
                 regex=cluster_regex,
                 helper="<p>Minerva cluster name</p>",
-            )
+            ),
+            connection=FormField(
+                required=False,
+                regex=connection_regex,
+                description=def_minerva_query_url,
+                helper=f"<p>Connection to minerva query engine <br/><code>{def_minerva_query_url}</code></p>",
+            ),
         )
 
     def run_query(self, query: str):

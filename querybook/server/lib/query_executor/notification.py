@@ -55,6 +55,7 @@ def notifiy_on_execution_completion(query_execution_id, session=None):
                     cell_id=cell_id,
                     query_title=query_title,
                     public_url=QuerybookSettings.PUBLIC_URL,
+                    base_name=QuerybookSettings.BASE_NAME,
                     env_name=env_name,
                 ),
                 session=session,

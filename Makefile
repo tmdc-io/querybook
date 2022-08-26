@@ -35,7 +35,7 @@ prod_scheduler:
 	docker-compose -f containers/docker-compose.prod.yml run scheduler
 
 prod_image:
-	docker build --pull -t querybook .
+	docker build --pull -t querybook . --build-arg PRODUCTION=true --build-arg EXTRA_PIP_INSTALLS=dev.txt,extra.txt,prod.txt
 
 dev_image:
 	docker build --pull -t querybook-dev . --build-arg PRODUCTION=false --build-arg EXTRA_PIP_INSTALLS=dev.txt,extra.txt

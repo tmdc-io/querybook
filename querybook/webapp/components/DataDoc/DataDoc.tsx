@@ -29,7 +29,11 @@ import {
     deserializeCopyCommand,
     serializeCopyCommand,
 } from 'lib/data-doc/copy';
-import { getShareUrl, scrollToCell } from 'lib/data-doc/data-doc-utils';
+import {
+    getShareUrl,
+    scrollToCell,
+    stripBasenamePrefixFromUrl,
+} from 'lib/data-doc/data-doc-utils';
 import { replaceDataDoc, searchDataDocCells } from 'lib/data-doc/search';
 import { sendConfirm, setBrowserTitle } from 'lib/querybookUI';
 import history from 'lib/router-history';
@@ -101,7 +105,9 @@ class DataDocComponent extends React.PureComponent<IProps, IState> {
     public publishDataDocTitle(title: string) {
         setBrowserTitle(title || 'Untitled DataDoc');
         if (title) {
-            const pathParts = location.pathname.split('/');
+            // remove /querybook from beginning
+            const pathname = stripBasenamePrefixFromUrl(location.pathname);
+            const pathParts = pathname.split('/');
             const pathPrefix =
                 pathParts[2] === '_' && pathParts[3] === 'embedded_datadoc'
                     ? pathParts.slice(0, 5).join('/')

@@ -1,5 +1,10 @@
 import React from 'react';
-import { Redirect, Route, Router, Switch } from 'react-router-dom';
+import {
+    Redirect,
+    Route,
+    Router,
+    Switch,
+} from 'react-router-dom';
 
 import { AppLayout } from 'components/AppLayout/AppLayout';
 import { ConfirmationManager } from 'components/ConfirmationManager/ConfirmationManager';

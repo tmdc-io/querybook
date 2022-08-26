@@ -46,7 +46,7 @@ def _get_datadoc_notification_params(
     datadoc = get_data_doc_by_id(doc_id, session=session)
     doc_title = datadoc.title or "Untitled"
     env_name = datadoc.environment.name
-    doc_url = f"{QuerybookSettings.PUBLIC_URL}/{env_name}/datadoc/{doc_id}/"
+    doc_url = f"{QuerybookSettings.PUBLIC_URL}/{QuerybookSettings.BASE_NAME}/{env_name}/datadoc/{doc_id}/"
 
     return dict(
         is_success=is_success,

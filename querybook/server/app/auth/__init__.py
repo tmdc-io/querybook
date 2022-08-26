@@ -1,7 +1,6 @@
 from flask import request
 from flask_login import logout_user, current_user
 
-from const.path import BUILD_PATH
 from const.datasources import DS_PATH
 from env import QuerybookSettings
 from lib.utils.import_helper import import_module_with_default
@@ -24,7 +23,9 @@ def init_app(flask_app):
         if request.path in ignore_paths:
             return
         # API LOGIC and Static File are handled differently
-        if request.path.startswith(DS_PATH) or request.path.startswith(BUILD_PATH):
+        if request.path.startswith(DS_PATH) or request.path.startswith(
+            QuerybookSettings.BASE_PATH
+        ):
             return
         if not current_user.is_authenticated:
             return auth.login(request)
