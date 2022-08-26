@@ -96,8 +96,12 @@ class DataTableViewComponent extends React.PureComponent<
     public publishDataTableTitle(title: string) {
         if (title) {
             setBrowserTitle(title);
+            // remove /querybook from beginning
+            const pathname = location.pathname.startsWith('/querybook')
+                ? location.pathname.substring('/querybook'.length)
+                : location.pathname;
             history.replace(
-                location.pathname.split('/').slice(0, 4).join('/') +
+                pathname.split('/').slice(0, 4).join('/') +
                     `/${sanitizeUrlTitle(title)}/` +
                     location.search +
                     location.hash,
