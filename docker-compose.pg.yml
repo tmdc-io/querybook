@@ -1,6 +1,8 @@
 version: '2.1'
 
-x-querybook-image: &querybook-image querybook-dev:latest
+x-querybook-image: &querybook-image
+    querybook-dev:latest
+#    rubiklabs/querybook:0.3
 x-querybook-depends-on: &querybook-depends-on
     postgres:
         condition: service_healthy
@@ -10,12 +12,12 @@ x-querybook-depends-on: &querybook-depends-on
         condition: service_healthy
 x-querybook-volumes: &querybook-volumes
     # This is to sync in live code change
-    - $PWD:/opt/querybook
+     - $PWD:/opt/querybook
     # See https://stackoverflow.com/questions/29181032/add-a-volume-to-docker-but-exclude-a-sub-folder
-    - /opt/querybook/node_modules/
+     - /opt/querybook/node_modules/
     # Make sure the build files don't leak back
-    - /opt/querybook/dist/
-    - $PWD/containers/bundled_querybook_config.pg.yaml:/opt/querybook/querybook/config/querybook_config.yaml
+     - /opt/querybook/dist/
+     - $PWD/containers/bundled_querybook_config.pg.yaml:/opt/querybook/querybook/config/querybook_config.yaml
     # - file:/opt/store/
 
 services:
@@ -24,8 +26,8 @@ services:
         image: *querybook-image
         tty: true
         stdin_open: true
-        # network_mode: 'host'
         command: './querybook/scripts/bundled_docker_run_web --initdb --initweb'
+#        command: './querybook/scripts/runservice prod_web'
         ports:
             - '${PORT:-10001}:${PORT:-10001}'
             - '${APIPORT-3000}:${APIPORT-3000}'
@@ -45,6 +47,7 @@ services:
         tty: true
         stdin_open: true
         command: './querybook/scripts/runservice worker -c 5'
+#        command: './querybook/scripts/runservice prod_worker -c 150 -l info -Ofair -n celery@%h'
         volumes: *querybook-volumes
         depends_on: *querybook-depends-on
     scheduler:
@@ -53,6 +56,7 @@ services:
         tty: true
         stdin_open: true
         command: './querybook/scripts/runservice scheduler --pidfile="/opt/celerybeat.pid"'
+#        command: './querybook/scripts/runservice prod_scheduler'
         volumes: *querybook-volumes
         depends_on: *querybook-depends-on
     redis:

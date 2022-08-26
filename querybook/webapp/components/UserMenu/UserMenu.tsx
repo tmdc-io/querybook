@@ -79,10 +79,10 @@ export const UserMenu: React.FC<IUserMenuProps> = ({
                 <MenuDivider />
                 {themeToggle}
                 <MenuItem onClick={goToUserSettingsMenu}>Settings</MenuItem>
-                <MenuDivider />
-                <MenuItem onClick={toggleShowTokenModal}>
-                    API Access Token
-                </MenuItem>
+                {/*                 <MenuDivider /> */}
+                {/*                 <MenuItem onClick={toggleShowTokenModal}> */}
+                {/*                     API Access Token */}
+                {/*                 </MenuItem> */}
                 {userInfo.isAdmin && (
                     <MenuItem>
                         <Link className="flex1" to="/admin">
@@ -90,7 +90,7 @@ export const UserMenu: React.FC<IUserMenuProps> = ({
                         </Link>
                     </MenuItem>
                 )}
-                <MenuDivider />
+                {/*                 <MenuDivider /> */}
                 <MenuItem onClick={logout}>Log out</MenuItem>
             </Menu>
         );

@@ -41,17 +41,19 @@ export const InfoMenuButton: React.FunctionComponent = () => {
                     Querybook v<QuerybookVersion />
                 </MenuInfoItem>
                 <MenuDivider />
-                <MenuItem
-                    onClick={() => {
-                        navigateWithinEnv('/changelog/', {
-                            isModal: true,
-                        });
-                        setNotification(false);
-                    }}
-                >
-                    Change Logs
-                    {notification ? <MenuItemPing /> : null}
-                </MenuItem>
+                {/*                 -- Hide Change Logs */}
+                {/*                 <MenuItem */}
+                {/*                     onClick={() => { */}
+                {/*                         navigateWithinEnv('/changelog/', { */}
+                {/*                             isModal: true, */}
+                {/*                         }); */}
+                {/*                         setNotification(false); */}
+                {/*                     }} */}
+                {/*                 > */}
+                {/*                     Change Logs */}
+                {/*                     {notification ? <MenuItemPing /> : null} */}
+                {/*                 </MenuItem> */}
+
                 <MenuItem
                     onClick={() =>
                         navigateWithinEnv('/info/shortcut/', {

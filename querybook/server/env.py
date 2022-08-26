@@ -53,6 +53,9 @@ def get_user_agent():
 
 
 class QuerybookSettings(object):
+    BASE_NAME = "querybook"
+    BASE_PATH = f"/{BASE_NAME}"
+
     # Core
     PRODUCTION = os.environ.get("production", "false") == "true"
     PUBLIC_URL = get_env_config("PUBLIC_URL")

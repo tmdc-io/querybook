@@ -35,16 +35,16 @@ function getDevServerSettings(env) {
                 pathRewrite: function (req) {},
                 bypass: function (req, res, proxyOptions) {},
             },
-            '/-/socket.io/*': {
+            '/querybook/socket.io/*': {
                 target: QUERYBOOK_UPSTREAM,
                 changeOrigin: true,
                 ws: true,
             },
-            '/static/*': {
+            '/querybook/static/*': {
                 target: QUERYBOOK_UPSTREAM,
                 changeOrigin: true,
             },
-            '/oauth2callback': {
+            '/querybook/auth/oidc/callback': {
                 target: QUERYBOOK_UPSTREAM,
                 changeOrigin: true,
             },
@@ -211,6 +211,19 @@ module.exports = (env, options) => {
                     test: /\.md$/i,
                     type: 'asset/source',
                 },
+//                {
+//                    test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+//                    use: [
+//                      {
+//                        loader: "file-loader",
+//                        options: {
+//                          context: path.resolve(__dirname, "./querybook/webapp/images/"),
+//                          outputPath: "hello/",
+//                          name: "[path][name].[ext]"
+//                        }
+//                      }
+//                    ]
+//                },
             ],
         },
 

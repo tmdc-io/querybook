@@ -19,7 +19,7 @@ LOG = get_logger(__file__)
 connection_regex = r"^(http|https):\/\/([\w.-]+(?:\:\d+)?(?:,[\w.-]+(?:\:\d+)?)*)(\/\w+)?(\/\w+)?(\?[\w.-]+=[\w.-]+(?:&[\w.-]+=[\w.-]+)*)?$"
 apikey_regex = r"^[A-Za-z0-9=]+$"
 cluster_regex = r"^[A-Za-z0-9]+$"
-
+def_minerva_query_url = QuerybookSettings.DATAOS_MINERVA_QUERY_URL
 
 def _parse_connection(connection_string: str):
     match = re.search(connection_regex, connection_string, )
@@ -55,14 +55,7 @@ class MinervaQueryExecutor(QueryExecutorBaseClass):
 
     @classmethod
     def EXECUTOR_TEMPLATE(cls):
-        def_minerva_query_url = QuerybookSettings.DATAOS_MINERVA_QUERY_URL
         return StructFormField(
-            connection=FormField(
-                required=True,
-                regex=connection_regex,
-                description=def_minerva_query_url,
-                helper=f"<p>Connection to minerva query engine. It should look like this: <br/><code>{def_minerva_query_url}</code></p>",
-            ),
             apikey=FormField(
                 required=True,
                 regex=apikey_regex,
@@ -74,11 +67,12 @@ class MinervaQueryExecutor(QueryExecutorBaseClass):
                 regex=cluster_regex,
                 helper="<p>Minerva cluster name</p>",
             ),
-            catalog=FormField(
-                required=True,
-                # regex= TODO Fix this
-                helper="<p>Catalog / Depot</p>",
-            )
+            connection=FormField(
+                required=False,
+                regex=connection_regex,
+                description=def_minerva_query_url,
+                helper=f"<p>Connection to minerva query engine <br/><code>{def_minerva_query_url}</code></p>",
+            ),
         )
 
     def _parse_exception(self, e):
@@ -110,10 +104,9 @@ class MinervaQueryExecutor(QueryExecutorBaseClass):
 class MinervaClient(ClientBaseClass):
     def __init__(
         self,
-        connection,
         apikey,
         cluster,
-        catalog,
+        connection=def_minerva_query_url,
         proxy_user=None,
         *args,
         **kwargs
@@ -129,7 +122,7 @@ class MinervaClient(ClientBaseClass):
             port=port,
             username=proxy_user or None,
             password=apikey,  # TODO: should we use current user's apikey?
-            catalog=catalog,
+            catalog=None,
             schema=None,
             source=source,
             session_props={"cluster-name": cluster},
