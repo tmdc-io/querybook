@@ -39,10 +39,17 @@ export function getShareUrl(
     const params = [cellParam, executionParam].filter((p) => p).join('&');
 
     const shareUrl = `${hostpart}${location.pathname}?` + params;
+    
+    return getStrippedBasenameUrl(shareUrl);
+}
+
+export function getStrippedBasenameUrl(
+    url: string
+) {
     // remove /querybook from beginning
-    return shareUrl.startsWith('/querybook')
-        ? shareUrl.substring('/querybook'.length)
-        : shareUrl;
+    return url.startsWith('/querybook')
+        ? url.substring('/querybook'.length)
+        : url;
 }
 
 // from: https://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
