@@ -37,17 +37,14 @@ export function getShareUrl(
         executionId != null ? `executionId=${executionId}` : null;
     const cellParam = cellId != null ? `cellId=${cellId}` : null;
     const params = [cellParam, executionParam].filter((p) => p).join('&');
-
-    const shareUrl = `${hostpart}${location.pathname}?` + params;
-    
-    return getStrippedBasenameUrl(shareUrl);
+    return stripBasenamePrefixFromUrl(
+        `${hostpart}${location.pathname}?` + params
+    );
 }
 
-export function getStrippedBasenameUrl(
-    url: string
-) {
+export function stripBasenamePrefixFromUrl(url: string) {
     // remove /querybook from beginning
-    return url.startsWith('/querybook')
+    return url && url.startsWith('/querybook')
         ? url.substring('/querybook'.length)
         : url;
 }

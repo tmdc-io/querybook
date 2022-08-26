@@ -29,7 +29,7 @@ import { ErrorPage } from 'ui/ErrorPage/ErrorPage';
 import { FourOhFour } from 'ui/ErrorPage/FourOhFour';
 import { Loader } from 'ui/Loader/Loader';
 import { Tabs } from 'ui/Tabs/Tabs';
-import { getStrippedBasenameUrl } from 'lib/data-doc/data-doc-utils';
+import { stripBasenamePrefixFromUrl } from 'lib/data-doc/data-doc-utils';
 
 import { DataTableHeader } from './DataTableHeader';
 
@@ -97,8 +97,7 @@ class DataTableViewComponent extends React.PureComponent<
     public publishDataTableTitle(title: string) {
         if (title) {
             setBrowserTitle(title);
-            // remove /querybook from beginning
-            const pathname = getStrippedBasenameUrl(location.pathname);
+            const pathname = stripBasenamePrefixFromUrl(location.pathname);
             history.replace(
                 pathname.split('/').slice(0, 4).join('/') +
                     `/${sanitizeUrlTitle(title)}/` +
