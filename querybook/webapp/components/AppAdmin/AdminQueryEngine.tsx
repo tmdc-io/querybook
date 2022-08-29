@@ -331,11 +331,11 @@ export const AdminQueryEngine: React.FunctionComponent<IProps> = ({
                                         supports more, click{' '}
                                         <Link
                                             newTab
-                                            to="https://www.querybook.org/docs/setup_guide/connect_to_query_engines/"
+                                            to="http://help.dataos.info/querybook/query_engines/"
                                         >
                                             here
                                         </Link>{' '}
-                                        to find out how to easily enable it.
+                                        to find out how to easily choose one.
                                     </div>
                                 )}
                                 name="language"
