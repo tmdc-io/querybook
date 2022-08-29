@@ -58,7 +58,8 @@ class HeimdallLoginManager(OAuthLoginManager):
         except AuthenticationError:
             abort_unauthorized()
 
-        next_url = "/"
+        home_url = (QuerybookSettings.PUBLIC_URL or QuerybookSettings.DATAOS_BASE_URL).rstrip("/")
+        next_url = f"{home_url}/{QuerybookSettings.BASE_NAME}"
         if "next" in flask_session:
             next_url = flask_session["next"]
             del flask_session["next"]
@@ -83,7 +84,7 @@ class HeimdallLoginManager(OAuthLoginManager):
                 user.id,
                 heimdall=user_apikey,
                 tags=tags
-           )
+            )
 
         update_admin_user_role_by_dataos_tags(user.id, username, tags or [], session)
         return user

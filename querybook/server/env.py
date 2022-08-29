@@ -40,7 +40,9 @@ def get_env_config_strip_slash(name, optional=True):
     This method fetches a value from Env and strip the trailing /
     """
     val = get_env_config(name, optional)
-    val = val.rstrip("/")
+    if val and type(val) == str:
+        val = val.rstrip("/")
+
     return val
 
 
@@ -152,6 +154,7 @@ class QuerybookSettings(object):
     DATAOS_OIDC_CLIENT_SECRET = get_env_config("OIDC_CLIENT_SECRET")
     DATAOS_BASE_URL = get_env_config_strip_slash("DATAOS_BASE_URL")
     DATAOS_MINERVA_QUERY_URL = get_env_config_strip_slash("MINERVA_QUERY_URL")
+    DATAOS_APIKEY = get_env_config("DATAOS_APIKEY", optional=False)
 
     # EMail
     MAIL_SERVER = get_env_config("MAIL_SERVER")
