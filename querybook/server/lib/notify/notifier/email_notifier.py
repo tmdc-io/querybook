@@ -31,7 +31,8 @@ class EmailNotifier(BaseNotifier):
             msg["From"] = from_email
             msg["To"] = user.email
             msg.attach(MIMEText(message, "html"))
-            LOG.debug(f"Deliver email ({subject}) to {user.email}")
+            LOG.debug(f"Deliver email ({subject}) to {user.email}; from: {from_email}")
+            # LOG.debug(f"MAIL_PASSWORD: {QuerybookSettings.MAIL_PASSWORD}")
 
             smtp = smtplib.SMTP(
                 QuerybookSettings.MAIL_SERVER, QuerybookSettings.MAIL_PORT
@@ -47,4 +48,5 @@ class EmailNotifier(BaseNotifier):
             smtp.sendmail(msg["From"], msg["To"], msg.as_string())
             smtp.quit()
         except Exception as e:
+            LOG.errof("*** failed to send email ***")
             LOG.error(e)

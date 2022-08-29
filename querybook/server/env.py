@@ -56,6 +56,9 @@ class QuerybookSettings(object):
     BASE_NAME = "querybook"
     BASE_PATH = f"/{BASE_NAME}"
 
+    APP_VERSION = get_env_config("APP_VERSION") or "dev"
+    BUILD_DATE = get_env_config("APP_VERSION") or "Unknown"
+
     # Core
     PRODUCTION = os.environ.get("production", "false") == "true"
     PUBLIC_URL = get_env_config("PUBLIC_URL")

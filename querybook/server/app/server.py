@@ -6,6 +6,7 @@ from app import auth
 # from app.datasource import register, abort_request
 from app.flask_app import flask_app, limiter
 from const.path import WEBAPP_INDEX_PATH
+from env import QuerybookSettings
 
 
 import datasources
@@ -37,3 +38,10 @@ def get_health_check():
 @limiter.exempt
 def main(ignore=None):
     return send_file(WEBAPP_INDEX_PATH, mimetype="text/html")
+
+
+@flask_app.after_request
+def apply_caching(response):
+    response.headers["x-version"] = QuerybookSettings.APP_VERSION
+    response.headers["x-build-date"] = QuerybookSettings.BUILD_DATE
+    return response

@@ -1,4 +1,9 @@
 SHELL := /bin/bash
+VERSION := 0.0.3
+GIT_TAG=$(shell git describe --tags --abbrev=0)
+GIT_VERSION=$(shell git describe --tags --dirty)
+DOCKER_TAG=$(GIT_VERSION)
+BUILD_DATE=$(shell date +"%m/%d/%Y %H:%M:%S %z")
 .PHONY: bundled_off prod_web prod_worker prod_scheduler docs remove_running_dev_image clean
 
 bundled_pg: dev_image
@@ -34,8 +39,8 @@ prod_worker:
 prod_scheduler:
 	docker-compose -f containers/docker-compose.prod.yml run scheduler
 
-prod_image:
-	docker build --pull -t querybook . --build-arg PRODUCTION=true --build-arg EXTRA_PIP_INSTALLS=dev.txt,extra.txt,prod.txt
+#prod_image:
+#	docker build --pull -t querybook . --build-arg PRODUCTION=true --build-arg EXTRA_PIP_INSTALLS=dev.txt,extra.txt,prod.txt
 
 dev_image:
 	docker build --pull -t querybook-dev . --build-arg PRODUCTION=false --build-arg EXTRA_PIP_INSTALLS=dev.txt,extra.txt
@@ -72,3 +77,10 @@ clean_pyc:
 	find . -type d -name __pycache__ -delete
 clean_docker:
 	docker system prune --volumes
+
+prepare: # Updates app version
+	@sed -i.bak "s/\"version\":.*/\"version\": \"${VERSION}\",/" package.json
+	@cat package.json | grep "version"
+
+prod_image:
+	docker build --pull -t rubiklabs/querybook:${DOCKER_TAG} . --build-arg PRODUCTION=true --build-arg EXTRA_PIP_INSTALLS=extra.txt

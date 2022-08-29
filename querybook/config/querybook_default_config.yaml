@@ -1,6 +1,7 @@
 # --------------- Core Config ---------------
 # Security key for flask, which is required to for any encryption with flask
-FLASK_SECRET_KEY: ~
+# FLASK_SECRET_KEY: ~
+FLASK_SECRET_KEY: 'om0htFTNO8'
 # Url of the querybook site, used for auth callback and notifications
 PUBLIC_URL: ''
 # Use this config to set cache policy of flask, see https://pythonhosted.org/Flask-Cache/ for details
@@ -31,7 +32,8 @@ QUERYBOOK_EMAIL_ADDRESS: ~
 # Settings for auth type. Currently support 'app.auth.password_auth' which
 # is authenticaton via username/password and 'app.auth.oauth_auth' which supports
 # authentication via oauth api
-AUTH_BACKEND: app.auth.password_auth
+# AUTH_BACKEND: app.auth.password_auth
+AUTH_BACKEND: auth_plugin.heimdall_auth
 # Force user to log out after they log in for X number of seconds
 # If set to 0 then only expire their login session after log out
 LOGS_OUT_AFTER: 0

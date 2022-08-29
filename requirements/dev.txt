@@ -4,3 +4,6 @@ watchdog[watchmedo]
 
 black==22.3.0
 pre-commit==2.9.2
+
+# Celery Flower
+# celery-flower==1.0.1

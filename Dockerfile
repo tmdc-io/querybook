@@ -3,6 +3,8 @@
 # This caused websocket to fail
 FROM python:3.9
 
+ARG GIT_VERSION
+ARG BUILD_DATE
 ARG PRODUCTION=true
 ARG EXTRA_PIP_INSTALLS=""
 
@@ -56,3 +58,5 @@ RUN if [ "${PRODUCTION}" = "true" ] ; then ./node_modules/.bin/webpack --mode=pr
 ENV QUERYBOOK_PLUGIN=/opt/querybook/plugins
 ENV PYTHONPATH=/opt/querybook/querybook/server:/opt/querybook/plugins
 ENV production=${PRODUCTION}
+ENV APP_VERSION=${GIT_VERSION}
+ENV BUILD_DATE=${BUILD_DATE}

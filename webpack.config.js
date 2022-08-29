@@ -2,6 +2,7 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin').CleanWebpackPlugin;
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const path = require('path');
 const webpack = require('webpack');
@@ -201,7 +202,6 @@ module.exports = (env, options) => {
                     loader: 'source-map-loader',
                     exclude: [/[\\/]node_modules[\\/]/],
                 },
-
                 {
                     test: /\.ya?ml$/,
                     include: path.resolve(__dirname, 'querybook/config'),
@@ -211,19 +211,6 @@ module.exports = (env, options) => {
                     test: /\.md$/i,
                     type: 'asset/source',
                 },
-//                {
-//                    test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-//                    use: [
-//                      {
-//                        loader: "file-loader",
-//                        options: {
-//                          context: path.resolve(__dirname, "./querybook/webapp/images/"),
-//                          outputPath: "hello/",
-//                          name: "[path][name].[ext]"
-//                        }
-//                      }
-//                    ]
-//                },
             ],
         },
 
@@ -265,6 +252,15 @@ module.exports = (env, options) => {
                 new ReactRefreshWebpackPlugin({
                     overlay: false,
                 }),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        context: 'querybook/webapp/images/',
+                        from: "*",
+                        to: path.resolve(__dirname, BUILD_DIR, './images/')
+                    }
+                ]
+            })
         ].filter(Boolean),
     };
 };

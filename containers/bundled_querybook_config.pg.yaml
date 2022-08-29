@@ -1,11 +1,6 @@
-# Make sure this is consistent with mysql part of docker-compose.yml
-FLASK_SECRET_KEY: SOME_RANDOM_SECRET_KEY
-
 DATABASE_CONN: postgresql://story:story@postgres:5432/story
 REDIS_URL: redis://redis:6379/0
 ELASTICSEARCH_HOST: elasticsearch:9200
-# Uncomment for email
-# EMAILER_CONN: dockerhostforward
 
 # HEIMDALL AUTH
 AUTH_BACKEND: 'auth_plugin.heimdall_auth'
@@ -22,6 +17,7 @@ MAIL_SERVER: smtp.mailgun.org
 MAIL_PORT: 587
 MAIL_USE_TLS: true
 MAIL_USE_SSL: true
-MAIL_USERNAME: postmaster@dataos.animesh.org
-MAIL_PASSWORD: REDACTED
-MAIL_DEFAULT_SENDER: "DataOS Querybook <querybook@dataos.animesh.org>"
+MAIL_USERNAME: querybook@mail.dataos.io
+MAIL_DEFAULT_SENDER: "DataOS Querybook <querybook@mail.dataos.io>"
+# Must be provided in the Env
+# MAIL_PASSWORD: "*** REDACTED ***"

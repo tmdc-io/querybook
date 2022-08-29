@@ -1,7 +1,7 @@
 version: '2.1'
 
 x-querybook-image: &querybook-image
-    querybook-dev:latest
+    rubiklabs/querybook:0.0.3
 x-local-env-files: &local-env-files
     - ./local.env
 x-querybook-depends-on: &querybook-depends-on
@@ -27,7 +27,7 @@ services:
         image: *querybook-image
         tty: true
         stdin_open: true
-        command: './querybook/scripts/bundled_docker_run_web --initdb --initweb'
+        command: './querybook/scripts/runservice prod_web'
         ports:
             - '${PORT:-10001}:${PORT:-10001}'
             - '${APIPORT-3000}:${APIPORT-3000}'
@@ -47,7 +47,7 @@ services:
         image: *querybook-image
         tty: true
         stdin_open: true
-        command: './querybook/scripts/runservice worker -c 5'
+        command: './querybook/scripts/runservice prod_worker -c 150 -l info -Ofair -n celery@%h'
         volumes: *querybook-volumes
         depends_on: *querybook-depends-on
         env_file: *local-env-files
@@ -56,7 +56,7 @@ services:
         image: *querybook-image
         tty: true
         stdin_open: true
-        command: './querybook/scripts/runservice scheduler --pidfile="/opt/celerybeat.pid"'
+        command: './querybook/scripts/runservice prod_scheduler'
         volumes: *querybook-volumes
         depends_on: *querybook-depends-on
         env_file: *local-env-files
@@ -119,38 +119,7 @@ services:
             interval: 30s
             timeout: 30s
             retries: 3
-
-    # CELERY FLOWER EXAMPLE
-    # If you want flower monitoring, use this
-    # Remember to put flower as part of local.txt
-    # PS - Latest Flower doens't work with Celery 5.2.7 :(
-#    flower:
-#        image: *querybook-image
-#        tty: true
-#        stdin_open: true
-#        command: './querybook/scripts/runservice flower --port=5566'
-#        ports:
-#         - '5566:5566'
-#        expose:
-#         - '5566'
-#        restart: 'always'
-#        volumes:
-#         # This is for code change via watcher
-#            - $PWD:/opt/querybook
-#            - $PWD/containers/bundled_querybook_config.yaml:/opt/querybook/querybook/config/querybook_config.yaml
-#        depends_on:
-#            postgres:
-#                condition: service_healthy
-#            redis:
-#                condition: service_healthy
-
 volumes:
     pgdata:
     esdata:
         driver: local
-    # file:
-    #     driver: local
-    #     driver_opts:
-    #         type: 'none'
-    #         o: 'bind'
-    #         device: '/mnt/querybook-store/'
