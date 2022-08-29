@@ -1,6 +1,6 @@
 import { getQueryLinePosition, IToken, tokenize } from './sql-lexer';
 import { find, invert, uniqueId } from 'lodash';
-import { format as sql_format } from 'sql-formatter';
+import { format as sql_format, FormatOptions } from 'sql-formatter';
 
 const skipTokenType = new Set(['TEMPLATED_TAG', 'TEMPLATED_BLOCK', 'URL']);
 
@@ -133,16 +133,19 @@ export function format(
                 firstKeyWord &&
                 allowedStatement.has(firstKeyWord.text.toLocaleLowerCase())
             ) {
-                formattedStatement = sql_format(statementText, {
-                    indent: options.indent,
+                const opts = {
                     language: getLanguageForSqlFormatter(language),
-                    // Prettier formatting
-                    keywordCase: 'upper',
+                    keywordCase: options.case || 'upper',
                     linesBetweenQueries: 2,
                     tabWidth: 2,
                     denseOperators: true,
                     tabulateAlias: true,
-                });
+                    indentStyle: 'standard', // standard | tabularLeft | tabularRight
+                    expressionWidth: 60,
+                    newlineBeforeSemicolon: true,
+                } as FormatOptions;
+                console.log('sql_format options:', opts);
+                formattedStatement = sql_format(statementText, opts);
             }
 
             for (const [id, templateTag] of Object.entries(idToTemplateTag)) {
@@ -163,11 +166,32 @@ export function format(
     );
 }
 
-const SQL_FORMATTER_LANGUAGES = ['db2', 'n1ql', 'pl/sql', 'sql'] as const;
+const SQL_FORMATTER_LANGUAGES = [
+    'db2',
+    'n1ql',
+    'plsql',
+    'bigquery',
+    'hive',
+    'mariadb',
+    'mysql',
+    'postgresql',
+    'redshift',
+    'singlestoredb',
+    'spark',
+    'sqlite',
+    'trino',
+    'tsql',
+    'sql',
+] as const;
+
+const SQL_LANGUAGE_MAP = {
+    Minerva: 'trino',
+} as const;
 
 type SqlFormatterLanguage = typeof SQL_FORMATTER_LANGUAGES[number];
 
 function getLanguageForSqlFormatter(language: string): SqlFormatterLanguage {
+    language = SQL_LANGUAGE_MAP[language] || language;
     if ((SQL_FORMATTER_LANGUAGES as readonly string[]).includes(language)) {
         return language as SqlFormatterLanguage;
     }

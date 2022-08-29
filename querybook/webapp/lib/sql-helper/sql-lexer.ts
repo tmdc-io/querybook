@@ -98,6 +98,11 @@ function getTokenTypeMatcher(
 ): Array<{ name: TokenType; regex: RegExp[] }> {
     const languageSetting = getLanguageSetting(language);
     return [
+        // Moved up to trump STRING matching
+        {
+            name: 'VARIABLE',
+            regex: [/^(\w+|".*"|`.*`)(?:\.(\w+|".*"|`.*`)?)+/], // Match double quotes as well
+        },
         {
             name: 'NUMBER',
             regex: [
@@ -153,10 +158,6 @@ function getTokenTypeMatcher(
         {
             name: 'URL',
             regex: [/^[a-z0-9]+:\/\/[A-Za-z0-9_.\-~/]+/],
-        },
-        {
-            name: 'VARIABLE',
-            regex: [/^(\w+|`.*`)(?:\.(\w+|`.*`)?)+/],
         },
         {
             name: 'WORD',
@@ -265,11 +266,30 @@ class Line {
     }
 }
 
+function sanitizeQuotes(str: string) {
+    const clean = (token: string, op: string) => {
+        // Match first and last char
+        if (token.charAt(0) === op && token.charAt(token.length - 1) === op) {
+            token = token.substring(op.length, token.length - op.length);
+        }
+        return token;
+    };
+
+    str = str.trim();
+    str = clean(str, `"`);
+    str = clean(str, '`');
+    return str;
+}
+
 function sanitizeTable(tableToken: IToken, defaultSchema: string) {
     const stream = new StringStream(tableToken.text);
     const parts = [];
     while (!stream.eol()) {
-        const match = stream.match(/^([_\w\d]+|`.*`)\.?/, true);
+        // const match = stream.match(/^([_\w\d]+|`.*`)\.?/, true);
+        const match = stream.match(
+            /^([_\w\d]+|"[_\w\d]+"|`[_\w\d]+`)\.?/,
+            true
+        );
         if (match[1]) {
             let part = match[1];
             if (part.charAt(0) === '`') {
@@ -286,25 +306,28 @@ function sanitizeTable(tableToken: IToken, defaultSchema: string) {
 
     if (parts.length === 1) {
         schema = defaultSchema;
-        table = parts[0];
+        table = sanitizeQuotes(parts[0]);
     } else if (parts.length === 2) {
-        schema = parts[0];
-        table = parts[1];
+        schema = sanitizeQuotes(parts[0]);
+        table = sanitizeQuotes(parts[1]);
     } else if (parts.length === 3) {
         // DataOS: catalog.schema.table
-        schema = parts[0] + '.' + parts[1];
-        table = parts[2];
+        schema = sanitizeQuotes(parts[0]) + '.' + sanitizeQuotes(parts[1]);
+        table = sanitizeQuotes(parts[2]);
     } else {
         console.error('Erroneous Input');
         console.error(tableToken);
         success = false;
     }
 
-    return {
+    const reply = {
         schema: (schema || '').toLowerCase(),
         table: (table || '').toLowerCase(),
         success,
     };
+
+    console.log('sanitizeTable: reply: ', reply);
+    return reply;
 }
 
 function categorizeWord(token: IToken, language: string) {
@@ -631,7 +654,6 @@ export function findTableReferenceAndAlias(statements: IToken[][]) {
     let defaultSchema = 'default';
     const references: Record<number, TableToken[]> = {};
     const aliases: Record<number, Record<string, TableToken>> = {};
-
     statements.forEach((statement, statementNum) => {
         if (statement.length === 0) {
             return;
@@ -675,7 +697,6 @@ export function findTableReferenceAndAlias(statements: IToken[][]) {
 
             let tableSearchMode = false;
             let lastTableIndex = -1;
-
             statement.forEach((token, tokenIndex) => {
                 const nextToken = statement[tokenIndex + 1];
                 const prevToken = statement[tokenIndex - 1];

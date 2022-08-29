@@ -17,7 +17,7 @@ MINERVA_QUERY_URL: https://tcp.main-lamb.dataos.app:7432
 MAIL_SERVER: smtp.mailgun.org
 MAIL_PORT: 587
 MAIL_USE_TLS: true
-MAIL_USE_SSL: true
+MAIL_USE_SSL: false
 MAIL_USERNAME: querybook@mail.dataos.io
 MAIL_DEFAULT_SENDER: "DataOS Querybook <querybook@mail.dataos.io>"
 # Must be provided in the Env
