@@ -48,5 +48,5 @@ class EmailNotifier(BaseNotifier):
             smtp.sendmail(msg["From"], msg["To"], msg.as_string())
             smtp.quit()
         except Exception as e:
-            LOG.errof("*** failed to send email ***")
+            LOG.error("*** failed to send email ***")
             LOG.error(e)

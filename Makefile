@@ -84,3 +84,6 @@ prepare: # Updates app version
 
 prod_image:
 	docker build --pull -t rubiklabs/querybook:${DOCKER_TAG} . --build-arg PRODUCTION=true --build-arg EXTRA_PIP_INSTALLS=extra.txt
+
+prod_push: prod_image
+	docker push rubiklabs/querybook:${DOCKER_TAG}
