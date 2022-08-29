@@ -63,6 +63,8 @@ def create_user(
     session=None,
     properties={},
 ):
+    if not username:
+        raise Exception("username must not be blank")
 
     user = User.create(
         fields={

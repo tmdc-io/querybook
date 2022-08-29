@@ -99,12 +99,14 @@ def load_user_with_api_access_token(request):
         token_string = request.headers.get("apikey")
 
     if token_string:
-        user_id = authorize_with_heimdall(token_string)
+        username = authorize_and_get_username(token_string)
         with DBSession() as session:
-            user = get_user_by_name(user_id, session=session)
-            username, email, fullname, tags = get_dataos_user_profile(token_string)
+            user = get_user_by_name(username, session=session)
+            username, email, fullname, tags = get_heimdall_user_profile(
+                token_string, username
+            )
             if not user:
-                user_apikey = get_or_create_dataos_user_apikey(username, token_string)
+                user_apikey = get_or_create_heimdall_user_apikey(username, token_string)
                 user = create_user(
                     username=username,
                     fullname=fullname if fullname is not None else username,
@@ -152,12 +154,9 @@ def update_admin_user_role_by_dataos_tags(uid, username, tags=[], session=None):
             delete_user_role(r.id, session)
 
 
-def authorize_with_heimdall(access_token):
-    dataos_base_url = QuerybookSettings.DATAOS_BASE_URL
-    heimdall_base_url = f"{dataos_base_url}/heimdall"
-
+def authorize_and_get_username(access_token):
     # Authorize
-    heimdall_auth_url = f"{heimdall_base_url}/api/v1/authorize"
+    heimdall_auth_url = f"{QuerybookSettings.DATAOS_BASE_URL}/heimdall/api/v1/authorize"
     LOG.debug(f"[Heimdall] auth_url: {heimdall_auth_url}")
 
     resp = requests.post(heimdall_auth_url, json={"token": access_token})
@@ -177,12 +176,9 @@ def authorize_with_heimdall(access_token):
     )
 
 
-def get_dataos_user_profile(access_token):
-    dataos_base_url = QuerybookSettings.DATAOS_BASE_URL
-    heimdall_base_url = f"{dataos_base_url}/heimdall"
-
+def authorize_and_get_user_profile(access_token):
     # Authorize
-    heimdall_auth_url = f"{heimdall_base_url}/api/v1/authorize"
+    heimdall_auth_url = f"{QuerybookSettings.DATAOS_BASE_URL}/heimdall/api/v1/authorize"
     LOG.debug(f"[Heimdall] auth_url: {heimdall_auth_url}")
 
     resp = requests.post(heimdall_auth_url, json={"token": access_token})
@@ -192,25 +188,7 @@ def get_dataos_user_profile(access_token):
         LOG.debug(f"[Heimdall] reply: {reply}")
         if reply["allow"] and reply["result"] is not None:
             user_id = reply["result"]["id"]
-
-            # Profile
-            heimdall_profile_url = f"{heimdall_base_url}/api/v1/users/{user_id}"
-            LOG.debug(f"[Heimdall] profile_url: {heimdall_profile_url}")
-
-            headers = {"Authorization": "Bearer {}".format(access_token)}
-            resp = requests.get(heimdall_profile_url, headers=headers)
-            LOG.debug(f"[Heimdall] resp: {resp.status_code}")
-            if resp.status_code == 200:
-                user = resp.json()
-                LOG.info(f"[Heimdall] resolved user: {user}")
-                return user["id"], user["email"], user["name"], user["tags"]
-            else:
-                raise AuthenticationError(
-                    "Failed to fetch user profile, status ({0}), body ({1})".format(
-                        resp.status if resp else "None",
-                        resp.json() if resp else "None",
-                    )
-                )
+            return get_heimdall_user_profile(access_token, user_id)
     else:
         raise AuthenticationError(
             "Failed to authorize with Heimdall, status ({0}), body ({1})".format(
@@ -219,7 +197,59 @@ def get_dataos_user_profile(access_token):
         )
 
 
-def get_or_create_dataos_user_apikey(user_id, access_token):
+def get_heimdall_user_profile(access_token, username):
+    heimdall_profile_url = (
+        f"{QuerybookSettings.DATAOS_BASE_URL}/heimdall/api/v1/users/{username}"
+    )
+    LOG.debug(f"[Heimdall] profile_url: {heimdall_profile_url}")
+
+    headers = {"Authorization": "Bearer {}".format(access_token)}
+    resp = requests.get(heimdall_profile_url, headers=headers)
+    LOG.debug(f"[Heimdall] resp: {resp.status_code}")
+    if resp.status_code == 200:
+        user = resp.json()
+        LOG.info(f"[Heimdall] resolved user: {user}")
+        # username, email, fullname, tags
+        return user["id"], user["email"], user["name"], user["tags"]
+    else:
+        raise AuthenticationError(
+            "Failed to fetch user profile, status ({0}), body ({1})".format(
+                resp.status if resp else "None",
+                resp.json() if resp else "None",
+            )
+        )
+
+
+def get_heimdall_users(access_token):
+    heimdall_users_url = f"{QuerybookSettings.DATAOS_BASE_URL}/heimdall/api/v1/users"
+    LOG.debug(f"[Heimdall] heimdall_users: {heimdall_users_url}")
+
+    headers = {"Authorization": "Bearer {}".format(access_token)}
+    resp = requests.get(heimdall_users_url, headers=headers)
+    LOG.debug(f"[Heimdall] resp: {resp.status_code}")
+    if resp.status_code == 200:
+        users = []
+        for user in resp.json():
+            users.append(
+                {
+                    "username": user["id"],
+                    "fullname": user["name"],
+                    "tags": user["tags"],
+                    "type": user["type"],
+                    "email": user["email"],
+                }
+            )
+        return users
+    else:
+        raise AuthenticationError(
+            "Failed to fetch users, status ({0}), body ({1})".format(
+                resp.status if resp else "None",
+                resp.json() if resp else "None",
+            )
+        )
+
+
+def get_or_create_heimdall_user_apikey(user_id, access_token):
     dataos_base_url = QuerybookSettings.DATAOS_BASE_URL
     heimdall_base_url = f"{dataos_base_url}/heimdall"
     heimdall_apikey_url = f"{heimdall_base_url}/api/v1/users/{user_id}/tokens"

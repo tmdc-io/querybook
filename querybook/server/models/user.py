@@ -24,7 +24,7 @@ class User(CRUDMixin, Base):
     __tablename__ = "user"
 
     id = sql.Column(sql.Integer, primary_key=True)
-    username = sql.Column(sql.String(length=name_length), unique=True)
+    username = sql.Column(sql.String(length=name_length), unique=True)  # nullable=False
     fullname = sql.Column(sql.String(length=name_length))
     _password = sql.Column("password", sql.String(length=password_length))
 

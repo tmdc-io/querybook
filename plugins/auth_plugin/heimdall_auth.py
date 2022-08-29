@@ -1,7 +1,3 @@
-import requests
-
-import hashlib
-
 from flask import request, session as flask_session, redirect
 import flask_login
 
@@ -11,8 +7,8 @@ from app.auth.utils import (
     AuthUser,
     abort_unauthorized,
     AuthenticationError,
-    get_dataos_user_profile,
-    get_or_create_dataos_user_apikey,
+    authorize_and_get_user_profile,
+    get_or_create_heimdall_user_apikey,
     update_admin_user_role_by_dataos_tags
 )
 from app.auth.oauth_auth import OAuthLoginManager
@@ -49,8 +45,8 @@ class HeimdallLoginManager(OAuthLoginManager):
 
         try:
             access_token = self._fetch_access_token(code)
-            username, email, fullname, tags = get_dataos_user_profile(access_token)
-            user_apikey = get_or_create_dataos_user_apikey(username, access_token)
+            username, email, fullname, tags = authorize_and_get_user_profile(access_token)
+            user_apikey = get_or_create_heimdall_user_apikey(username, access_token)
             with DBSession() as session:
                 flask_login.login_user(
                     AuthUser(self.login_user(username, email, user_apikey, tags, session=session, fullname=fullname))

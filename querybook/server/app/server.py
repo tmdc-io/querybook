@@ -17,12 +17,6 @@ datasources
 datasources_socketio
 
 
-# @register("/querybook/<path:ignore>")
-# @limiter.exempt
-# def datasource_four_oh_four(*args, **kwargs):
-#     abort_request(404)
-
-
 @flask_app.route("/querybook/ping/")
 @limiter.exempt
 def get_health_check():
@@ -45,3 +39,9 @@ def apply_caching(response):
     response.headers["x-version"] = QuerybookSettings.APP_VERSION
     response.headers["x-build-date"] = QuerybookSettings.BUILD_DATE
     return response
+
+
+# Force fetch all users at the start of the application
+from tasks.heimdall_users import create_users
+
+create_users.delay()
