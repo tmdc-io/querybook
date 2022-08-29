@@ -48,8 +48,8 @@ def get_env_config_strip_slash(name, optional=True):
 
 def get_user_agent():
     source = "{0}/{1}".format(
-        get_env_config("QUERYBOOK_APPNAME") or "Querybook",
-        get_env_config("QUERYBOOK_VERSION") or "dev",
+        get_env_config("QUERYBOOK_APPNAME") or "querybook",
+        get_env_config("APP_VERSION") or "dev",
     )
     return source
 
@@ -59,7 +59,7 @@ class QuerybookSettings(object):
     BASE_PATH = f"/{BASE_NAME}"
 
     APP_VERSION = get_env_config("APP_VERSION") or "dev"
-    BUILD_DATE = get_env_config("APP_VERSION") or "Unknown"
+    BUILD_DATE = get_env_config("BUILD_DATE") or "Unknown"
 
     # Core
     PRODUCTION = os.environ.get("production", "false") == "true"
