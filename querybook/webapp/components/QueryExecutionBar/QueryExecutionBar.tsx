@@ -19,7 +19,7 @@ interface IProps {
 function useQueryExecutionUrl(queryExecution: IQueryExecution) {
     return useMemo(
         () =>
-            `${location.protocol}//${location.host}${getWithinEnvUrl(
+            `${location.protocol}//${location.host}/querybook${getWithinEnvUrl(
                 `/query_execution/${queryExecution.id}/`
             )}`,
         [queryExecution.id]
