@@ -42,4 +42,5 @@ declare global {
     const __VERSION__: string;
     const __APPNAME__: string;
     const __ENVIRONMENT__: string;
+    const __BUILD_DATE__: string;
 }

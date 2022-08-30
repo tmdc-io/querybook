@@ -14,7 +14,7 @@ import {
 } from 'ui/Menu/Menu';
 import { Popover } from 'ui/Popover/Popover';
 
-import { QuerybookVersion } from './QuerybookVersion';
+import { QuerybookVersion, QuerybookBuildDate } from './QuerybookVersion';
 
 export const InfoMenuButton: React.FunctionComponent = () => {
     const [showPanel, setShowPanel] = React.useState(false);
@@ -39,6 +39,7 @@ export const InfoMenuButton: React.FunctionComponent = () => {
             <Menu>
                 <MenuInfoItem>
                     Querybook v<QuerybookVersion />
+                    {/* <QuerybookBuildDate /> */}
                 </MenuInfoItem>
                 <MenuDivider />
                 {/*                 -- Hide Change Logs */}

@@ -89,6 +89,7 @@ function getDevServerSettings(env) {
 }
 
 module.exports = (env, options) => {
+    const BUILD_DATE = (env && env.BUILD_DATE) || 'Unknown';
     const PROD = ((env && env.NODE_ENV) || options.mode) === 'production';
     const mode = PROD ? 'production' : 'development';
 
@@ -229,7 +230,8 @@ module.exports = (env, options) => {
             new webpack.DefinePlugin({
                 __VERSION__: JSON.stringify(require('./package.json').version),
                 __APPNAME__: JSON.stringify(appName),
-                __ENVIRONMENT__: JSON.stringify(mode)
+                __ENVIRONMENT__: JSON.stringify(mode),
+                __BUILD_DATE__: JSON.stringify(BUILD_DATE),
             }),
             new webpack.IgnorePlugin({
                 resourceRegExp: /^\.\/locale$/,

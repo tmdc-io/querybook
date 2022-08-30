@@ -384,9 +384,9 @@ class QuerySnippetComposerComponent extends React.PureComponent<
             <FormField
                 label="Scope"
                 help={
-                    'Public snippets can be searched/viewed/modified by anyone.' +
-                    'Private snippets can only be searched/modified by the' +
-                    'creator, but anyone can view it given the link.'
+                    'Public snippets can be searched/viewed/modified by anyone. ' +
+                    'Private snippets can only be searched/modified by the ' +
+                    'creator, but anyone can view it given the link. '
                 }
             >
                 <Tabs

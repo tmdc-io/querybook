@@ -129,7 +129,7 @@ function getQuerybookSidebarTourSteps() {
         },
         {
             selector:
-                '.EntitySidebar .sidebar-footer [aria-label="Search Docs/Tables"]',
+                '.EntitySidebar [aria-label="Search Queries, Docs, Tables, and Boards"]',
             content: (
                 <>
                     <p>This is the Advanced Search for DataDocs and Tables.</p>
@@ -143,7 +143,7 @@ function getQuerybookSidebarTourSteps() {
             ),
         },
         {
-            selector: '.EntitySidebar .sidebar-footer .UserMenu',
+            selector: '.EntitySidebar .UserMenu',
             content: (
                 <>
                     <p>
@@ -159,7 +159,7 @@ function getQuerybookSidebarTourSteps() {
             ),
         },
         {
-            selector: '.EntitySidebar .sidebar-footer .QueryEngineStatusButton',
+            selector: '.EntitySidebar .QueryEngineStatusButton',
             content: (
                 <>
                     <p>
@@ -179,9 +179,9 @@ function getQuerybookSidebarTourSteps() {
                 <>
                     <p>
                         That's it! Thanks for using {getAppName()}. Please send
-                        your suggestions to improve the product on&nbsp;
-                        <Link to="https://github.com/pinterest/querybook">
-                            GitHub
+                        your suggestions to improve the product on &nbsp;
+                        <Link to="http://feedback.dataos.info">
+                            DataOS feedback portal
                         </Link>
                         .
                     </p>

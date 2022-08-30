@@ -24,3 +24,10 @@ export function getAppName() {
 export function getEnvironment() {
     return __ENVIRONMENT__;
 }
+
+/**
+ * Get the build date of the app
+ */
+export function getAppBuildDate() {
+    return __BUILD_DATE__;
+}
