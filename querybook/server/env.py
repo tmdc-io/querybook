@@ -1,7 +1,6 @@
 import sys
 import os
 import json
-import re
 
 from lib.config import get_config_value
 
@@ -155,11 +154,6 @@ class QuerybookSettings(object):
     DATAOS_BASE_URL = get_env_config_strip_slash("DATAOS_BASE_URL")
     DATAOS_MINERVA_QUERY_URL = get_env_config_strip_slash("MINERVA_QUERY_URL")
     DATAOS_APIKEY = get_env_config("DATAOS_APIKEY", optional=False)
-    # Duplicate of const.dataos
-    heimdall_apikey_regex = r"^[A-Za-z0-9=]+$"
-    if not re.match(heimdall_apikey_regex, DATAOS_APIKEY):
-        print(f"err: DATAOS_APIKEY must match {heimdall_apikey_regex}")
-        exit()
 
     # EMail
     MAIL_SERVER = get_env_config("MAIL_SERVER")

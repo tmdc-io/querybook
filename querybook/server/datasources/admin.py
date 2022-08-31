@@ -747,7 +747,6 @@ def exec_minerva_set_up(
             f"cluster_name={cluster_name} must match {minerva_cluster_regex}", 400
         )
 
-    # TODO: regex validation
     with DBSession() as session:
         # Environment
         environment = environment_logic.get_environment_by_name(environment_name)
