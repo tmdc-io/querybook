@@ -740,7 +740,7 @@ def get_admin_table_upload_exporters():
 @register("/admin/minerva_set_up/", methods=["POST"])
 @admin_only
 def exec_minerva_set_up(
-    cluster_name, environment_name, metastore_name, engine_name, **kwargs
+    cluster_name, environment_name, metastore_name, engine_name, apikey, **kwargs
 ):
     if not re.match(minerva_cluster_regex, cluster_name):
         raise RequestException(
@@ -768,11 +768,11 @@ def exec_minerva_set_up(
         # Metastore
         metastore = logic.get_query_metastore_by_name(metastore_name)
         if metastore is None:
-            metastore_id = QueryMetastore.create(
+            metastore = QueryMetastore.create(
                 {
                     "name": metastore_name,
                     "metastore_params": {
-                        "apikey": QuerybookSettings.DATAOS_APIKEY,
+                        "apikey": apikey,
                         "cluster": cluster_name,
                     },
                     "loader": "MinervaClusterMetadataLoader",
@@ -780,43 +780,43 @@ def exec_minerva_set_up(
                 },
                 commit=False,
                 session=session,
-            ).id
+            )
         else:
             raise RequestException(f"metastore={metastore_name} already exists", 400)
 
         # Engine
         engine = logic.get_query_engine_by_name(engine_name)
         if engine is None:
-            engine_id = QueryEngine.create(
+            engine = QueryEngine.create(
                 {
                     "name": engine_name,
                     "description": engine_name,
                     "language": minerva_language,
                     "executor": minerva_executor_name,
                     "executor_params": {
-                        "apikey": QuerybookSettings.DATAOS_APIKEY,
+                        "apikey": apikey,
                         "cluster": cluster_name,
                     },
                     "feature_params": {"status_checker": "SelectOneChecker"},
                     "environment_id": environment.id,
-                    "metastore_id": metastore_id,
+                    "metastore_id": metastore.id,
                 },
                 commit=False,
                 session=session,
-            ).id
+            )
         else:
             raise RequestException(f"engine={metastore_name} already exists", 400)
 
         logic.add_query_engine_to_environment(
-            environment.id, engine_id, commit=False, session=session
+            environment.id, engine.id, commit=False, session=session
         )
 
         task_schedule = TaskSchedule.create(
             {
-                "name": "update_metastore_{}_{}".format(metastore_id, cluster_name),
+                "name": "update_metastore_{}_{}".format(metastore.id, cluster_name),
                 "task": "tasks.update_metastore.update_metastore",
                 "cron": "0 0 * * *",
-                "args": [metastore_id],
+                "args": [metastore.id],
                 "task_type": "prod",
                 "enabled": True,
             },
