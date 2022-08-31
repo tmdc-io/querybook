@@ -1,8 +1,9 @@
 from flask_login import current_user
-
-from app.datasource import register, admin_only, api_assert
+import re
+from app.datasource import register, admin_only, api_assert, RequestException
 from app.db import DBSession
 from const.admin import AdminOperation, AdminItemType
+from const.dataos import minerva_language, minerva_executor_name, minerva_cluster_regex
 from datasources.admin_audit_log import with_admin_audit_log
 from env import QuerybookSettings
 
@@ -24,6 +25,9 @@ from logic import metastore as metastore_logic
 from logic import demo as demo_logic
 from models.admin import Announcement, QueryMetastore, QueryEngine, AdminAuditLog
 from models.schedule import TaskSchedule
+from lib.logger import get_logger
+
+LOG = get_logger(__file__)
 
 
 @register(
@@ -233,7 +237,7 @@ def delete_query_engine(
 
 @register(
     "/admin/query_engine/<int:id>/recover/",
-    methods=["POST"],
+    methods=["POST", "PUT"],
 )
 @admin_only
 @with_admin_audit_log(AdminItemType.QueryEngine, AdminOperation.UPDATE)
@@ -241,6 +245,18 @@ def recover_query_engine(
     id,
 ):
     logic.recover_query_engine_by_id(id)
+
+
+@register(
+    "/admin/query_engine/name/<name>/recover/",
+    methods=["PUT"],
+)
+@admin_only
+@with_admin_audit_log(AdminItemType.QueryEngine, AdminOperation.UPDATE)
+def recover_query_engine_by_name(
+    name,
+):
+    logic.recover_query_engine_by_name(name)
 
 
 @register(
@@ -348,6 +364,18 @@ def recover_metastore(
 
 
 @register(
+    "/admin/query_metastore/name/<name>/recover/",
+    methods=["PUT"],
+)
+@admin_only
+@with_admin_audit_log(AdminItemType.QueryMetastore, AdminOperation.UPDATE)
+def recover_metastore_by_name(
+    name,
+):
+    logic.recover_query_metastore_by_name(name)
+
+
+@register(
     "/admin/query_metastore/<int:id>/",
     methods=["DELETE"],
 )
@@ -439,6 +467,17 @@ def recover_environment(
     id,
 ):
     environment_logic.recover_environment_by_id(id)
+
+
+@register(
+    "/admin/environment/name/<name>/recover/",
+    methods=["PUT"],
+)
+@admin_only
+def recover_environment_by_name(
+    name,
+):
+    environment_logic.recover_environment_by_name(name)
 
 
 @register(
@@ -696,3 +735,105 @@ def get_admin_config():
 @admin_only
 def get_admin_table_upload_exporters():
     return list(ALL_TABLE_UPLOAD_EXPORTER_BY_NAME.keys())
+
+
+@register("/admin/minerva_set_up/", methods=["POST"])
+@admin_only
+def exec_minerva_set_up(
+    cluster_name, environment_name, metastore_name, engine_name, **kwargs
+):
+    if not re.match(minerva_cluster_regex, cluster_name):
+        raise RequestException(
+            f"cluster_name={cluster_name} must match {minerva_cluster_regex}", 400
+        )
+
+    # TODO: regex validation
+    with DBSession() as session:
+        # Environment
+        environment = environment_logic.get_environment_by_name(environment_name)
+        if environment is None:
+            environment = environment_logic.create_environment(
+                name=environment_name,
+                description=environment_name,
+                image="",
+                public=True,
+                commit=False,
+                session=session,
+            )
+        else:
+            raise RequestException(
+                f"environment={environment_name} already exists", 400
+            )
+
+        # Metastore
+        metastore = logic.get_query_metastore_by_name(metastore_name)
+        if metastore is None:
+            metastore_id = QueryMetastore.create(
+                {
+                    "name": metastore_name,
+                    "metastore_params": {
+                        "apikey": QuerybookSettings.DATAOS_APIKEY,
+                        "cluster": cluster_name,
+                    },
+                    "loader": "MinervaClusterMetadataLoader",
+                    "acl_control": {},
+                },
+                commit=False,
+                session=session,
+            ).id
+        else:
+            raise RequestException(f"metastore={metastore_name} already exists", 400)
+
+        # Engine
+        engine = logic.get_query_engine_by_name(engine_name)
+        if engine is None:
+            engine_id = QueryEngine.create(
+                {
+                    "name": engine_name,
+                    "description": engine_name,
+                    "language": minerva_language,
+                    "executor": minerva_executor_name,
+                    "executor_params": {
+                        "apikey": QuerybookSettings.DATAOS_APIKEY,
+                        "cluster": cluster_name,
+                    },
+                    "feature_params": {"status_checker": "SelectOneChecker"},
+                    "environment_id": environment.id,
+                    "metastore_id": metastore_id,
+                },
+                commit=False,
+                session=session,
+            ).id
+        else:
+            raise RequestException(f"engine={metastore_name} already exists", 400)
+
+        logic.add_query_engine_to_environment(
+            environment.id, engine_id, commit=False, session=session
+        )
+
+        task_schedule = TaskSchedule.create(
+            {
+                "name": "update_metastore_{}_{}".format(metastore_id, cluster_name),
+                "task": "tasks.update_metastore.update_metastore",
+                "cron": "0 0 * * *",
+                "args": [metastore_id],
+                "task_type": "prod",
+                "enabled": True,
+            },
+            commit=False,
+            session=session,
+        )
+
+        schedule_logic.run_and_log_scheduled_task(
+            scheduled_task_id=task_schedule.id, wait_to_finish=False, session=session
+        )
+
+        session.commit()
+
+        return {
+            "environment": environment,
+            "cluster_name": cluster_name,
+            "metastore": metastore,
+            "engine": engine,
+            "task_schedule": task_schedule,
+        }

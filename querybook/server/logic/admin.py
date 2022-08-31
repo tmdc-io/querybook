@@ -29,6 +29,11 @@ from logic.schedule import (
 
 
 @with_session
+def get_query_engine_by_name(name, session=None):
+    return session.query(QueryEngine).filter(QueryEngine.name == name).first()
+
+
+@with_session
 def get_query_engine_by_id(id, session=None):
     return session.query(QueryEngine).get(id)
 
@@ -163,6 +168,15 @@ def recover_query_engine_by_id(id, commit=True, session=None):
 
 
 @with_session
+def recover_query_engine_by_name(name, commit=True, session=None):
+    query_engine = get_query_engine_by_name(name, session=session)
+    if query_engine:
+        query_engine.deleted_at = None
+        if commit:
+            session.commit()
+
+
+@with_session
 def get_admin_announcements(session=None):
     return (
         session.query(Announcement)
@@ -244,6 +258,19 @@ def recover_query_metastore_by_id(id, commit=True, session=None):
 
         if commit:
             sync_metastore_schedule_job(id, commit=False, session=session)
+            session.commit()
+
+
+@with_session
+def recover_query_metastore_by_name(name, commit=True, session=None):
+    query_metastore = get_query_metastore_by_name(name, session=session)
+    if query_metastore:
+        query_metastore.deleted_at = None
+
+        if commit:
+            sync_metastore_schedule_job(
+                query_metastore.id, commit=False, session=session
+            )
             session.commit()
 
 

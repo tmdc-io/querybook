@@ -131,6 +131,19 @@ def recover_environment_by_id(id, commit=True, session=None):
 
 
 @with_session
+def recover_environment_by_name(name, commit=True, session=None):
+    environment = get_environment_by_name(name, session=session)
+    if environment:
+        environment.deleted_at = None
+
+        if commit:
+            session.commit()
+        else:
+            session.flush()
+        session.refresh(environment)
+
+
+@with_session
 def get_users_in_environment(environment_id, offset=0, limit=100, session=None):
     return (
         session.query(User)

@@ -12,17 +12,15 @@ from lib.query_executor.connection_string.helpers.common import (
 from lib.form import StructFormField, FormField
 from logic.user import get_user_by_name
 from env import QuerybookSettings, get_user_agent
+from const.dataos import minerva_connection_regex, minerva_cluster_regex, heimdall_apikey_regex, minerva_language, minerva_executor_name
 from lib.logger import get_logger
 
 LOG = get_logger(__file__)
 
-connection_regex = r"^(http|https):\/\/([\w.-]+(?:\:\d+)?(?:,[\w.-]+(?:\:\d+)?)*)(\/\w+)?(\/\w+)?(\?[\w.-]+=[\w.-]+(?:&[\w.-]+=[\w.-]+)*)?$"
-apikey_regex = r"^[A-Za-z0-9=]+$"
-cluster_regex = r"^[A-Za-z0-9]+$"
 def_minerva_query_url = QuerybookSettings.DATAOS_MINERVA_QUERY_URL
 
 def _parse_connection(connection_string: str):
-    match = re.search(connection_regex, connection_string, )
+    match = re.search(minerva_connection_regex, connection_string, )
 
     protocol = match.group(1)
     raw_hosts = match.group(2)
@@ -47,29 +45,29 @@ class MinervaQueryExecutor(QueryExecutorBaseClass):
 
     @classmethod
     def EXECUTOR_NAME(cls):
-        return "Minerva"
+        return minerva_executor_name
 
     @classmethod
     def EXECUTOR_LANGUAGE(cls):
-        return "Minerva"
+        return minerva_language
 
     @classmethod
     def EXECUTOR_TEMPLATE(cls):
         return StructFormField(
             apikey=FormField(
                 required=True,
-                regex=apikey_regex,
+                regex=heimdall_apikey_regex,
                 hidden=True,
                 helper="<p>Apikey to connect with Minerva query engine</p>",
             ),
             cluster=FormField(
                 required=True,
-                regex=cluster_regex,
+                regex=minerva_cluster_regex,
                 helper="<p>Minerva cluster name</p>",
             ),
             connection=FormField(
                 required=False,
-                regex=connection_regex,
+                regex=minerva_connection_regex,
                 description=def_minerva_query_url,
                 helper=f"<p>Connection to minerva query engine <br/><code>{def_minerva_query_url}</code></p>",
             ),

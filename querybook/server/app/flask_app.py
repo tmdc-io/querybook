@@ -70,7 +70,9 @@ def make_celery(app):
             # This must be higher than soft time limit,
             # otherwise the task will get retried (in the case of acks_late=True)
             # after visibility timeout
-            "visibility_timeout": 180000  # 2 days + 2 hours
+            "visibility_timeout": 180000,  # 2 days + 2 hours
+            # Redis key prefix
+            "global_keyprefix": "qb_",
         },
     )
 
