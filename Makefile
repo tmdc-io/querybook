@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-VERSION := 0.0.8
+VERSION := 0.0.9
 GIT_TAG=$(shell git describe --tags --abbrev=0)
 GIT_VERSION=$(shell git describe --tags --dirty)
 DOCKER_TAG=$(GIT_VERSION)
