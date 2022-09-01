@@ -231,7 +231,7 @@ export const QuerybookSidebarUIGuide: React.FC = () => {
                 className="QuerybookSidebarUIGuide"
                 onClick={startTour}
                 icon="Layout"
-                title="UI Tutorial"
+                title="Tutorial"
             />
             <Tour
                 isOpen={showTour}

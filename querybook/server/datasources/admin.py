@@ -740,11 +740,19 @@ def get_admin_table_upload_exporters():
 @register("/admin/minerva_set_up/", methods=["POST"])
 @admin_only
 def exec_minerva_set_up(
-    cluster_name, environment_name, metastore_name, engine_name, apikey, **kwargs
+    cluster_name, environment_name, metastore_name, engine_name, apikey=None, **kwargs
 ):
     if not re.match(minerva_cluster_regex, cluster_name):
         raise RequestException(
             f"cluster_name={cluster_name} must match {minerva_cluster_regex}", 400
+        )
+
+    # environment_name pattern
+    # ref: webapp/components/AppAdmin => environmentSchema
+    environment_regex = r"^[a-z_0-9]+$"
+    if not re.match(environment_regex, environment_name):
+        raise RequestException(
+            f"environment_name={environment_name} must match {environment_regex}", 400
         )
 
     with DBSession() as session:
@@ -774,7 +782,7 @@ def exec_minerva_set_up(
                         "apikey": apikey,
                         "cluster": cluster_name,
                     },
-                    "loader": "MinervaClusterMetadataLoader",
+                    "loader": "MinervaMetadataLoader",
                     "acl_control": {},
                 },
                 commit=False,

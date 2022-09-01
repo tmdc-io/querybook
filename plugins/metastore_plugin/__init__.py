@@ -1,5 +1,5 @@
-from .minerva_cluster_metastore import MinervaClusterMetadataLoader
+from .minerva_metastore import MinervaMetadataLoader
 
 ALL_PLUGIN_METASTORE_LOADERS = [
-    MinervaClusterMetadataLoader
+    MinervaMetadataLoader
 ]

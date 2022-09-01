@@ -99,9 +99,11 @@
         justify-content: center;
         align-items: center;
 
-        width: 36px;
+        // width: 36px;
         height: 36px;
         padding: 2px;
+        padding-left: 6px;
+        padding-right: 6px;
 
         &.selected {
             font-weight: var(--bold-font);

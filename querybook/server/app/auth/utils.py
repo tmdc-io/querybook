@@ -262,7 +262,7 @@ def get_or_create_heimdall_user_apikey(user_id, access_token):
         "use_existing": True,
         "type": "apikey",
         "name": querybook_token_name,
-        "duration": "8760h",
+        "duration": "8760h",  # 1 Year
     }
 
     LOG.debug(f"[Heimdall] apikey_url: {heimdall_apikey_url} json: {json}")

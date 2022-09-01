@@ -57,6 +57,7 @@ class QuerybookSettings(object):
     BASE_NAME = "querybook"
     BASE_PATH = f"/{BASE_NAME}"
 
+    APP_NAME = get_env_config("APP_NAME") or "querybook"
     APP_VERSION = get_env_config("APP_VERSION") or "dev"
     BUILD_DATE = get_env_config("BUILD_DATE") or "Unknown"
 

@@ -12,7 +12,7 @@ from lib.query_executor.connection_string.helpers.common import (
 from lib.form import StructFormField, FormField
 from logic.user import get_user_by_name
 from env import QuerybookSettings, get_user_agent
-from const.dataos import minerva_connection_regex, minerva_cluster_regex, heimdall_apikey_regex, minerva_language, minerva_executor_name
+from const.dataos import minerva_connection_regex, minerva_cluster_regex, minerva_language, minerva_executor_name
 from lib.logger import get_logger
 
 LOG = get_logger(__file__)
@@ -55,10 +55,9 @@ class MinervaQueryExecutor(QueryExecutorBaseClass):
     def EXECUTOR_TEMPLATE(cls):
         return StructFormField(
             apikey=FormField(
-                required=True,
-                regex=heimdall_apikey_regex,
+                required=False,
                 hidden=True,
-                helper="<p>Apikey to connect with Minerva query engine</p>",
+                helper="<p>Apikey to connect with DataOS Minerva. If empty, current user's <code>heimdall apikey</code> will be used.</p>",
             ),
             cluster=FormField(
                 required=True,
@@ -69,7 +68,7 @@ class MinervaQueryExecutor(QueryExecutorBaseClass):
                 required=False,
                 regex=minerva_connection_regex,
                 description=def_minerva_query_url,
-                helper=f"<p>Connection to minerva query engine <br/><code>{def_minerva_query_url}</code></p>",
+                helper=f"<p>Connection to DataOS Minerva <br/><code>{def_minerva_query_url}</code></p>",
             ),
         )
 
@@ -119,7 +118,7 @@ class MinervaClient(ClientBaseClass):
             host=hostname,
             port=port,
             username=proxy_user or None,
-            password=apikey,  # TODO: should we use current user's apikey?
+            password=apikey or current_user_apikey,
             catalog=None,
             schema=None,
             source=source,

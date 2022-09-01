@@ -10,7 +10,7 @@ curl --location --request POST 'http://127.0.0.1:10001/querybook/ds/admin/query_
         "apikey": "YXRsYXNfNDBkMTMwMDY4NTM4OTM3ZWIwY2ZiOGI0YWIyMjcyOWIuMWY0ZmVmZDUtODliMi00ZTkyLWJhZGYtODdlYzY0YmQ4NjQ2",
         "cluster": "minervaa"
     },
-    "loader": "MinervaClusterMetadataLoader",
+    "loader": "MinervaMetadataLoader",
     "acl_control": {}
 }'
 

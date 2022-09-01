@@ -66,6 +66,7 @@ def make_celery(app):
         worker_max_tasks_per_child=1,
         task_track_started=True,
         task_soft_time_limit=172800,
+        task_reject_on_worker_lost=True,
         broker_transport_options={
             # This must be higher than soft time limit,
             # otherwise the task will get retried (in the case of acks_late=True)

@@ -15,16 +15,14 @@ from lib.metastore.base_metastore_loader import (
     DataTable,
     DataColumn,
 )
-from const.dataos import minerva_connection_regex, minerva_cluster_regex, heimdall_apikey_regex
+from const.dataos import minerva_connection_regex, minerva_cluster_regex
 from env import QuerybookSettings, get_env_config, get_env_config_strip_slash, get_user_agent
 from lib.logger import get_logger
 
 LOG = get_logger(__file__)
 
-# connection_regex = r"^(http|https):\/\/([\w.-]+(?:\:\d+)?(?:,[\w.-]+(?:\:\d+)?)*)(\/\w+)?(\/\w+)?(\?[\w.-]+=[\w.-]+(?:&[\w.-]+=[\w.-]+)*)?$"
-# apikey_regex = r"^[A-Za-z0-9=]+$"
-# cluster_regex = r"^[A-Za-z0-9]+$"
 def_minerva_query_url = QuerybookSettings.DATAOS_MINERVA_QUERY_URL
+
 
 def _parse_connection(connection_string: str):
     match = re.search(minerva_connection_regex, connection_string, )
@@ -37,7 +35,7 @@ def _parse_connection(connection_string: str):
     return protocol, hostname, port
 
 
-class MinervaClusterMetadataLoader(BaseMetastoreLoader):
+class MinervaMetadataLoader(BaseMetastoreLoader):
     def __init__(self, metastore_dict: Dict):
         connection = metastore_dict.get("metastore_params").get("connection") or def_minerva_query_url
         protocol, hostname, port = _parse_connection(connection)
@@ -46,18 +44,18 @@ class MinervaClusterMetadataLoader(BaseMetastoreLoader):
         self.port = port
         self.source = get_user_agent()
         self.cluster = metastore_dict.get("metastore_params").get("cluster")
-        self.apikey = metastore_dict.get("metastore_params").get("apikey")
+        self.username = QuerybookSettings.APP_NAME
+        self.apikey = metastore_dict.get("metastore_params").get("apikey") or QuerybookSettings.DATAOS_APIKEY
 
-        super(MinervaClusterMetadataLoader, self).__init__(metastore_dict)
+        super(MinervaMetadataLoader, self).__init__(metastore_dict)
 
     @classmethod
     def get_metastore_params_template(cls):
         return StructFormField(
             apikey=FormField(
-                required=True,
-                regex=heimdall_apikey_regex,
+                required=False,
                 hidden=True,
-                helper="<p>Apikey to connect with Minerva query engine</p>",
+                helper="<p>Apikey to connect with DataOS Minerva. If empty, <code>DATAOS_APIKEY</code> will be used.</p>",
             ),
             cluster=FormField(
                 required=True,
@@ -68,7 +66,7 @@ class MinervaClusterMetadataLoader(BaseMetastoreLoader):
                 required=False,
                 regex=minerva_connection_regex,
                 description=def_minerva_query_url,
-                helper=f"<p>Connection to minerva query engine <br/><code>{def_minerva_query_url}</code></p>",
+                helper=f"<p>Connection to DataOS Minerva <br/><code>{def_minerva_query_url}</code></p>",
             ),
         )
 
@@ -79,7 +77,7 @@ class MinervaClusterMetadataLoader(BaseMetastoreLoader):
             protocol=self.protocol,
             host=self.hostname,
             port=self.port,
-            # username=self.apikey, # TODO: look at it again?
+            username=self.username,
             password=self.apikey,
             source=self.source,
             session_props={"cluster-name": self.cluster},
@@ -100,6 +98,7 @@ class MinervaClusterMetadataLoader(BaseMetastoreLoader):
 
     def get_all_schema_names(self) -> List[str]:
         query = f"""
+            /* {get_user_agent()} */
             /* get_all_schema_names() cluster:{self.cluster} */
             SELECT DISTINCT CONCAT(table_cat, '.', table_schem)
             FROM system.jdbc.columns
@@ -115,6 +114,7 @@ class MinervaClusterMetadataLoader(BaseMetastoreLoader):
     def get_all_table_names_in_schema(self, schema_name: str) -> List[str]:
         [catalog, schema] = schema_name.split(".")
         query = f"""
+            /* {get_user_agent()} */
             /* get_all_table_names_in_schema() cluster:{self.cluster} */
             SELECT DISTINCT table_name
             FROM system.jdbc.columns
@@ -130,6 +130,7 @@ class MinervaClusterMetadataLoader(BaseMetastoreLoader):
     ) -> Tuple[DataTable, List[DataColumn]]:
         [catalog, schema] = schema_name.split(".")
         query = f"""
+            /* {get_user_agent()} */
             /* get_table_and_columns() cluster:{self.cluster} */
             SELECT
                 table_cat,
