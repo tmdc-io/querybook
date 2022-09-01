@@ -12,6 +12,7 @@ export interface IQueryEngine {
         row_limit?: number;
         status_checker?: string;
         upload_exporter?: string;
+        validator?: string;
     };
 }
 
@@ -34,4 +35,15 @@ export interface IEngineStatusData {
     status: QueryEngineStatus;
     messages: string[];
     status_info: string;
+}
+
+export interface IQueryValidator {
+    name: string;
+    languages: string[];
+}
+
+export interface IQueryTranspiler {
+    name: string;
+    from_languages: string[];
+    to_languages: string[];
 }

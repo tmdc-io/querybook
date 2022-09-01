@@ -30,12 +30,14 @@ import { IQueryEngine } from 'const/queryEngine';
 import { ISearchOptions, ISearchResult } from 'const/searchAndReplace';
 import { useDebounceState } from 'hooks/redux/useDebounceState';
 import { useBrowserTitle } from 'hooks/useBrowserTitle';
+import { createSQLLinter } from 'lib/codemirror/codemirror-lint';
 import { replaceStringIndices, searchText } from 'lib/data-doc/search';
 import { sendConfirm } from 'lib/querybookUI';
 import { getDroppedTables } from 'lib/sql-helper/sql-checker';
 import { getSelectedQuery, IRange } from 'lib/sql-helper/sql-lexer';
 import { getLimitedQuery } from 'lib/sql-helper/sql-limiter';
 import { renderTemplatedQuery } from 'lib/templated-query';
+import { getPossibleTranspilers } from 'lib/templated-query/transpile';
 import { enableResizable, getQueryEngineId, sleep } from 'lib/utils';
 import { formatError } from 'lib/utils/error';
 import { navigateWithinEnv } from 'lib/utils/query-string';
@@ -48,6 +50,7 @@ import {
 } from 'redux/queryEngine/selector';
 import * as queryExecutionsAction from 'redux/queryExecutions/action';
 import { Dispatch, IStoreState } from 'redux/store/types';
+import { TemplatedQueryResource } from 'resource/queryExecution';
 import { Button } from 'ui/Button/Button';
 import { IconButton } from 'ui/Button/IconButton';
 import { Content } from 'ui/Content/Content';
@@ -267,6 +270,70 @@ function useKeyMap(
     }, [clickOnRunButton, queryEngines, setEngineId]);
 }
 
+function useQueryLint(queryEngine: IQueryEngine) {
+    const [hasLintErrors, setHasLintErrors] = useState(false);
+    const hasQueryValidators = Boolean(queryEngine?.feature_params?.validator);
+
+    const getLintAnnotations = useMemo(() => {
+        if (!hasQueryValidators) {
+            return null;
+        }
+
+        return (query: string, cm: CodeMirror.Editor) =>
+            createSQLLinter(queryEngine.id)(query, cm);
+    }, [hasQueryValidators, queryEngine?.id]);
+
+    return {
+        getLintAnnotations,
+        setHasLintErrors,
+        hasLintErrors,
+    };
+}
+
+function useTranspileQuery(
+    query: string,
+    currentQueryEngine: IQueryEngine,
+    queryEngines: IQueryEngine[],
+    setEngineId: (engineId: number) => any,
+    setQuery: (query: string) => any
+) {
+    const queryTranspilers = useSelector(
+        (state: IStoreState) => state.queryEngine.queryTranspilers
+    );
+    const transpilerOptions = useMemo(
+        () =>
+            getPossibleTranspilers(
+                queryTranspilers,
+                currentQueryEngine,
+                queryEngines
+            ),
+        [queryTranspilers, currentQueryEngine, queryEngines]
+    );
+
+    const transpileQuery = useCallback(
+        async (transpilerName: string, toEngine: IQueryEngine) => {
+            const { data: transpiledQuery } =
+                await TemplatedQueryResource.transpileQuery(
+                    transpilerName,
+                    query,
+                    currentQueryEngine.language,
+                    toEngine.language
+                );
+
+            setQuery(transpiledQuery);
+            setEngineId(toEngine.id);
+
+            toast.success(`Query transpiled to ${toEngine.name}`);
+        },
+        [setEngineId, setQuery, query, currentQueryEngine]
+    );
+
+    return {
+        transpileQuery,
+        transpilerOptions,
+    };
+}
+
 const QueryComposer: React.FC = () => {
     useBrowserTitle('Adhoc Query');
 
@@ -311,6 +378,15 @@ const QueryComposer: React.FC = () => {
     }, []);
 
     const { queryEditorRef, handleFormatQuery } = useQueryEditorHelpers();
+    const { hasLintErrors, setHasLintErrors, getLintAnnotations } =
+        useQueryLint(engine);
+    const { transpileQuery, transpilerOptions } = useTranspileQuery(
+        query,
+        engine,
+        queryEngines,
+        setEngineId,
+        setQuery
+    );
 
     const handleCreateDataDoc = useCallback(async () => {
         let dataDoc = null;
@@ -446,6 +522,8 @@ const QueryComposer: React.FC = () => {
                 height="full"
                 engine={engine}
                 onSelection={handleEditorSelection}
+                getLintErrors={getLintAnnotations}
+                onLintCompletion={setHasLintErrors}
                 allowFullScreen
             />
         </>
@@ -541,6 +619,7 @@ const QueryComposer: React.FC = () => {
                 runButtonTooltipPos={'down'}
                 rowLimit={rowLimit}
                 onRowLimitChange={setRowLimit}
+                hasLintError={hasLintErrors}
             />
         </div>
     );
@@ -606,6 +685,18 @@ const QueryComposer: React.FC = () => {
                 tooltipPos: 'right',
             },
         ];
+
+        if (transpilerOptions.length > 0) {
+            additionalButtons.push({
+                name: `Transpile Query`,
+                icon: 'Languages',
+
+                items: transpilerOptions.map((t) => ({
+                    name: `To ${t.toEngine.name} (${t.toEngine.language})`,
+                    onClick: () => transpileQuery(t.transpilerName, t.toEngine),
+                })),
+            });
+        }
 
         if (canShowUDFForm) {
             additionalButtons.push({

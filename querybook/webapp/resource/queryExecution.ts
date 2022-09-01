@@ -1,4 +1,5 @@
 import type { IAccessRequest } from 'const/accessRequest';
+import { IQueryTranspiler } from 'const/queryEngine';
 import {
     IQueryError,
     IQueryExecution,
@@ -6,6 +7,7 @@ import {
     IQueryExecutionNotification,
     IQueryExecutionViewer,
     IQueryResultExporter,
+    IQueryValidationResult,
     IRawQueryExecution,
 } from 'const/queryExecution';
 import dataDocSocket from 'lib/data-doc/datadoc-socketio';
@@ -159,4 +161,25 @@ export const TemplatedQueryResource = {
             },
             false
         ),
+
+    validateQuery: (query: string, engineId: number) =>
+        ds.save<IQueryValidationResult[]>('/query/validate/', {
+            query,
+            engine_id: engineId,
+        }),
+
+    getAllQueryTranspilers: () =>
+        ds.fetch<IQueryTranspiler[]>('/query/transpile/'),
+
+    transpileQuery: (
+        transpiler: string,
+        query: string,
+        fromLanguage: string,
+        toLanguage: string
+    ) =>
+        ds.save<string>(`/query/transpile/${transpiler}/`, {
+            query,
+            from_language: fromLanguage,
+            to_language: toLanguage,
+        }),
 };

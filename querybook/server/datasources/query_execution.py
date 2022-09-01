@@ -22,12 +22,22 @@ from lib.query_analysis.templating import (
 from lib.form import validate_form
 from const.query_execution import QueryExecutionExportStatus, QueryExecutionStatus
 from const.datasources import RESOURCE_NOT_FOUND_STATUS_CODE
-from logic import query_execution as logic, datadoc as datadoc_logic, user as user_logic
+from logic import (
+    query_execution as logic,
+    datadoc as datadoc_logic,
+    user as user_logic,
+    admin as admin_logic,
+)
 from logic.datadoc_permission import user_can_read
 from logic.query_execution_permission import (
     get_default_user_environment_by_execution_id,
 )
 from lib.config import get_config_value
+from lib.query_analysis.validation.all_validators import get_validator_by_name
+from lib.query_analysis.transpilation.all_transpilers import (
+    ALL_TRANSPILERS,
+    get_transpiler_by_name,
+)
 from tasks.export_query_execution import export_query_execution_task
 from tasks.run_query import run_query_task
 from app.auth.permission import verify_query_execution_owner
@@ -555,3 +565,34 @@ def send_query_execution_invitation_notification(execution_id, uid, session=None
         ),
         session=session,
     )
+
+
+@register("/query/validate/", methods=["POST"])
+def perform_query_syntax_check(query: str, engine_id: int):
+    verify_query_engine_permission(engine_id)
+
+    engine = admin_logic.get_query_engine_by_id(engine_id)
+    validator_name = engine.feature_params.get("validator", None)
+    api_assert(validator_name is not None, "This engine has no validator configured")
+
+    validator = get_validator_by_name(validator_name)
+
+    api_assert(
+        engine.language in validator.languages(),
+        "The query engine language does not equal to validator language",
+    )
+
+    return validator.validate(query, current_user.id, engine_id)
+
+
+@register("/query/transpile/", methods=["GET"])
+def get_all_transpilers():
+    return ALL_TRANSPILERS
+
+
+@register("/query/transpile/<transpiler_name>/", methods=["POST"])
+def transpile_query(
+    transpiler_name: str, query: str, from_language: str, to_language: str
+):
+    transpiler = get_transpiler_by_name(transpiler_name)
+    return transpiler.transpile(query, from_language, to_language)

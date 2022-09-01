@@ -22,6 +22,7 @@ import {
     IDataCell,
     IDataCellMeta,
     IDataDoc,
+    IDataQueryCell,
 } from 'const/datadoc';
 import { ISearchOptions, ISearchResult } from 'const/searchAndReplace';
 import { DataDocContext, IDataDocContextType } from 'context/DataDoc';
@@ -315,12 +316,21 @@ class DataDocComponent extends React.PureComponent<IProps, IState> {
                 // After componentDidUpdate, this will focus the cell
                 this.focusCellIndexAfterInsert = index;
 
+                const previousQueryCell = dataDoc.dataDocCells
+                    .slice(0, index)
+                    .reverse()
+                    .find(
+                        (cell) => cell.cell_type === 'query'
+                    ) as IDataQueryCell;
+                const previousCellEngineId = previousQueryCell?.meta?.engine;
+
                 await this.props.insertDataDocCell(
                     dataDoc.id,
                     index,
                     cellType,
                     context,
-                    meta
+                    meta,
+                    previousCellEngineId
                 );
             }
         } catch (e) {
@@ -862,7 +872,8 @@ function mapDispatchToProps(dispatch: Dispatch) {
             index: number,
             cellType: CELL_TYPE,
             context: string | ContentState,
-            meta: IDataCellMeta
+            meta: IDataCellMeta,
+            previousEngineId: number
         ) =>
             dispatch(
                 dataDocActions.insertDataDocCell(
@@ -870,7 +881,8 @@ function mapDispatchToProps(dispatch: Dispatch) {
                     index,
                     cellType,
                     context,
-                    meta
+                    meta,
+                    previousEngineId
                 )
             ),
 

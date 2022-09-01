@@ -101,8 +101,8 @@ class MinervaQueryExecutor(QueryExecutorBaseClass):
 class MinervaClient(ClientBaseClass):
     def __init__(
         self,
-        apikey,
         cluster,
+        apikey=None,
         connection=def_minerva_query_url,
         proxy_user=None,
         *args,
@@ -118,7 +118,7 @@ class MinervaClient(ClientBaseClass):
             host=hostname,
             port=port,
             username=proxy_user or None,
-            password=apikey or current_user_apikey,
+            password=apikey or current_user_apikey or QuerybookSettings.DATAOS_APIKEY,
             catalog=None,
             schema=None,
             source=source,
