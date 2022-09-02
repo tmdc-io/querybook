@@ -1,28 +1,26 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title><%= htmlWebpackPlugin.options.title %></title>
-        <link
-            rel="stylesheet"
-            href="https://unpkg.com/balloon-css/balloon.min.css"
-        />
-        <link
-            rel="shortcut icon"
-            type="image/x-icon"
-            href="/querybook/images/querybook.svg"
-        />
-        <link
+
+<head>
+    <meta charset="UTF-8" />
+    <title>
+        <%= htmlWebpackPlugin.options.title %>
+    </title>
+    <link rel="stylesheet" href="https://unpkg.com/balloon-css/balloon.min.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="/querybook/images/querybook.svg" />
+    <!-- <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Poppins"
-        />
-    </head>
+        /> -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+</head>
 
-    <body>
-        <div id="root">
-            <div
-                class="app-splash"
-                style="
+<body>
+    <div id="root">
+        <div class="app-splash" style="
                     height: 100vh;
                     display: flex;
                     justify-content: center;
@@ -30,23 +28,20 @@
                     position: fixed;
                     left: 0;
                     right: 0;
-                "
-            >
-                <div
-                    class="app-splash-text"
-                    style="
+                ">
+            <div class="app-splash-text" style="
                         font-family: sans-serif;
                         letter-spacing: 2px;
                         font-weight: 200;
                         color: #808080;
                         font-size: 0.9rem;
-                    "
-                >
-                    LOADING
-                </div>
+                    ">
+                LOADING
             </div>
         </div>
-        <div id="overlay-root"></div>
-        <div id="notification-root"></div>
-    </body>
+    </div>
+    <div id="overlay-root"></div>
+    <div id="notification-root"></div>
+</body>
+
 </html>

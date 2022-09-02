@@ -56,7 +56,14 @@ function applyUserSettings(
 
         // Apply each settings individually
         if (key === 'theme') {
+            console.log(value);
             switch (value) {
+                case 'default':
+                    document.body.className = 'modern-theme';
+                    break;
+                // case 'modern':
+                //     document.body.className = 'modern-theme';
+                //     break;
                 case 'dark':
                     document.body.className = 'dark-theme';
                     break;

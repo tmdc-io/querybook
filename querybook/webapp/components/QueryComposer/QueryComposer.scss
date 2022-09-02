@@ -44,7 +44,8 @@
             height: 100%;
             flex: 1;
             overflow-y: scroll;
-            background-color: var(--bg-lightest);
+            background-color: var(--bg);
+            border-top:1px solid var(--bg-light);
             border-radius: var(--border-radius);
 
             .hide-execution {

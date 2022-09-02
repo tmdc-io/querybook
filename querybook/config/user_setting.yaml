@@ -1,5 +1,5 @@
 theme:
-    default: default
+    default: modern
     tab: general
     options:
         - default

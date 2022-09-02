@@ -2,9 +2,10 @@
     display: flex;
     flex-direction: row;
     padding: var(--padding-sm);
-    background-color: var(--bg-lightest);
+    background-color: var(--bg);
     // match when collapsed
     margin-left: 1px;
+    border-right:1px solid var(--bg-light);
 
     .env-icon-wrapper {
         display: inline-block;

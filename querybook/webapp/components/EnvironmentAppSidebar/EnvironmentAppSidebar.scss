@@ -8,12 +8,13 @@
         .sidebar-content-main {
             display: flex;
             flex: 1;
-            background-color: var(--bg-lightest);
+            border-right:1px solid var(--bg-light);
+            background-color: var(--bg);
 
             .sidebar-content-main-navigator {
                 flex: 1;
                 overflow: hidden;
-                background-color: var(--bg-lightest);
+                background-color: var(--bg);
 
                 > div {
                     padding-top: var(--padding-sm);
@@ -26,7 +27,7 @@
                 }
 
                 .navigator-header {
-                    background-color: var(--bg-light);
+                    background-color: var(--bg);
                     border-radius: var(--border-radius-sm);
                     user-select: none;
                     cursor: pointer;
@@ -99,7 +100,7 @@
         justify-content: center;
         align-items: center;
 
-        // width: 36px;
+        width: 36px;
         height: 36px;
         padding: 2px;
         padding-left: 6px;
@@ -117,8 +118,10 @@
         }
 
         .env-icon-text {
-            word-break: break-all;
+            word-break: unset;
             text-align: center;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
     }
 }

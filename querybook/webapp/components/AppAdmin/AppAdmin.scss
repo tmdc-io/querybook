@@ -21,7 +21,7 @@
         .AdminLanding {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            // justify-content: space-between;
             height: 100%;
         }
         .AdminLanding-top {
@@ -40,9 +40,13 @@
         .AdminLanding-content {
             .AdminLanding-cards {
                 flex-wrap: wrap;
-                justify-content: flex-end;
+                justify-content: flex-start;
+                margin-top: 8px;
                 .Card {
-                    margin: 16px 24px;
+                    margin: 8px 16px;
+                    height: auto !important;
+                    width: 100% !important;
+                    padding-bottom: 24px;
                     .Card-title {
                         font-weight: var(--bold-font);
                     }
@@ -58,7 +62,7 @@
         .AdminForm {
             min-width: 480px;
             max-width: 720px;
-            margin: 0px auto;
+            // margin: 0px auto;
             .AdminForm-main {
                 display: flex;
                 flex-direction: row;

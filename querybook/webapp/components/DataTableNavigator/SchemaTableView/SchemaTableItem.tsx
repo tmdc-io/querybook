@@ -75,13 +75,13 @@ export const SchemaTableItem: React.FC<{
     );
 
     return (
-        <div className="SchemaTableItem mb12">
+        <div className="SchemaTableItem mb2">
             <StyledItem className="horizontal-space-between navigator-header pl8">
                 <div
                     className="schema-name flex1 flex-row"
                     onClick={() => setIsExpanded(!isExpanded)}
                 >
-                    <Title size="small" className="one-line-ellipsis">
+                    <Title size="small" weight="normal" className="one-line-ellipsis">
                         {name}
                     </Title>
                 </div>
