@@ -53,3 +53,4 @@ build
 requirements/local.txt
 
 local.env
+test.js
