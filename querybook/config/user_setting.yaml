@@ -51,7 +51,7 @@ show_full_view:
     helper: Instead of modal, show full view when opening table/execution/snippet
 
 editor_font_size:
-    default: medium
+    default: small
     tab: editor
     options:
         - xsmall # Maps to var(--xxsmall-text-size)
