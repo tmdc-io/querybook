@@ -10,6 +10,7 @@
 -r engine/redshift.txt
 -r engine/snowflake.txt
 -r engine/trino.txt
+-r engine/postgresql.txt
 
 # Metastores
 -r metastore/hms.txt
