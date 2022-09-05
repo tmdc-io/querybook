@@ -43,10 +43,18 @@ prod_scheduler:
 #	docker build --pull -t querybook . --build-arg PRODUCTION=true --build-arg EXTRA_PIP_INSTALLS=dev.txt,extra.txt,prod.txt
 
 dev_image:
-	docker build --pull -t querybook-dev . --build-arg PRODUCTION=false --build-arg EXTRA_PIP_INSTALLS=dev.txt,extra.txt
+	docker build --pull -t querybook-dev . \
+	--build-arg PRODUCTION=false \
+	--build-arg EXTRA_PIP_INSTALLS=dev.txt,extra.txt \
+	--build-arg APP_VERSION=${GIT_VERSION} \
+	--build-arg BUILD_DATE=${BUILD_DATE}
 
 test_image:
-	docker build --pull -t querybook-test . --build-arg PRODUCTION=false --build-arg EXTRA_PIP_INSTALLS=test.txt
+	docker build --pull -t querybook-test . \
+	--build-arg PRODUCTION=false \
+	--build-arg EXTRA_PIP_INSTALLS=test.txt \
+	--build-arg APP_VERSION=${GIT_VERSION} \
+	--build-arg BUILD_DATE=${BUILD_DATE}
 
 docs_image:
 	docker build --pull -t querybook-docs . -f docs_website/Dockerfile
@@ -83,7 +91,11 @@ prepare: # Updates app version
 	@cat package.json | grep "version"
 
 prod_image:
-	docker build --pull -t rubiklabs/querybook:${DOCKER_TAG} . --build-arg PRODUCTION=true --build-arg EXTRA_PIP_INSTALLS=extra.txt
+	docker build --pull -t rubiklabs/querybook:${DOCKER_TAG} . \
+	--build-arg PRODUCTION=true \
+	--build-arg EXTRA_PIP_INSTALLS=extra.txt \
+	--build-arg APP_VERSION=${GIT_VERSION} \
+	--build-arg BUILD_DATE=${BUILD_DATE}
 
 prod_push: prod_image
 	docker push rubiklabs/querybook:${DOCKER_TAG}
