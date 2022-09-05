@@ -1,13 +1,13 @@
 @import '../../scss_variables.scss';
 
 .UserBadge {
-    cursor: default;
+    cursor: pointer;
 
     .UserBadge-icon {
         margin-right: 16px;
         figure {
-            width: 48px;
-            height: 48px;
+            width: 36px;
+            height: 36px;
         }
     }
     &.mini {
@@ -15,8 +15,8 @@
             margin: 0;
             display: inline-block;
             vertical-align: sub;
-            width: 24px;
-            height: 24px;
+            width: 36px;
+            height: 36px;
 
             ~ .username {
                 margin-left: 6px;

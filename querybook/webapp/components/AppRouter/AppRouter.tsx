@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-    Redirect,
-    Route,
-    Router,
-    Switch,
-} from 'react-router-dom';
+import { Redirect, Route, Router, Switch } from 'react-router-dom';
 
 import { AppLayout } from 'components/AppLayout/AppLayout';
 import { ConfirmationManager } from 'components/ConfirmationManager/ConfirmationManager';
@@ -25,15 +20,23 @@ export const AppRouter: React.FunctionComponent = () => (
         <UserLoader>
             <AppLayout>
                 <div className="global-app-header">
-                    <div style={{display:"flex", alignItems:"center"}}>
-                        <img 
-                            src={'/querybook/images/dataOS-querybook-logo.svg'} 
-                            width="175" 
-                            className="dataos-app-logo" 
-                            onClick={() => history.push('/')} 
+                    <div
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        <img
+                            src={'/querybook/images/dataOS-querybook-logo.svg'}
+                            width="175"
+                            className="dataos-app-logo"
+                            title="Home"
+                            alt="Home"
+                            onClick={() => history.push('/')}
                         />
                     </div>
-                    <div style={{marginLeft:"auto"}}>
+                    <div style={{ marginLeft: 'auto' }}>
                         <UserMenuHeader />
                     </div>
                 </div>

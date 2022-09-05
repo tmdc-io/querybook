@@ -37,6 +37,7 @@ export const EntitySidebar: React.FunctionComponent<IEntitySidebarProps> =
                                         icon="Home"
                                         tooltip="Home"
                                         tooltipPos="right"
+                                        title="Home"
                                         active={
                                             location.pathname ===
                                             `/${environment.name}/`
