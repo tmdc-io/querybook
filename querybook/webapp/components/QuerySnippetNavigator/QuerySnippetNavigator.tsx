@@ -270,7 +270,7 @@ class QuerySnippetNavigatorComponent extends React.PureComponent<
                 items={NAVIGATOR_TABS}
                 selectedTabKey={this.state.selectedTabKey}
                 onSelect={this.onTabSelect}
-                wide
+                // wide
                 className="list-header"
             />
         );

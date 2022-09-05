@@ -17,13 +17,9 @@
     &.light {
         color: var(--icon-light);
     }
-    svg {
-        max-height: 16px;
-    }
     &.fill {
         svg {
             fill: currentColor;
-            max-height: 16px;
         }
     }
 

@@ -13,7 +13,7 @@
         .AdminAppEntitySidebar-top {
             box-sizing: content-box;
             font-size: var(--small-text-size);
-            letter-spacing: 1px;
+            // letter-spacing: 1px;
             cursor: pointer;
             user-select: none;
         }
@@ -25,6 +25,11 @@
 
             .IconButton {
                 margin-right: 6px;
+                .Icon {
+                    svg {
+                        max-height: 16px;
+                    }
+                }
             }
             &:hover {
                 color: var(--text-hover);

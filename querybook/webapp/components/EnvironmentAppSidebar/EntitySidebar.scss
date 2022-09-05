@@ -24,10 +24,16 @@
         .UserMenu {
             width: 100%;
         }
+        .UserMenu {
+            display: none;
+        }
         .IconButton {
             .Icon {
                 margin-bottom: 2px;
                 height: 24px;
+                svg {
+                    max-height: 16px;
+                }
             }
         }
     }

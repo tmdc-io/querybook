@@ -64,6 +64,14 @@
     .FormFieldRequired {
         margin-left: 8px;
     }
+    input {
+        height:38px;
+    }
+    &.form-select {
+        input {
+            height:unset;
+        }
+    }
 }
 
 .FormSectionHeader {

@@ -89,6 +89,7 @@ export const DataDocTemplateVarForm: React.FunctionComponent<
                                                   />
                                                   <SimpleField
                                                       label={() => null}
+                                                      className={"form-select"}
                                                       type="react-select"
                                                       name={`variables.${index}[1]`}
                                                       options={
@@ -99,6 +100,7 @@ export const DataDocTemplateVarForm: React.FunctionComponent<
                                                   {valueType === 'boolean' ? (
                                                       <SimpleField
                                                           label={() => null}
+                                                          className={"form-select"}
                                                           type="react-select"
                                                           name={`variables.${index}[2]`}
                                                           options={[

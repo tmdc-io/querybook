@@ -126,7 +126,7 @@ const AppAdmin: React.FunctionComponent = () => {
                     All your settings are here.
                 </div>
             </div>
-            <div className="AdminLanding-content">
+            <div className="AdminLanding-content create-section">
                 <div className="AdminLanding-cards flex-row">
                     <Card
                         title={<Icon name="Box" />}

@@ -108,7 +108,7 @@ export const SchemaTableItem: React.FC<{
             </StyledItem>
 
             {isExpanded && (
-                <div className="board-scroll-wrapper">
+                <div className="board-scroll-wrapper ml16">
                     {total === 0 ? (
                         <div className="empty-section-message">
                             No tables in {name}

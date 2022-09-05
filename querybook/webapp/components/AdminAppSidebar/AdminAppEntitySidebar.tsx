@@ -36,10 +36,10 @@ export const AdminAppEntitySidebar: React.FunctionComponent<
             <div className="AdminAppEntitySidebar-main">
                 <div
                     className="AdminAppEntitySidebar-top mv16"
-                    onClick={() => history.push('/admin/')}
+                    // onClick={() => history.push('/admin/')}
                 >
-                    <QuerybookLogo size={1.3} withBrandMark />
-                    <div>ADMIN APP</div>
+                    {/* <QuerybookLogo size={1.3} withBrandMark />
+                    <div>ADMIN APP</div> */}
                 </div>
                 <div className="mb16">
                     {makeSidebarItem('environment', 'Box')}

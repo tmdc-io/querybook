@@ -56,14 +56,10 @@ function applyUserSettings(
 
         // Apply each settings individually
         if (key === 'theme') {
-            console.log(value);
             switch (value) {
-                case 'default':
+                case 'modern':
                     document.body.className = 'modern-theme';
                     break;
-                // case 'modern':
-                //     document.body.className = 'modern-theme';
-                //     break;
                 case 'dark':
                     document.body.className = 'dark-theme';
                     break;
@@ -71,7 +67,7 @@ function applyUserSettings(
                     document.body.className = 'lush-theme';
                     break;
                 default:
-                    document.body.className = '';
+                    document.body.className = 'modern-theme';
             }
         }
     }

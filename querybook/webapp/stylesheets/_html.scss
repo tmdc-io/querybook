@@ -257,6 +257,7 @@ input:-webkit-autofill {
         background-color: var(--bg);
         color: var(--text);
         border-radius: var(--border-radius);
+        max-width: 400px;
         > span {
             color: var(--bg);
             font-weight: var(--bold-font);
@@ -333,4 +334,23 @@ blockquote {
 // Make sure this takes the highest priority
 [aria-label][data-balloon-pos]:after {
     z-index: 1000;
+}
+
+body {
+    .global-app-header {
+        height: 48px;
+        padding: 8px 14px; 
+        display:flex;
+        align-items:center;
+        border-bottom:1px solid #eee;
+    }
+    &.dark-theme, &.lush-theme {
+        .global-app-header {
+            border-bottom:1px solid var(--bg-light);
+        }
+        .dataos-app-logo {
+            cursor: pointer;
+            filter: invert(1)
+        }
+    }
 }

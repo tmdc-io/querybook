@@ -11,10 +11,11 @@
     }
 
     .rt-thead {
+        padding: 8px 0;
         &.-header {
             box-shadow: none;
             background-color: var(--bg-light);
-            letter-spacing: 0.25px;
+            // letter-spacing: 0.25px;
             font-weight: var(--bold-font);
         }
 
@@ -26,7 +27,7 @@
 
     .rt-tbody {
         .rt-td {
-            padding: 2px 4px;
+            padding: 4px 8px;
         }
 
         .rt-tr-group {

@@ -6,12 +6,14 @@
     .schema-info-panel {
         min-height: 20%;
         max-height: 80%;
-        box-shadow: var(--box-shadow-sm);
+        box-shadow: var(--box-shadow);
+        width: calc(100% - 16px) !important;
+        margin: auto 8px;
+    }
 
         .DataTableViewMini {
             border-top: var(--border);
             height: 100%;
             margin-left: 8px;
         }
-    }
 }

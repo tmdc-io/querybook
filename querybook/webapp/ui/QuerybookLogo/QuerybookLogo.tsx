@@ -17,7 +17,7 @@ const StyledQuerybookLogo = styled.span`
     .querybook-wordmark {
         font-weight: 700;
 
-        letter-spacing: -0.05em;
+        // letter-spacing: -0.05em;
         padding-right: 0.05em;
 
         user-select: none;

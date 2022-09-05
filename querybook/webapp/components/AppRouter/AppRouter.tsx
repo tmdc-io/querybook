@@ -13,6 +13,7 @@ import history from 'lib/router-history';
 import { FourOhFour } from 'ui/ErrorPage/FourOhFour';
 import { Loading } from 'ui/Loading/Loading';
 import { ToastManager } from 'ui/ToastManager/ToastManager';
+import { UserMenuHeader } from 'components/UserMenu/UserMenuHeader';
 
 const AppAdmin = React.lazy(() => import('components/AppAdmin/AppAdmin'));
 const EnvironmentsRouter = React.lazy(
@@ -23,6 +24,19 @@ export const AppRouter: React.FunctionComponent = () => (
     <Router history={history}>
         <UserLoader>
             <AppLayout>
+                <div className="global-app-header">
+                    <div style={{display:"flex", alignItems:"center"}}>
+                        <img 
+                            src={'/querybook/images/dataOS-querybook-logo.svg'} 
+                            width="175" 
+                            className="dataos-app-logo" 
+                            onClick={() => history.push('/')} 
+                        />
+                    </div>
+                    <div style={{marginLeft:"auto"}}>
+                        <UserMenuHeader />
+                    </div>
+                </div>
                 <React.Suspense fallback={<Loading fullHeight />}>
                     <Switch>
                         {/* auto append trailing slash */}

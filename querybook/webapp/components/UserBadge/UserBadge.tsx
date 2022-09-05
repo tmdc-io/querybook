@@ -22,6 +22,7 @@ export const UserBadge: React.FunctionComponent<IProps> = ({
     isOnline,
     mini,
     cardStyle,
+    header
 }) => {
     const { loading, userInfo } = useUser({ uid, name });
 
@@ -42,6 +43,33 @@ export const UserBadge: React.FunctionComponent<IProps> = ({
                 : 'Unknown',
         [userInfo, name]
     );
+
+    if (mini && header) {
+        return (
+            <span
+                className={clsx({
+                    UserBadge: true,
+                    mini: true,
+                    'card-style': cardStyle,
+                })}
+            >
+                <figure>{avatarDOM}</figure>
+            </span>
+        );
+    }
+
+    if (header) {
+        return (
+            <span>
+                <AccentText className="username" weight="bold" size="large" color="light">
+                    {userInfo?.fullname ?? userName}
+                </AccentText>
+                <AccentText className="handle" size="small" color="light">
+                    @{userName}
+                </AccentText>
+            </span>
+        );
+    }
 
     if (mini) {
         return (
