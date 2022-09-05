@@ -47,14 +47,14 @@ dev_image:
 	--build-arg PRODUCTION=false \
 	--build-arg EXTRA_PIP_INSTALLS=dev.txt,extra.txt \
 	--build-arg APP_VERSION=${GIT_VERSION} \
-	--build-arg BUILD_DATE=${BUILD_DATE}
+	--build-arg BUILD_DATE="${BUILD_DATE}"
 
 test_image:
 	docker build --pull -t querybook-test . \
 	--build-arg PRODUCTION=false \
 	--build-arg EXTRA_PIP_INSTALLS=test.txt \
 	--build-arg APP_VERSION=${GIT_VERSION} \
-	--build-arg BUILD_DATE=${BUILD_DATE}
+	--build-arg BUILD_DATE="${BUILD_DATE}"
 
 docs_image:
 	docker build --pull -t querybook-docs . -f docs_website/Dockerfile
@@ -95,7 +95,7 @@ prod_image:
 	--build-arg PRODUCTION=true \
 	--build-arg EXTRA_PIP_INSTALLS=extra.txt \
 	--build-arg APP_VERSION=${GIT_VERSION} \
-	--build-arg BUILD_DATE=${BUILD_DATE}
+	--build-arg BUILD_DATE="${BUILD_DATE}"
 
 prod_push: prod_image
 	docker push rubiklabs/querybook:${DOCKER_TAG}
