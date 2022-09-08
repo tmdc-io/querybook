@@ -81,7 +81,7 @@ export const SchemaTableItem: React.FC<{
                     className="schema-name flex1 flex-row"
                     onClick={() => setIsExpanded(!isExpanded)}
                 >
-                    <Title size="small" weight="normal" className="one-line-ellipsis">
+                    <Title color="light" size="small" weight="normal" className="one-line-ellipsis">
                         {name}
                     </Title>
                 </div>
@@ -103,6 +103,7 @@ export const SchemaTableItem: React.FC<{
                     <SchemaIconButton
                         onClick={() => setIsExpanded(!isExpanded)}
                         icon={isExpanded ? 'ChevronDown' : 'ChevronRight'}
+                        size={18}
                     />
                 </div>
             </StyledItem>

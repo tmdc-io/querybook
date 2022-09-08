@@ -33,7 +33,8 @@
                     cursor: pointer;
 
                     & + div {
-                        margin-top: var(--margin-xs);
+                        // margin-top: var(--margin-xs);
+                        margin-bottom: var(--margin-xs);
                     }
                 }
             }
@@ -130,11 +131,11 @@
 
     .list-header {
         background: var(--bg-light);
-        margin-bottom: var(--margin-sm);
+        // margin-bottom: var(--margin-sm);
         border-radius: var(--border-radius-sm);
         overflow: hidden;
-        margin-left: var(--margin-sm);
-        margin-right: 16px; // match scrollbar width
+        // margin-left: var(--margin-sm);
+        margin: 4px var(--margin-xs) var(--margin-xs) var(--margin-xs) !important; // match scrollbar width
 
         &:hover {
             background-color: var(--bg-hover);

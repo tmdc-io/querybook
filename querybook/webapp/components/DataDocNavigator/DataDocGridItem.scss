@@ -1,18 +1,21 @@
-.DataDocGridItem {
-    .delete-grid-item-button {
-        display: none;
-        padding: 0px;
-    }
-
-    &:hover {
+.DataDocGrid {
+    margin-left: 30px;
+    .DataDocGridItem {
         .delete-grid-item-button {
-            display: flex;
+            display: none;
+            padding: 0px;
+        }
+    
+        &:hover {
+            .delete-grid-item-button {
+                display: flex;
+            }
         }
     }
-}
-
-.DataDocHoverContent {
-    .DataDocHoverContent-date {
-        font-size: var(--xsmall-text-size);
+    
+    .DataDocHoverContent {
+        .DataDocHoverContent-date {
+            font-size: var(--xsmall-text-size);
+        }
     }
 }

@@ -19,6 +19,7 @@ import { FourOhFour } from 'ui/ErrorPage/FourOhFour';
 import { FourOhThree } from 'ui/ErrorPage/FourOhThree';
 import { Loading } from 'ui/Loading/Loading';
 import { EmptyText } from 'ui/StyledText/StyledText';
+import { AppHeader } from 'components/AppHeader/AppHeader';
 
 const blank: React.FunctionComponent = () => {
     const message =
@@ -135,11 +136,14 @@ const EnvironmentsRouter: React.FC = () => {
                     }
 
                     return (
-                        <EnvironmentAppRouter
-                            {...props}
-                            selectEnvironment={selectEnvironment}
-                            environment={currentEnvironment}
-                        />
+                        <>
+                            <AppHeader />
+                            <EnvironmentAppRouter
+                                {...props}
+                                selectEnvironment={selectEnvironment}
+                                environment={currentEnvironment}
+                            />
+                        </>
                     );
                 }}
             />

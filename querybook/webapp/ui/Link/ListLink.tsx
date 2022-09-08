@@ -41,8 +41,8 @@ export const ListLink: React.FunctionComponent<IProps> = React.memo(
                 ) : noPlaceHolder ? null : (
                     <UntitledText size="small" />
                 )}
-                {icon && <Icon name={icon} size={16} />}
                 {children}
+                {icon && <span className="ml8" style={{lineHeight:0}}><Icon name={icon} size={12} /></span>}
             </Link>
         );
     }

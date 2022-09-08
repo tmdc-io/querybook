@@ -82,7 +82,7 @@ export const Dropdown: React.FunctionComponent<IProps> = ({
     const buttonDOM = customButtonRenderer ? (
         customButtonRenderer()
     ) : (
-        <IconButton icon={menuIcon} noPadding />
+        <IconButton icon={menuIcon} noPadding size={14} />
     );
 
     const customFormatClass = customButtonRenderer ? ' custom-format ' : '';

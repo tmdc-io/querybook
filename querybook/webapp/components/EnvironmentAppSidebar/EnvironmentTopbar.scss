@@ -1,15 +1,50 @@
 .EnvironmentTopbar {
     display: flex;
     flex-direction: row;
-    padding: var(--padding-sm);
+    padding: 0 var(--padding);
     background-color: var(--bg);
     // match when collapsed
-    margin-left: 1px;
-    border-right:1px solid var(--bg-light);
+    margin-left: var(--margin-sm);
+    // border-left:1px solid var(--bg-light);
 
     .env-icon-wrapper {
         display: inline-block;
-
+        .env-icon {
+            font-size: var(--xxxsmall-text-size);
+            font-family: var(--font-monospace);
+            background-color: var(--bg-light);
+            color: var(--text);
+            border-radius: var(--border-radius-sm);
+            transition: background-color 0.3s ease-out;
+            user-select: none;
+    
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+    
+            // width: 36px;
+            height: 36px;
+            padding: 2px 8px;
+    
+            &.selected {
+                font-weight: var(--light-bold-font);
+                color: var(--color-accent-dark);
+                background-color: var(--color-accent-lightest-0);
+            }
+    
+            &.disabled {
+                opacity: 0.45;
+                cursor: not-allowed;
+            }
+    
+            .env-icon-text {
+                font-weight: var(--light-bold-font);
+                word-break: unset;
+                text-align: center;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+        }
         &:not(:first-child) {
             margin-left: var(--margin-xs);
         }

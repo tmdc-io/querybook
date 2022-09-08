@@ -60,6 +60,7 @@ export const StatementResultTableColumn: React.FC<
                 }`}
             >
                 {column}
+                <div style={{fontSize:"7px",textTransform:"uppercase", fontWeight:400}}>{colType}</div>
             </span>
             <div className="flex-row">
                 <IconButton

@@ -148,6 +148,7 @@ export const DataDocNavigatorSection: React.FC<INavigatorSectionProps> = ({
                     onClick={() => setCollapsed(!collapsed)}
                     icon={collapsed ? 'ChevronRight' : 'ChevronDown'}
                     className="ml4"
+                    size={18}
                 />
             </div>
         </div>
@@ -158,7 +159,7 @@ export const DataDocNavigatorSection: React.FC<INavigatorSectionProps> = ({
             <LoadingIcon />
         </div>
     ) : (
-        <div>{makeDataDocListDOM()}</div>
+        <div className="DataDocGrid">{makeDataDocListDOM()}</div>
     );
 
     return (

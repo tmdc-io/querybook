@@ -14,11 +14,11 @@
 
     .Modal-background {
         background-color: var(--bg-invert);
-        opacity: 0.75;
+        opacity: 0.9;
     }
 
     .Modal-box {
-        width: 90vw;
+        width: 80vw;
         min-width: 400px;
         max-width: var(--max-width);
         max-height: 84vh;
@@ -29,8 +29,9 @@
         display: flex;
         flex-direction: column;
         position: relative;
-
+        border: 1px solid var(--bg-light);
         animation: translateFadeModalUp 0.2s ease-in-out;
+        box-shadow: var(--box-shadow-md);
     }
 
     .StandardModal {

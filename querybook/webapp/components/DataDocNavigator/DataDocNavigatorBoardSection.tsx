@@ -160,10 +160,12 @@ export const DataDocNavigatorBoardSection: React.FC<
                     onClick={() => setShowCreateModal(true)}
                     tooltip="New List"
                     tooltipPos="left"
+                    size={18}
                 />
                 <IconButton
                     icon={collapsed ? 'ChevronRight' : 'ChevronDown'}
                     onClick={toggleCollapsed}
+                    size={18}
                 />
             </LevelItem>
         </Level>

@@ -1,8 +1,8 @@
 .Table.ReactTable {
     border: none;
     border-radius: var(--border-radius-sm);
-    background: var(--bg-lightest);
-    font-weight: 500;
+    background: var(--bg);
+    font-weight: var(--light-font);
     overflow: hidden;
     font-variant-numeric: tabular-nums;
 
@@ -30,9 +30,9 @@
             padding: 4px 8px;
         }
 
-        .rt-tr-group {
-            border-bottom: none;
-        }
+        // .rt-tr-group {
+        //     border-bottom: none;
+        // }
 
         .rt-tr:not(.-padRow):hover {
             background: var(--bg-hover);

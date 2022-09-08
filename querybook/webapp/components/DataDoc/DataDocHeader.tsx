@@ -94,7 +94,7 @@ export const DataDocHeader = React.forwardRef<HTMLDivElement, IProps>(
                         <DataDocViewersBadge docId={dataDoc.id} />
                     </div>
                 </div>
-                <AccentText color="light" size="xlarge" weight="extra">
+                <AccentText color="text" size="xlarge" weight="extra">
                     <ResizableTextArea
                         value={dataDoc.title}
                         onChange={changeDataDocTitle.bind(this, dataDoc.id)}

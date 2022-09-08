@@ -30,6 +30,7 @@ import { AdminUserRole } from './AdminUserRole';
 import { AdminEntity } from './types';
 
 import './AppAdmin.scss';
+import { AdminHeader } from 'components/AdminHeader/AdminHeader';
 
 const ENTITY_SIDEBAR_WIDTH = 200;
 const NAV_SIDEBAR_WIDTH = 260;
@@ -178,6 +179,8 @@ const AppAdmin: React.FunctionComponent = () => {
     );
 
     return isAdmin ? (
+        <>
+        <AdminHeader />
         <div className="AppAdmin">
             <Sidebar
                 className="AdminAppSidebar"
@@ -261,6 +264,7 @@ const AppAdmin: React.FunctionComponent = () => {
                 </Switch>
             </div>
         </div>
+        </>
     ) : (
         <FourOhThree />
     );

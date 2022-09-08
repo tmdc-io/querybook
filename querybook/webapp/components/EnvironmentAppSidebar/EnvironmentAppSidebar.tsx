@@ -141,9 +141,9 @@ export const EnvironmentAppSidebar: React.FunctionComponent = () => {
     const contentDOM = (
         <>
             <div className="EnvironmentAppSidebar-content">
-                <div className={envPickerClassName}>
+                {/* <div className={envPickerClassName}>
                     {environmentPickerSection}
-                </div>
+                </div> */}
                 <div className="sidebar-content-main">
                     <EntitySidebar
                         selectedEntity={entity}
