@@ -36,7 +36,8 @@ QUERYBOOK_EMAIL_ADDRESS: ~
 AUTH_BACKEND: auth_plugin.heimdall_auth
 # Force user to log out after they log in for X number of seconds
 # If set to 0 then only expire their login session after log out
-LOGS_OUT_AFTER: 0
+# default: 7 days
+LOGS_OUT_AFTER: 604800
 
 # If OAuth, then the following values should be provided
 # Optional, if null then defaults to public url
