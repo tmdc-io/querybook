@@ -227,27 +227,6 @@ body.modern-theme {
     --color-invert-1: #202020; // BG-invert background
     --color-invert: rgba(0,0,0,.85); // C-dark text
 
-    --color-true-light: var(--color-green);
-    --color-true-lightest: var(--color-green-dark);
-    --color-true-lightest-0: var(--color-green-darkest);
-    --color-true: var(--color-green-light);
-    --color-true-dark: var(--color-green-lightest);
-    --color-true-darkest: var(--color-green-lightest-0);
-
-    --color-false-light: var(--color-red);
-    --color-false-lightest: var(--color-red-dark);
-    --color-false-lightest-0: var(--color-red-darkest);
-    --color-false: var(--color-red-light);
-    --color-false-dark: var(--color-red-lightest);
-    --color-false-darkest: var(--color-red-lightest-0);
-
-    --color-warning-light: var(--color-yellow);
-    --color-warning-lightest: var(--color-yellow-dark);
-    --color-warning-lightest-0: var(--color-yellow-darkest);
-    --color-warning: var(--color-yellowlight);
-    --color-warning-dark: var(--color-yellow-lightest);
-    --color-warning-darkest: var(--color-yellow-lightest-0);
-
     --color-accent: var(--color-blue-light);
     --color-accent-dark: var(--color-blue);
     --color-accent-darkest: var(--color-blue-lightest);
@@ -264,10 +243,10 @@ body.modern-theme {
 
     --text-highlight: rgba(52, 101, 127, 0.5);
 
-    font-weight: 500;
-    --light-bold-font: 600;
-    --bold-font: 700;
-    --extra-bold-font: 800;
+    --light-font: 400;
+    --light-bold-font: 500;
+    --bold-font: 600;
+    --extra-bold-font: 700;
 }
 
 body.dark-theme {
@@ -323,10 +302,10 @@ body.dark-theme {
 
     --text-highlight: rgba(52, 101, 127, 0.5);
 
-    font-weight: 500;
-    --light-bold-font: 600;
-    --bold-font: 700;
-    --extra-bold-font: 800;
+    --light-font: 400;
+    --light-bold-font: 500;
+    --bold-font: 600;
+    --extra-bold-font: 700;
 }
 
 body.lush-theme {
@@ -381,9 +360,9 @@ body.lush-theme {
 
     --scroll-bar-color: var(--color-primary-3);
 
-    font-weight: 500;
-    --light-bold-font: 600;
-    --bold-font: 700;
-    --extra-bold-font: 800;
+    --light-font: 400;
+    --light-bold-font: 500;
+    --bold-font: 600;
+    --extra-bold-font: 700;
 }
 

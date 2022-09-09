@@ -8,7 +8,6 @@
         .sidebar-content-main {
             display: flex;
             flex: 1;
-            border-right:1px solid var(--bg-light);
             background-color: var(--bg);
 
             .sidebar-content-main-navigator {
@@ -31,7 +30,7 @@
                     border-radius: var(--border-radius-sm);
                     user-select: none;
                     cursor: pointer;
-
+                    // margin-bottom: 8px;
                     & + div {
                         // margin-top: var(--margin-xs);
                         margin-bottom: var(--margin-xs);
@@ -68,6 +67,7 @@
     &:not(.collapsed) {
         .sidebar-content-main {
             overflow: hidden auto;
+            border-right:1px solid var(--bg-light);
         }
     }
 
@@ -83,7 +83,8 @@
         .EnvironmentAppSidebar-content {
             background-color: var(--bg-lightest);
             .EntitySidebar {
-                background-color: var(--bg-lightest);
+                background-color: var(--bg);
+                border-right: 1px solid var(--bg-light);
             }
         }
     }
@@ -130,13 +131,13 @@
     flex-direction: column;
 
     .list-header {
-        background: var(--bg-light);
+        background: var(--bg);
         // margin-bottom: var(--margin-sm);
         border-radius: var(--border-radius-sm);
         overflow: hidden;
         // margin-left: var(--margin-sm);
         margin: 4px var(--margin-xs) var(--margin-xs) var(--margin-xs) !important; // match scrollbar width
-
+        border-bottom: 1px solid var(--bg-light);
         &:hover {
             background-color: var(--bg-hover);
         }

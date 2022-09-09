@@ -281,7 +281,7 @@ export const DataTableViewSamples: React.FunctionComponent<
                             />
                             <AsyncButton
                                 icon="Play"
-                                color="accent"
+                                // color="accent"
                                 title="Generate Samples"
                                 onClick={submitForm}
                                 disabled={isSubmitting}

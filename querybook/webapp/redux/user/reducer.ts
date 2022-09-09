@@ -66,6 +66,9 @@ function applyUserSettings(
                 case 'lush':
                     document.body.className = 'lush-theme';
                     break;
+                case 'light':
+                    document.body.className = '';
+                    break;
                 default:
                     document.body.className = 'modern-theme';
             }

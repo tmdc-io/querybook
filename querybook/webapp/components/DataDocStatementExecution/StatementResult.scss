@@ -10,11 +10,16 @@
         .StatementResultTable {
             overflow: hidden;
             display: flex;
+            margin: 24px 0px 8px;
             .Table {
                 flex: 1;
                 overflow: auto;
             }
         }
+    }
+
+    .StatementResultTable {
+        margin: 24px 0px 8px;
     }
 
     .statement-results-summary {

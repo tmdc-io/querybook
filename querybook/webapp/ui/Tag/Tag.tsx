@@ -64,7 +64,7 @@ const StyledColorTag = styled.span.attrs<{
         const borderColor = props.withBorder ? textColor : 'transparent';
 
         return `
-            background-color: ${bgColor};
+            // background-color: ${bgColor};
             color: ${textColor};
             border: 1px solid ${borderColor};
         `;

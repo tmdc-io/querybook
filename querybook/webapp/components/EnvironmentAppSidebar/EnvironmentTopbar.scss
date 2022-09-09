@@ -12,7 +12,7 @@
         .env-icon {
             font-size: var(--xxxsmall-text-size);
             font-family: var(--font-monospace);
-            background-color: var(--bg-light);
+            background-color: var(--bg);
             color: var(--text);
             border-radius: var(--border-radius-sm);
             transition: background-color 0.3s ease-out;
@@ -29,7 +29,7 @@
             &.selected {
                 font-weight: var(--light-bold-font);
                 color: var(--color-accent-dark);
-                background-color: var(--color-accent-lightest-0);
+                background-color: var(--bg-light);
             }
     
             &.disabled {

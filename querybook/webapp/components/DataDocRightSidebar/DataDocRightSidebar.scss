@@ -10,6 +10,22 @@
                     opacity: 0;
                     pointer-events: none;
                 }
+                .Icon {
+                    // margin-bottom: 2px;
+                    height: 24px;
+                    svg {
+                        max-height: 16px;
+                    }
+                }
+            }
+        }
+        .DataDocRightSidebar-button-section-bottom {
+            span.Icon {
+                // margin-bottom: 2px;
+                height: 24px;
+                svg {
+                    max-height: 16px;
+                }
             }
         }
     }

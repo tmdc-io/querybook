@@ -65,9 +65,14 @@
         margin-left: 8px;
     }
     input {
-        height:38px;
+        height: 38px;
     }
     &.form-select {
+        input {
+            height:unset;
+        }
+    }
+    .FormFieldInputSection  {
         input {
             height:unset;
         }

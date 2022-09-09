@@ -163,7 +163,7 @@ export const DataDocNavigatorSection: React.FC<INavigatorSectionProps> = ({
     );
 
     return (
-        <div className={'DataDocNavigatorSection mb12 ' + className}>
+        <div className={'DataDocNavigatorSection mb12 pb8 ' + className}>
             {headerSectionDOM}
             {dataDocListDOM}
         </div>

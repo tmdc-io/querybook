@@ -92,6 +92,7 @@
 
                         svg {
                             z-index: 4;
+                            max-height: 16px;
                         }
                         &:hover {
                             background-color: var(--bg-hover);
@@ -108,7 +109,7 @@
     .editor {
         position: relative;
         box-sizing: border-box;
-        margin: 8px 0px;
+        margin: 8px 0px 24px;
 
         .fullscreen-button-wrapper {
             position: absolute;

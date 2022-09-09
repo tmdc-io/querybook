@@ -11,8 +11,10 @@ export interface IPanelSectionProps {
 }
 
 const PanelContentWrapper = styled.div`
-    margin-left: 16px;
-    margin-bottom: 4px;
+    margin-left: 32px;
+    margin-right: 14px;
+    margin-bottom: 8px;
+    margin-top: 8px;
     word-break: break-all;
 
     ${({ isOpen }) =>
@@ -28,11 +30,12 @@ const PanelTitle = styled.span`
     flex-direction: row;
     justify-content: space-between;
     cursor: pointer;
-    margin-left: 8px;
+    // margin-left: 8px;
     margin-bottom: 4px;
-    padding: 4px 8px;
+    padding: 8px 8px 0 14px;
+    align-items: center;
 
-    background-color: var(--bg-light);
+    border-top: 1px solid var(--bg-light);
     border-radius: var(--border-radius-sm);
 `;
 

@@ -1,8 +1,8 @@
 .BoardExpandableSection {
-    background-color: var(--bg-light);
+    // border-top: 1px solid var(--bg-light);
     border-radius: var(--border-radius-sm);
     overflow: hidden;
-    margin-top: var(--margin-sm);
+    margin-top: 0px;
 
     &.dragged-over {
         background-color: var(--bg-select);
@@ -20,6 +20,7 @@
         .board-header-title {
             cursor: pointer;
             overflow: hidden;
+            padding: 4px 4px 4px 14px;
         }
 
         .header-control-section {
@@ -28,6 +29,15 @@
 
             .hover-control-section {
                 display: none;
+            }
+            .IconButton {
+                .Icon {
+                    // margin-bottom: 2px;
+                    height: 24px;
+                    svg {
+                        max-height: 16px;
+                    }
+                }
             }
         }
 

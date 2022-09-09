@@ -11,16 +11,17 @@
     }
 
     .rt-thead {
-        padding: 8px 0;
+        padding: 0 0;
         &.-header {
             box-shadow: none;
-            background-color: var(--bg-light);
+            // background-color: var(--bg-light);
+            background: rgba(153, 153, 153, 0.063);
             // letter-spacing: 0.25px;
             font-weight: var(--bold-font);
         }
 
         .rt-th {
-            padding: 4px 8px;
+            padding: 8px;
             outline: none;
         }
     }
@@ -30,9 +31,9 @@
             padding: 4px 8px;
         }
 
-        // .rt-tr-group {
-        //     border-bottom: none;
-        // }
+        .rt-tr-group {
+            border-bottom: 1px solid var(--bg-light);
+        }
 
         .rt-tr:not(.-padRow):hover {
             background: var(--bg-hover);
@@ -71,17 +72,22 @@
         position: sticky;
         bottom: 0px;
         left: 0px;
+        margin: 16px 0;
 
         .-pagination {
             box-shadow: none;
             border-top: none;
             padding: 0px;
+            justify-content: end;
 
             button.-btn {
                 background: var(--bg-hover);
                 color: var(--text-light);
                 border-radius: 0px;
                 font-weight: 700;
+            }
+            .-center {
+                flex: unset;
             }
 
             .-previous {

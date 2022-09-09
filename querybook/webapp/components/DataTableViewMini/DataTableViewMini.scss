@@ -1,7 +1,7 @@
 .DataTableViewMini {
     display: flex;
     flex-direction: column;
-    background: var(--bg-lightest);
+    // background: var(--bg-lightest);
     overflow: hidden;
     border-radius: var(--border-radius-sm);
 
@@ -13,8 +13,13 @@
 
     .DataTableViewMini-content {
         overflow-y: auto;
-        > div {
-            margin-right: 4px;
+        // > div {
+        //     margin-right: 4px;
+        // }
+        .Icon {
+            svg {
+                max-height: 16px;
+            }
         }
     }
     .DataTableTags {

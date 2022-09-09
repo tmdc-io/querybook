@@ -79,7 +79,7 @@
 
                 &.active {
                     border-radius: 0px;
-                    background-color: var(--color-accent-lightest-0);
+                    // background-color: var(--color-accent-lightest-0);
                     a {
                         color: var(--color-accent-dark);
                     }
@@ -135,12 +135,17 @@
 
     &.selectColor {
         ul {
+            border-bottom: 2px solid var(--bg-light);
             li {
+                border-bottom: 2px solid transparent;
+                margin-bottom: -2px;
                 &.active {
-                    background-color: var(--color-accent-lightest-0);
+                    // background-color: var(--color-accent-lightest-0);
+                    border-bottom: 2px solid var(--color-accent-dark);
                 }
                 &:not(.active):hover {
-                    background-color: var(--bg-hover);
+                    // background-color: var(--bg-hover);
+                    border-bottom: 2px solid var(--color-accent-dark);
                 }
             }
         }

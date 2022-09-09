@@ -109,7 +109,7 @@ export const DataDocChart = React.memo<IDataDocChartProps>(
             ${fontColor[theme][2]}
         )`;
             Chart.defaults.font = {
-                family: 'Avenir Next',
+                // family: 'Avenir Next',
                 size: 14,
                 style: 'normal',
                 weight: undefined,

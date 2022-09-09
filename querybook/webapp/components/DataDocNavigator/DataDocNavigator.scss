@@ -1,6 +1,10 @@
 .DataDocNavigator {
     height: 100%;
 
+    .DataDocNavigatorSection {
+        border-bottom: 1px solid var(--bg-light);
+    }
+
     .data-docs {
         overflow-y: auto;
         overflow-x: hidden;
@@ -37,10 +41,13 @@
     }
 
     .nav-favorite-dragged-over {
-        background-color: var(--color-accent-lightest);
+        background-color: var(--bg-light);
 
-        .DataDocNavigatorSection .navigator-header {
-            background-color: var(--color-accent-lightest);
+        .DataDocNavigatorSection {
+            border-bottom: 1px solid #eee;
+            .navigator-header {
+                background-color: transparent //var(--color-accent-lightest);
+            }
         }
     }
 }

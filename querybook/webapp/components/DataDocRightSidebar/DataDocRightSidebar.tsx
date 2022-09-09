@@ -132,7 +132,7 @@ export const DataDocRightSidebar: React.FunctionComponent<IProps> = ({
     return (
         <div
             className="DataDocRightSidebar right-align"
-            style={{ height: `calc(100vh - ${numAnnouncements * 40}px)` }}
+            style={{ height: `calc(100vh - ${numAnnouncements * 40 + 62}px)` }}
             ref={selfRef}
         >
             {buttonSection}

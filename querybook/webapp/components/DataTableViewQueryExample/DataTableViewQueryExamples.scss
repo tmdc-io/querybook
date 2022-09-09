@@ -1,7 +1,7 @@
 .DataTableViewQueryExamples {
     .filter-selection-section {
         .Button.active {
-            background-color: var(--color-accent-lightest-0);
+            // background-color: var(--color-accent-lightest-0);
             color: var(--color-accent-dark);
         }
     }
@@ -52,28 +52,28 @@
             margin-left: 0px;
             margin-right: 12px;
 
-            &:hover {
-                .UserBadge .username,
-                .Tag {
-                    background-color: var(--bg-hover);
-                }
-            }
+            // &:hover {
+            //     .UserBadge .username,
+            //     .Tag {
+            //         background-color: var(--bg-hover);
+            //     }
+            // }
 
             &.active {
                 .UserBadge .username {
-                    background-color: var(--color-accent-lightest-0);
+                    // background-color: var(--color-accent-lightest-0);
                     color: var(--color-accent-dark);
                 }
                 .Icon svg {
                     color: var(--color-accent-dark);
                 }
-                &:hover {
-                    background-color: var(--color-accent-lightest);
-                    .UserBadge .username,
-                    .Tag {
-                        background-color: var(--color-accent-lightest);
-                    }
-                }
+                // &:hover {
+                //     background-color: var(--color-accent-lightest);
+                //     .UserBadge .username,
+                //     .Tag {
+                //         background-color: var(--color-accent-lightest);
+                //     }
+                // }
             }
 
             .UserBadge .username {

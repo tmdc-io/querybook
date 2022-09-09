@@ -1,7 +1,7 @@
 .EntitySidebar {
     height: 100%;
     background-color: var(--bg);
-
+    border-right: 1px solid var(--bg-light);
     position: relative;
     width: 50px;
     display: flex;
@@ -29,7 +29,7 @@
         }
         .IconButton {
             .Icon {
-                margin-bottom: 2px;
+                // margin-bottom: 2px;
                 height: 24px;
                 svg {
                     max-height: 16px;

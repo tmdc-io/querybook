@@ -3,6 +3,7 @@ theme:
     tab: general
     options:
         - default
+        - modern
         - dark
         - lush
     helper: Color themes for Querybook.

@@ -13,11 +13,12 @@ import { Tabs } from 'ui/Tabs/Tabs';
 import { Title } from 'ui/Title/Title';
 
 import { IFilterCondition, tableColumnFiltersByType } from './useFilterCell';
+import { Table } from 'ui/Table/Table';
 
 const StyledColumnInfo = styled.div.attrs({
     className: 'StatementResultColumnInfo',
 })`
-    width: 160px;
+    width: 250px;
     font-size: var(--xsmall-text-size);
 
     .preview-warning {
@@ -29,7 +30,7 @@ const StyledColumnInfo = styled.div.attrs({
     }
 
     .result-statistic {
-        word-break: break-all;
+        border-top: 1px solid var(--bg-light);
     }
 
     .ColumnInfoMenu {
@@ -225,11 +226,12 @@ const ColumnQuickInsights: React.FC<IColumnQuickInsightsProps> = ({
 
     const generateStatisticsDOM = () => {
         const statsDOM = statistics.map(([key, name, stat]) => (
-            <div key={key} className="result-statistic">
-                {name}: {stat}
-            </div>
+            <tr key={key} className="result-statistic">
+                <td align="left" style={{padding:"4px"}}>{name}</td>
+                <td align="right" style={{padding:"4px"}}>{stat}</td>
+            </tr>
         ));
-        return <div>{statsDOM}</div>;
+        return <table width="100%">{statsDOM}</table>;
     };
 
     return statistics.length ? (
