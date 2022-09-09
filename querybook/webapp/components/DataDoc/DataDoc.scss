@@ -23,6 +23,8 @@
         top: 0;
         z-index: 9;
         flex: 1;
+        border-left: 1px solid var(--bg-light);
+        padding-left: 4px;
     }
 
     .DataDocLeftSidebar {
