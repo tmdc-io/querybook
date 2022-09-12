@@ -8,9 +8,9 @@ from const.db import (
     name_length,
     now,
     description_length,
-    url_length,
+    # url_length,
     password_length,
-    # mediumtext_length,
+    mediumtext_length,
     # text_length
 )
 from const.user_roles import UserRoleType
@@ -29,7 +29,9 @@ class User(CRUDMixin, Base):
     _password = sql.Column("password", sql.String(length=password_length))
 
     email = sql.Column(sql.String(length=name_length))
-    profile_img = sql.Column(sql.String(length=url_length))
+    profile_img = sql.Column(
+        sql.Text(length=mediumtext_length)
+    )  # .String(length=url_length)) # Might store image in binary format!
     deleted = sql.Column(sql.Boolean, default=False)
 
     properties = sql.Column(sql.JSON, default={})

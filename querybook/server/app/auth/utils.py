@@ -8,7 +8,6 @@ from app.db import with_session
 from const.datasources import ACCESS_RESTRICTED_STATUS_CODE, UNAUTHORIZED_STATUS_CODE
 from const.user_roles import UserRoleType
 
-# from lib.utils.decorators import in_mem_memoized
 from models.user import User
 from app.db import DBSession, get_session
 from logic.admin import get_api_access_token
@@ -20,7 +19,6 @@ from logic.user import (
     create_user_role,
     delete_user_role,
     get_all_admin_user_roles_by_user_id,
-    # update_user_properties,
 )
 from env import QuerybookSettings
 from lib.logger import get_logger
@@ -102,7 +100,7 @@ def load_user_with_api_access_token(request):
         username = authorize_and_get_username(token_string)
         with DBSession() as session:
             user = get_user_by_name(username, session=session)
-            username, email, fullname, tags = get_heimdall_user_profile(
+            username, email, fullname, tags, profile_img = get_heimdall_user_profile(
                 token_string, username
             )
             if not user:
@@ -111,6 +109,7 @@ def load_user_with_api_access_token(request):
                     username=username,
                     fullname=fullname if fullname is not None else username,
                     email=email,
+                    profile_img=profile_img,
                     session=session,
                     properties={"heimdall": user_apikey, "tags": tags},
                 )
@@ -208,9 +207,38 @@ def get_heimdall_user_profile(access_token, username):
     LOG.debug(f"[Heimdall] resp: {resp.status_code}")
     if resp.status_code == 200:
         user = resp.json()
-        LOG.info(f"[Heimdall] resolved user: {user}")
-        # username, email, fullname, tags
-        return user["id"], user["email"], user["name"], user["tags"]
+        LOG.debug(f"[Heimdall] resolved user: {user}")
+        profile_img = get_heimdall_user_profile_img(access_token, username)
+
+        # username, email, fullname, tags, profile_img
+        return user["id"], user["email"], user["name"], user["tags"], profile_img
+    else:
+        raise AuthenticationError(
+            "Failed to fetch user profile, status ({0}), body ({1})".format(
+                resp.status if resp else "None",
+                resp.json() if resp else "None",
+            )
+        )
+
+
+def get_heimdall_user_profile_img(access_token, username):
+    heimdall_profile_image_url = (
+        f"{QuerybookSettings.DATAOS_BASE_URL}/heimdall/api/v1/users/{username}/avatars"
+    )
+    LOG.debug(f"[Heimdall] profile_url: {heimdall_profile_image_url}")
+
+    headers = {"Authorization": "Bearer {}".format(access_token)}
+    resp = requests.get(heimdall_profile_image_url, headers=headers)
+    LOG.debug(f"[Heimdall] resp: {resp.status_code}")
+    if resp.status_code == 200:
+        avatars = resp.json()
+        # LOG.debug(f"[Heimdall] resolved avatars: {avatars}")
+        profile_img = avatars["image_base64"]
+        # prepend data:image/png;base64
+        if profile_img:
+            profile_img = f"data:image/png;base64, {profile_img}"
+
+        return profile_img
     else:
         raise AuthenticationError(
             "Failed to fetch user profile, status ({0}), body ({1})".format(

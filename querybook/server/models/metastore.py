@@ -283,7 +283,9 @@ class DataTableColumn(TruncateString("name", "type", "comment"), Base):
     updated_at = sql.Column(sql.DateTime, default=now)
 
     name = sql.Column(sql.String(length=name_length), index=True)
-    type = sql.Column(sql.String(length=name_length))
+    type = sql.Column(
+        sql.Text(length=mediumtext_length)
+    )  # .String(length=name_length)) # Type can be really long for Complex Data Types
 
     comment = sql.Column(sql.String(length=description_length))
     description = sql.Column(sql.Text(length=mediumtext_length))

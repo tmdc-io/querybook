@@ -8,7 +8,6 @@ from app.flask_app import flask_app, limiter
 from const.path import WEBAPP_INDEX_PATH
 from env import QuerybookSettings
 
-
 import datasources
 import datasources_socketio
 
@@ -42,6 +41,6 @@ def apply_caching(response):
 
 
 # Force fetch all users at the start of the application
-from tasks.heimdall_users import create_users
+from tasks.heimdall_users import sync_users
 
-create_users.delay()
+sync_users.delay()

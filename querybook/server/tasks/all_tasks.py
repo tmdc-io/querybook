@@ -17,7 +17,7 @@ from .delete_mysql_cache import delete_mysql_cache
 from .poll_engine_status import poll_engine_status
 from .presto_hive_function_scrapper import presto_hive_function_scrapper
 from .db_clean_up_jobs import run_all_db_clean_up_jobs
-from .heimdall_users import create_users
+from .heimdall_users import sync_users
 
 LOG = get_logger(__file__)
 
@@ -39,7 +39,7 @@ poll_engine_status
 presto_hive_function_scrapper
 run_all_db_clean_up_jobs
 run_sample_query
-create_users
+sync_users
 
 LOG = get_task_logger(__name__)
 

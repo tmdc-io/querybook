@@ -2,7 +2,7 @@ from flask import request, session as flask_session, redirect
 import flask_login
 
 from app.db import with_session, DBSession
-from logic.user import get_user_by_name, create_user, update_user_properties
+from logic.user import get_user_by_name, create_user, update_user, update_user_properties
 from app.auth.utils import (
     AuthUser,
     abort_unauthorized,
@@ -45,11 +45,11 @@ class HeimdallLoginManager(OAuthLoginManager):
 
         try:
             access_token = self._fetch_access_token(code)
-            username, email, fullname, tags = authorize_and_get_user_profile(access_token)
+            username, email, fullname, tags, profile_img = authorize_and_get_user_profile(access_token)
             user_apikey = get_or_create_heimdall_user_apikey(username, access_token)
             with DBSession() as session:
                 flask_login.login_user(
-                    AuthUser(self.login_user(username, email, user_apikey, tags, session=session, fullname=fullname))
+                    AuthUser(self.login_user(username, email, user_apikey, tags, profile_img=profile_img, session=session, fullname=fullname))
                 )
         except AuthenticationError:
             abort_unauthorized()
@@ -63,15 +63,15 @@ class HeimdallLoginManager(OAuthLoginManager):
         return redirect(next_url)
 
     @with_session
-    def login_user(self, username, email, user_apikey, tags, session=None, fullname=None):
+    def login_user(self, username, email, user_apikey, tags, profile_img=None, session=None, fullname=None):
         """ creates a user (if necessary) and logs him in """
-        # TODO: 1/ Update fullname, 2/ Fetch avatar
         user = get_user_by_name(username, session=session)
         if not user:
             user = create_user(
                 username=username,
                 fullname=fullname if fullname is not None else username,
                 email=email,
+                profile_img=profile_img,
                 session=session,
                 properties={'heimdall': user_apikey, 'tags': tags},
             )
@@ -79,7 +79,15 @@ class HeimdallLoginManager(OAuthLoginManager):
             update_user_properties(
                 user.id,
                 heimdall=user_apikey,
-                tags=tags
+                tags=tags,
+                session=session,
+            )
+            update_user(
+                user.id,
+                fullname=fullname if fullname is not None else username,
+                profile_img=profile_img,
+                email=email,
+                session=session,
             )
 
         update_admin_user_role_by_dataos_tags(user.id, username, tags or [], session)
