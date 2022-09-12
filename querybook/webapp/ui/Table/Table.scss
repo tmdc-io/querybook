@@ -79,17 +79,18 @@
             border-top: none;
             padding: 0px;
             justify-content: end;
-
+            
+            .-previous,
+            .-next,
+            .-center {
+                flex: inherit;
+            }
             button.-btn {
                 background: var(--bg-hover);
                 color: var(--text-light);
                 border-radius: 0px;
                 font-weight: 700;
             }
-            .-center {
-                flex: unset;
-            }
-
             .-previous {
                 button.-btn {
                     border-bottom-right-radius: var(--border-radius);
