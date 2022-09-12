@@ -109,9 +109,12 @@ class MinervaClient(ClientBaseClass):
         **kwargs
     ):
         protocol, hostname, port = _parse_connection(connection)
-        current_user = get_user_by_name(proxy_user)
-        current_user_apikey = current_user.properties["heimdall"] if current_user else None
         source = get_user_agent()
+        if proxy_user:
+            current_user = get_user_by_name(proxy_user)
+            current_user_apikey = current_user.properties["heimdall"] if current_user else None
+        else:
+            current_user_apikey: None
 
         connection = presto.connect(
             protocol=protocol,
