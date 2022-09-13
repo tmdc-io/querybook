@@ -747,7 +747,7 @@ def get_admin_query_validators():
 @register("/admin/minerva_set_up/", methods=["POST"])
 @admin_only
 def exec_minerva_set_up(
-    cluster_name, environment_name, metastore_name, engine_name, apikey=None, **kwargs
+    cluster_name, environment_name, metastore_name, engine_name, **kwargs
 ):
     if not re.match(minerva_cluster_regex, cluster_name):
         raise RequestException(
@@ -762,6 +762,7 @@ def exec_minerva_set_up(
             f"environment_name={environment_name} must match {environment_regex}", 400
         )
 
+    # apikey = apikey or QuerybookSettings.DATAOS_APIKEY
     with DBSession() as session:
         # Environment
         environment = environment_logic.get_environment_by_name(environment_name)
@@ -786,7 +787,7 @@ def exec_minerva_set_up(
                 {
                     "name": metastore_name,
                     "metastore_params": {
-                        "apikey": apikey,
+                        # "apikey": apikey,
                         "cluster": cluster_name,
                     },
                     "loader": "MinervaMetadataLoader",
@@ -808,7 +809,7 @@ def exec_minerva_set_up(
                     "language": minerva_language,
                     "executor": minerva_executor_name,
                     "executor_params": {
-                        "apikey": apikey,
+                        # "apikey": apikey,
                         "cluster": cluster_name,
                     },
                     "feature_params": {"status_checker": "SelectOneChecker"},
@@ -827,7 +828,7 @@ def exec_minerva_set_up(
 
         task_schedule = TaskSchedule.create(
             {
-                "name": "update_metastore_{}_{}".format(metastore.id, cluster_name),
+                "name": "{}_update_metastore_{}".format(metastore_name, metastore.id),
                 "task": "tasks.update_metastore.update_metastore",
                 "cron": "0 0 * * *",
                 "args": [metastore.id],

@@ -6,6 +6,9 @@ from const.query_execution import QueryEngineStatus
 from lib.query_executor.base_executor import QueryExecutorBaseClass
 from lib.query_executor.base_client import CursorBaseClass
 from lib.utils.utils import Timeout, TimeoutError
+from lib.logger import get_logger
+
+LOG = get_logger(__file__)
 
 
 class SelectOneChecker(BaseEngineStatusChecker):
@@ -29,7 +32,7 @@ def check_select_one(
 ) -> EngineStatus:
     result: EngineStatus = {"status": QueryEngineStatus.GOOD.value, "messages": []}
     try:
-        with Timeout(20, "Select 1 took too long"):
+        with Timeout(30, "Select 1 took too long (>30 sec)"):
             cursor: CursorBaseClass = executor._get_client(client_settings).cursor()
             cursor.run("select 1")
             cursor.poll_until_finish()
@@ -41,7 +44,7 @@ def check_select_one(
 
             # Record the success results
             utc_now_str = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
-            result["messages"].append(f"Select 1 check successed at {utc_now_str} UTC")
+            result["messages"].append(f"Select 1 check succeeded at {utc_now_str} UTC")
     except WrongSelectOneException as e:
         result["status"] = QueryEngineStatus.WARN.value
         result["messages"].append(str(e))
@@ -49,4 +52,5 @@ def check_select_one(
         result["status"] = QueryEngineStatus.ERROR.value
         result["messages"].append(str(e))
 
+    LOG.info(f"check_select_one: {result}")
     return result

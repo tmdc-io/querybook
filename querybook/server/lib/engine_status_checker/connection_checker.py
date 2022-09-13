@@ -5,6 +5,9 @@ from .base_checker import BaseEngineStatusChecker, EngineStatus
 from const.query_execution import QueryEngineStatus
 from lib.query_executor.base_executor import QueryExecutorBaseClass
 from lib.utils.utils import Timeout
+from lib.logger import get_logger
+
+LOG = get_logger(__file__)
 
 
 class ConnectionChecker(BaseEngineStatusChecker):
@@ -35,4 +38,5 @@ def check_connection(
         result["status"] = QueryEngineStatus.ERROR.value
         result["messages"].append(str(e))
 
+    LOG.info(f"check_connection: {result}")
     return result

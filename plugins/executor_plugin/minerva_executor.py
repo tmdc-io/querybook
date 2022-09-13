@@ -57,7 +57,8 @@ class MinervaQueryExecutor(QueryExecutorBaseClass):
             apikey=FormField(
                 required=False,
                 hidden=True,
-                helper="<p>Apikey to connect with DataOS Minerva. If empty, current user's <code>heimdall apikey</code> will be used.</p>",
+                helper="<p>Apikey to connect with DataOS Minerva. <br/>"
+                       "If not supplied, Querybook will try to use current user's apikey or teh supplied <code>DATAOS_APIKEY</code></p>",
             ),
             cluster=FormField(
                 required=True,
@@ -110,11 +111,10 @@ class MinervaClient(ClientBaseClass):
     ):
         protocol, hostname, port = _parse_connection(connection)
         source = get_user_agent()
+        current_user_apikey = None
         if proxy_user:
             current_user = get_user_by_name(proxy_user)
             current_user_apikey = current_user.properties["heimdall"] if current_user else None
-        else:
-            current_user_apikey: None
 
         connection = presto.connect(
             protocol=protocol,

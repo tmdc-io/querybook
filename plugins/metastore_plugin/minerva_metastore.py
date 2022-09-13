@@ -55,7 +55,8 @@ class MinervaMetadataLoader(BaseMetastoreLoader):
             apikey=FormField(
                 required=False,
                 hidden=True,
-                helper="<p>Apikey to connect with DataOS Minerva. If empty, <code>DATAOS_APIKEY</code> will be used.</p>",
+                helper="<p>Apikey to connect with DataOS Minerva. <br/>"
+                       "If not supplied, Querybook will use supplied <code>DATAOS_APIKEY</code></p>",
             ),
             cluster=FormField(
                 required=True,

@@ -140,9 +140,9 @@ def update_admin_user_role_by_dataos_tags(uid, username, tags=[], session=None):
     can_be_admin = tags and any(tag in admin_tags for tag in tags)
     existing_admin_user_roles = get_all_admin_user_roles_by_user_id(uid)
     is_already_admin = len(existing_admin_user_roles) > 0
-    LOG.info(
-        f"user:{uid}:{username} can_be_admin:{can_be_admin} => is_already_admin:{is_already_admin}"
-    )
+    # LOG.debug(
+    #     f"user:{uid}:{username} can_be_admin:{can_be_admin} is_already_admin:{is_already_admin}"
+    # )
 
     if can_be_admin and not is_already_admin:
         LOG.info(f"*** Assigning ADMIN role to {username}")
