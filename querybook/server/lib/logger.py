@@ -23,5 +23,10 @@ def get_logger(module):
         print("{} not found".format(QuerybookSettings.LOG_LOCATION))
     finally:
         # Avoid debug logs in production
-        log.setLevel(logging.INFO if QuerybookSettings.PRODUCTION else logging.DEBUG)
+        log_level = (
+            logging.INFO
+            if QuerybookSettings.PRODUCTION and not QuerybookSettings.LOG_DEBUG_LEVEL
+            else logging.DEBUG
+        )
+        log.setLevel(log_level)
         return log

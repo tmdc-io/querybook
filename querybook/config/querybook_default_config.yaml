@@ -73,6 +73,7 @@ GOOGLE_CREDS: ~
 
 # --------------- Logging ---------------
 LOG_LOCATION: ~
+LOG_DEBUG_LEVEL: true
 
 # --------------- Table Upload (Experimental) ---------------
 # Size in bytes

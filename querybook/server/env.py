@@ -53,6 +53,17 @@ def get_user_agent():
     return source
 
 
+def parse_boolean(s):
+    """Takes a string and returns the equivalent as a boolean value."""
+    s = s.strip().lower()
+    if s in ("yes", "true", "on", "1"):
+        return True
+    elif s in ("no", "false", "off", "0", "none"):
+        return False
+    else:
+        raise ValueError("Invalid boolean value %r" % s)
+
+
 class QuerybookSettings(object):
     BASE_NAME = "querybook"
     BASE_PATH = f"/{BASE_NAME}"
@@ -142,6 +153,7 @@ class QuerybookSettings(object):
 
     # Logging
     LOG_LOCATION = get_env_config("LOG_LOCATION")
+    LOG_DEBUG_LEVEL = str(get_env_config("LOG_DEBUG_LEVEL")).lower() == "true"
 
     # Table Upload (Experimental)
     TABLE_MAX_UPLOAD_SIZE = get_env_config("TABLE_MAX_UPLOAD_SIZE")
