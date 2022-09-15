@@ -34,9 +34,12 @@ const PanelTitle = styled.span`
     margin-bottom: 4px;
     padding: 8px 8px 0 14px;
     align-items: center;
-
-    border-top: 1px solid var(--bg-light);
+    // border-top: 1px solid var(--bg-light);
     border-radius: var(--border-radius-sm);
+`;
+
+const PanelOuter = styled.div`
+    border-bottom: 1px solid var(--bg-light);
 `;
 
 export const PanelSection: React.FunctionComponent<IPanelSectionProps> = ({
@@ -69,12 +72,12 @@ export const PanelSection: React.FunctionComponent<IPanelSectionProps> = ({
         </div>
     );
     return (
-        <div className="mb8">
+        <PanelOuter className="pb4 pt4">
             {headerDOM}
             <PanelContentWrapper isOpen={isOpen}>
                 {children}
             </PanelContentWrapper>
-        </div>
+        </PanelOuter>
     );
 };
 
