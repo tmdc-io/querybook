@@ -5,7 +5,11 @@ import { useSelector } from 'react-redux';
 import { IQueryEngine, QueryEngineStatus } from 'const/queryEngine';
 import { queryEngineStatusToIconStatus } from 'const/queryStatusIcon';
 import { TooltipDirection } from 'const/tooltip';
-import { DEFAULT_ROW_LIMIT, ROW_LIMIT_SCALE } from 'lib/sql-helper/sql-limiter';
+import {
+    ALLOW_UNLIMITED_QUERY,
+    DEFAULT_ROW_LIMIT,
+    ROW_LIMIT_SCALE,
+} from 'lib/sql-helper/sql-limiter';
 import { getShortcutSymbols, KeyMap } from 'lib/utils/keyboard';
 import { formatNumber } from 'lib/utils/number';
 import { queryEngineStatusByIdEnvSelector } from 'redux/queryEngine/selector';
@@ -102,7 +106,7 @@ export const QueryRunButton = React.forwardRef<
         const isRowLimitEnabled =
             queryEngineById[engineId]?.feature_params.row_limit;
         const rowLimitDOM =
-            onRowLimitChange && isRowLimitEnabled ? (
+            !disabled && onRowLimitChange && isRowLimitEnabled ? (
                 <QueryLimitSelector
                     rowLimit={rowLimit}
                     setRowLimit={onRowLimitChange}
@@ -191,7 +195,7 @@ export const QueryEngineSelector: React.FC<IQueryEngineSelectorProps> = ({
 const rowLimitOptions = ROW_LIMIT_SCALE.map((value) => ({
     label: formatNumber(value),
     value,
-}));
+})).concat(ALLOW_UNLIMITED_QUERY ? [{ label: 'none', value: -1 }] : []);
 
 const QueryLimitSelector: React.FC<{
     rowLimit: number;
@@ -204,6 +208,13 @@ const QueryLimitSelector: React.FC<{
         }
     }, [rowLimit, setRowLimit]);
 
+    const selectedRowLimitText = React.useMemo(() => {
+        if (rowLimit >= 0) {
+            return formatNumber(rowLimit);
+        }
+        return 'none';
+    }, [rowLimit]);
+
     const rowLimitMenuItems = rowLimitOptions.map((option) => ({
         name: <span>{option.label}</span>,
         onClick: () => setRowLimit(option.value),
@@ -215,10 +226,10 @@ const QueryLimitSelector: React.FC<{
             customButtonRenderer={() => (
                 <div
                     className="flex-center ph4"
-                    aria-label="Only applies to select statements without limit"
+                    aria-label="Only applies to SELECT query without LIMIT"
                     data-balloon-pos={tooltipPos}
                 >
-                    <span className="mr4">Limit: {formatNumber(rowLimit)}</span>
+                    <span className="mr4">Limit: {selectedRowLimitText}</span>
                     <Icon name="ChevronDown" size={24} color="light" />
                 </div>
             )}

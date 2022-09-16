@@ -3,9 +3,13 @@ from .base_query_validator import BaseQueryValidator
 from .validators.presto_explain_validator import (
     PrestoExplainValidator,
 )
+from .validators.minerva_explain_validator import (
+    MinervaExplainValidator,
+)
 
 ALL_DEFAULT_QUERY_VALIDATORS = [
     PrestoExplainValidator,
+    MinervaExplainValidator,
 ]
 
 ALL_PLUGIN_QUERY_VALIDATORS_BY_NAME = import_module_with_default(

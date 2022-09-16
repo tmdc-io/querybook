@@ -30,7 +30,7 @@ import {
 import { isQueryUsingTemplating } from 'lib/templated-query/validation';
 import { Nullable } from 'lib/typescript';
 import { navigateWithinEnv } from 'lib/utils/query-string';
-import { analyzeCode } from 'lib/web-worker';
+import { analyzeCode, getSqlLintAnnotations } from 'lib/web-worker';
 import { Button } from 'ui/Button/Button';
 
 import {
@@ -167,6 +167,8 @@ export class QueryEditor extends React.PureComponent<
             readOnly,
             theme,
             keyMap,
+            language,
+            metastoreId,
             getLintErrors,
         } = this.props;
         // In constructor this.state is not defined
@@ -175,6 +177,8 @@ export class QueryEditor extends React.PureComponent<
             lineWrapping,
             readOnly,
             theme,
+            language,
+            metastoreId,
             getLintErrors,
             keyMap
         );
@@ -186,6 +190,8 @@ export class QueryEditor extends React.PureComponent<
         lineWrapping: boolean,
         readOnly: boolean,
         theme: string,
+        language: string,
+        metastoreId: number,
         getLintErrors: Nullable<
             (
                 query: string,
@@ -194,8 +200,14 @@ export class QueryEditor extends React.PureComponent<
         >,
         keyMap: CodeMirrorKeyMap
     ) {
-        const lintingOptions =
+        // TODO: remove
+        console.log(
+            '[QueryEditor Linter] useQueryValidator:',
             getLintErrors && !readOnly
+        );
+
+        const lintingOptions =
+            getLintErrors && !readOnly // Use Query Analyzer
                 ? {
                       lint: {
                           // Lint only when you can edit
@@ -203,6 +215,20 @@ export class QueryEditor extends React.PureComponent<
                           async: true,
                           lintOnChange: false,
                       },
+                  }
+                : language != null && metastoreId != null // Use fallback linter
+                ? {
+                      lint: metastoreId
+                          ? {
+                                // Lint only when you can edit
+                                getAnnotations: getSqlLintAnnotations(
+                                    metastoreId,
+                                    language
+                                ),
+                                async: true,
+                                delay: 1000,
+                            }
+                          : null,
                   }
                 : {};
 
