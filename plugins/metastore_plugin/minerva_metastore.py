@@ -1,4 +1,3 @@
-import os
 import re
 import time
 from pyhive import presto
@@ -157,6 +156,6 @@ class MinervaMetadataLoader(BaseMetastoreLoader):
 
         return table, columns
 
-    def _create_tables_batched(self, schema_tables):
-        LOG.info(f">>>>>> _create_tables_batched HERE")
-        super()._create_tables_batched(schema_tables)
+    # def _create_tables_batched(self, schema_tables):
+    #     LOG.info(f">>>>>> _create_tables_batched HERE")
+    #     super()._create_tables_batched(schema_tables)
