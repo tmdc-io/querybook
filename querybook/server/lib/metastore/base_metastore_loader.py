@@ -103,8 +103,11 @@ class BaseMetastoreLoader(metaclass=ABCMeta):
         """
         try:
             # return None if the table is not in the allow list or in the deny list
-            if self.acl_checker.is_table_valid(schema_name, table_name):
-                return None
+            #
+            # Confused about this:
+            # https://github.com/pinterest/querybook/commit/fdb5df09480d9c0beb2f1ef38d755dae5c55ab96 Why shouldn't
+            # you add this table to Metastore if this is a valid table? if self.acl_checker.is_table_valid(
+            # schema_name, table_name): return None
 
             # get table from metastore
             table, columns = self.get_table_and_columns(schema_name, table_name)

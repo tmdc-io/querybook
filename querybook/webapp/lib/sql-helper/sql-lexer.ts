@@ -329,7 +329,6 @@ function sanitizeTable(tableToken: IToken, defaultSchema: string) {
         success,
     };
 
-    console.log('sanitizeTable: reply: ', reply);
     return reply;
 }
 

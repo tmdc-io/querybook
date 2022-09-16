@@ -156,3 +156,7 @@ class MinervaMetadataLoader(BaseMetastoreLoader):
         columns = [DataColumn(row[3], row[4], row[5]) for row in rows]
 
         return table, columns
+
+    def _create_tables_batched(self, schema_tables):
+        LOG.info(f">>>>>> _create_tables_batched HERE")
+        super()._create_tables_batched(schema_tables)

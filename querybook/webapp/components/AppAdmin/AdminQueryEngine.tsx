@@ -409,20 +409,34 @@ export const AdminQueryEngine: React.FunctionComponent<IProps> = ({
                                     withDeselect
                                 />
 
-                                <SimpleField
+                                {/* <SimpleField
                                     stacked
                                     name="feature_params.upload_exporter"
                                     type="react-select"
                                     label="(Experimental) Table Upload Exporter"
                                     options={tableUploadExporterNames}
                                     withDeselect
-                                />
+                                /> */}
 
                                 <SimpleField
                                     stacked
+                                    help={() => (
+                                        <div>
+                                            Querybook uses in-editor{' '}
+                                            <strong>sql linting</strong> to
+                                            display errors on the editor. You
+                                            can select a custom validator that
+                                            would use{' '}
+                                            <code>
+                                                EXPLAIN <i>query</i>
+                                            </code>{' '}
+                                            to validate queries.
+                                        </div>
+                                    )}
                                     name="feature_params.validator"
                                     type="react-select"
-                                    label="(Experimental) Query Validator"
+                                    // label="(Experimental) Query Validator"
+                                    label="Query Validator"
                                     options={
                                         queryValidatorsPerLanguage[
                                             item.language
@@ -433,9 +447,16 @@ export const AdminQueryEngine: React.FunctionComponent<IProps> = ({
 
                                 <SimpleField
                                     stacked
+                                    help={() => (
+                                        <div>
+                                            Helps you apply <code>LIMIT</code>{' '}
+                                            clause on queries.
+                                        </div>
+                                    )}
                                     name="feature_params.row_limit"
                                     type="toggle"
-                                    label="(Experimental) Enable Row Limit"
+                                    // label="(Experimental) Enable Row Limit"
+                                    label="Enable Row Limit"
                                 />
                             </div>
                         </div>

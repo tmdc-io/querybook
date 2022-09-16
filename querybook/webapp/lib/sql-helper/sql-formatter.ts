@@ -144,7 +144,7 @@ export function format(
                     expressionWidth: 60,
                     newlineBeforeSemicolon: true,
                 } as FormatOptions;
-                console.log('sql_format options:', opts);
+                console.log('[sql_format] options:', opts);
                 formattedStatement = sql_format(statementText, opts);
             }
 
