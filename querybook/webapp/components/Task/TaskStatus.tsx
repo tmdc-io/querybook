@@ -35,11 +35,11 @@ const tableColumnWidths = {
     status: 80,
 };
 const tableColumnAligns: Record<string, TableAlign> = {
-    id: 'center',
-    name: 'center',
-    created_at: 'center',
-    updated_at: 'center',
-    status: 'center',
+    id: 'left',
+    name: 'left',
+    created_at: 'left',
+    updated_at: 'left',
+    status: 'left',
 };
 
 function formatCell(

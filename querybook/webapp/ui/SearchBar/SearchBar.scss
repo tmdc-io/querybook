@@ -18,6 +18,11 @@
         right: 16px;
         top: 10px;
         color: var(--icon);
+        span {
+            svg {
+                max-height: 16px;
+            }
+        }
     }
 
     .search-bar-clear-sep {

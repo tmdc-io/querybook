@@ -1,4 +1,7 @@
 .ToggleButton.Button {
+    min-height: 32px;
+    background: unset;
+    color: unset;
     &.checked {
         // background-color: var(--color-accent-lightest);
         color: var(--color-accent-dark);

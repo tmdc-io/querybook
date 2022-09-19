@@ -43,7 +43,7 @@ export const Card: React.FunctionComponent<IProps> = ({
             style={height || width ? { height, width } : null}
         >
             {title && (
-                <AccentText className="mt8 mb16" size="large" weight="bold">
+                <AccentText className="mt8" size="large" weight="bold">
                     {title}
                 </AccentText>
             )}

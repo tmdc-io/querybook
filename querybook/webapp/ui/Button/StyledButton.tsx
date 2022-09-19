@@ -34,6 +34,7 @@ export const StyledButton = styled.span<StyledButtonProps>`
 
     + .Button {
         margin-left: 12px;
+        min-height: 32px;
     }
 
     &:hover,

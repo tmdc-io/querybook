@@ -1,6 +1,7 @@
 import React from 'react';
 import { UserMenuHeader } from 'components/UserMenu/UserMenuHeader';
 import { EnvironmentTopbar } from 'components/EnvironmentAppSidebar/EnvironmentTopbar';
+import history from 'lib/router-history';
 
 export const AppHeader: React.FunctionComponent = () => {
 

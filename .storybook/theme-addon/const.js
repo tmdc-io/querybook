@@ -3,7 +3,7 @@ export const PARAM_KEY = 'selected_querybook_theme';
 export const ThemeOptions = ['light', 'modern', 'dark', 'lush'];
 
 export const ThemeToClassName = {
-    light: '',
+    light: 'modern-theme',
     modern: 'modern-theme',
     dark: 'dark-theme',
     lush: 'lush-theme',

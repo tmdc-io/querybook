@@ -6,12 +6,12 @@ ELASTICSEARCH_HOST: elasticsearch:9200
 AUTH_BACKEND: 'auth_plugin.heimdall_auth'
 OIDC_CLIENT_ID: 'dataos_generic'
 OIDC_CLIENT_SECRET: '665CAF977DA1ED77456B7CD3F3FD4'
-DATAOS_BASE_URL: https://notable-manatee.dataos.app/
+DATAOS_BASE_URL: https://immense-lamb.dataos.app/
 DATAOS_APIKEY: YXRsYXNfNDBkMTMwMDY4NTM4OTM3ZWIwY2ZiOGI0YWIyMjcyOWIuY2FmODc4MDgtMWI4Zi00ZTBmLWI1ZDctOWMwZDQ1MWU1OTU5
 PUBLIC_URL: http://127.0.0.1:10001
 
 # MINERVA
-MINERVA_QUERY_URL: https://tcp.notable-manatee.dataos.app:7432
+MINERVA_QUERY_URL: https://tcp.immense-lamb.dataos.app:7432
 
 # Email Notifications
 MAIL_SERVER: smtp.mailgun.org

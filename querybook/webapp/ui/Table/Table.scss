@@ -20,9 +20,12 @@
             font-weight: var(--bold-font);
         }
 
-        .rt-th {
-            padding: 8px;
-            outline: none;
+        .rt-tr {
+            text-align: left;
+            .rt-th {
+                padding: 8px;
+                outline: none;
+            }
         }
     }
 
