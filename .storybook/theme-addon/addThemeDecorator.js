@@ -12,7 +12,7 @@ const withTheme = (StoryFn, context) => {
     }, [context.id]);
 
     useEffect(() => {
-        body.className = 'modern-theme';
+        body.className = '';
 
         const className = ThemeToClassName[theme];
         if (className) {
@@ -20,7 +20,7 @@ const withTheme = (StoryFn, context) => {
         }
 
         return () => {
-            body.className = 'modern-theme';
+            body.className = '';
         };
     }, [body, theme, context.id]);
 

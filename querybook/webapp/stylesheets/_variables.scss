@@ -77,14 +77,14 @@ body {
 
     --color-null: var(--color-primary-4);
 
-    --color-accent: var(--color-pink);
-    --color-accent-dark: var(--color-pink-dark);
-    --color-accent-darkest: var(--color-pink-darkest);
-    --color-accent-light: var(--color-pink-light);
-    --color-accent-lightest: var(--color-pink-lightest);
-    --color-accent-lightest-0: var(--color-pink-lightest-0);
-    --color-accent-transp-lightest: var(--color-pink-transp-lightest);
-    --color-accent-transp-lightest-0: var(--color-pink-transp-lightest-0);
+    --color-accent: var(--color-blue-light);
+    --color-accent-dark: var(--color-blue);
+    --color-accent-darkest: var(--color-blue-lightest);
+    --color-accent-light: #34657f;
+    --color-accent-lightest: #254a5d;
+    --color-accent-lightest-0: #13252f;
+    --color-accent-transp-lightest: var(--color-blue-transp-lightest);
+    --color-accent-transp-lightest-0: var(--color-blue-transp-lightest-0);
 
     // Colors: Text
     --text: var(--color-invert);

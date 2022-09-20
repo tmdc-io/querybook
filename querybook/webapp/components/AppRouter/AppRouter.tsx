@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Redirect, Route, Router, Switch } from 'react-router-dom';
 
 import { AppLayout } from 'components/AppLayout/AppLayout';
@@ -14,40 +14,53 @@ const EnvironmentsRouter = React.lazy(
     () => import('components/EnvironmentsRouter/EnvironmentsRouter')
 );
 
-export const AppRouter: React.FunctionComponent = () => (
-    <Router history={history}>
-        <UserLoader>
-            <AppLayout>
-                <React.Suspense fallback={<Loading fullHeight />}>
-                    <Switch>
-                        {/* auto append trailing slash */}
-                        <Route
-                            exact
-                            strict
-                            path="/:url*"
-                            render={(props) => (
-                                <Redirect
-                                    to={{
-                                        ...props.location,
-                                        pathname: `${props.location.pathname}/`,
-                                    }}
-                                />
-                            )}
-                        />
+export const AppRouter: React.FunctionComponent = () => {
 
-                        <Route path="/admin/:entity?" component={AppAdmin} />
-                        <Route
-                            exact
-                            path="/"
-                            render={() => <EnvironmentsRouter />}
-                        />
-                        <Route path="/:env/" component={EnvironmentsRouter} />
-                        <Route component={FourOhFour} />
-                    </Switch>
-                </React.Suspense>
-            </AppLayout>
-        </UserLoader>
-        <ConfirmationManager />
-        <ToastManager />
-    </Router>
-);
+    useEffect(() => {
+        if(document.body.className.length <= 0) {
+            document.body.className = 'modern-theme';
+        }
+    }, []);
+
+    return <Router history={history}>
+    <UserLoader>
+        <AppLayout>
+            <React.Suspense fallback={<Loading fullHeight />}>
+                <Switch>
+                    {/* auto append trailing slash */}
+                    <Route
+                        exact
+                        strict
+                        path="/:url*"
+                        render={(props) => (
+                            <Redirect
+                                to={{
+                                    ...props.location,
+                                    pathname: `${props.location.pathname}/`,
+                                }}
+                            />
+                        )}
+                    />
+
+                    <Route path="/admin/:entity?" component={AppAdmin} />
+                    <Route
+                        exact
+                        path="/"
+                        render={() => <EnvironmentsRouter />}
+                    />
+                    <Route path="/:env/" component={EnvironmentsRouter} />
+                    <Route component={FourOhFour} />
+                </Switch>
+            </React.Suspense>
+        </AppLayout>
+    </UserLoader>
+    <ConfirmationManager />
+    <ToastManager />
+</Router>
+;
+
+}
+
+
+
+
