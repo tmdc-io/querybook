@@ -1,12 +1,12 @@
 SHELL := /bin/bash
-VERSION := 0.0.19
+VERSION := 0.0.20
 GIT_TAG=$(shell git describe --tags --abbrev=0)
 GIT_VERSION=$(shell git describe --tags --dirty)
 DOCKER_TAG=$(GIT_VERSION)
 BUILD_DATE=$(shell date +"%m/%d/%Y %H:%M:%S %z")
 .PHONY: bundled_off prod_web prod_worker prod_scheduler docs remove_running_dev_image clean
 
-bundled_pg: dev_image
+bundled_pg: # dev_image
 	docker-compose -f docker-compose.pg.yml up
 
 bundled_pg_off:
