@@ -97,53 +97,33 @@ class MinervaMetadataLoader(BaseMetastoreLoader):
         return columns, rows
 
     def get_all_schema_names(self) -> List[str]:
-        query = f"""
-            /* {get_user_agent()} */
-            /* get_all_schema_names() cluster:{self.cluster} */
-            SELECT DISTINCT CONCAT(table_cat, '.', table_schem)
-            FROM system.jdbc.columns
-            WHERE
-                table_schem NOT IN ('pg_catalog', 'information_schema', 'definitions')
-                AND table_cat NOT IN ('system')
-        """
+        query = f"show catalogs"
         columns, rows = self.run_query(query)
-        schemas = [row[0] for row in rows]
+        catalogs = [row[0] for row in rows]
+
+        schemas = []
+        for catalog in catalogs:
+            query = f"show schemas in {catalog}"
+            columns, rows = self.run_query(query)
+            rows = filter(lambda row: row[0].lower() != 'information_schema', rows)  # Ignore information_schema
+            schemas = schemas + [f"{catalog}.{row[0]}" for row in rows]
+
         LOG.info(f"[Minerva] get_all_schema_names: schemas: {schemas}")
         return schemas
 
     def get_all_table_names_in_schema(self, schema_name: str) -> List[str]:
-        [catalog, schema] = schema_name.split(".")
-        query = f"""
-            /* {get_user_agent()} */
-            /* get_all_table_names_in_schema() cluster:{self.cluster} */
-            SELECT DISTINCT table_name
-            FROM system.jdbc.columns
-            WHERE table_cat = '{catalog}' AND table_schem = '{schema}'
-        """
+        # [catalog, schema] = schema_name.split(".")
+        query = f"show tables in {schema_name}"
         columns, rows = self.run_query(query)
         tables = [row[0] for row in rows]
-        LOG.debug(f"[Minerva] get_all_table_names_in_schema: tables: {tables}")
+        LOG.debug(f"[Minerva] get_all_table_names_in_schema: schema: {schema_name}, tables: {tables}")
         return tables
 
     def get_table_and_columns(
             self, schema_name: str, table_name: str
     ) -> Tuple[DataTable, List[DataColumn]]:
-        [catalog, schema] = schema_name.split(".")
-        query = f"""
-            /* {get_user_agent()} */
-            /* get_table_and_columns() cluster:{self.cluster} */
-            SELECT
-                table_cat,
-                table_schem,
-                table_name,
-                column_Name,
-                type_name,
-                remarks,
-                data_type,
-                column_size
-            FROM system.jdbc.columns
-            WHERE table_cat = '{catalog}' AND table_schem = '{schema}' AND table_name = '{table_name}'
-        """
+        # [catalog, schema] = schema_name.split(".")
+        query = f"describe {schema_name}.{table_name}"
         columns, rows = self.run_query(query)
 
         table = DataTable(
@@ -152,10 +132,5 @@ class MinervaMetadataLoader(BaseMetastoreLoader):
             table_updated_at=int(time.time()),
         )
 
-        columns = [DataColumn(row[3], row[4], row[5]) for row in rows]
-
+        columns = [DataColumn(row[0], row[1], row[3]) for row in rows]  # column_name, type, remarks
         return table, columns
-
-    # def _create_tables_batched(self, schema_tables):
-    #     LOG.info(f">>>>>> _create_tables_batched HERE")
-    #     super()._create_tables_batched(schema_tables)
