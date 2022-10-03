@@ -1,6 +1,7 @@
 import { sampleSize } from 'lodash';
 
 import { isValidUrl } from 'lib/utils';
+import { isBoolean } from 'lib/utils/boolean';
 import { isNumeric } from 'lib/utils/number';
 
 import { isCellValNull } from './helper';
@@ -18,8 +19,11 @@ const columnDetectors: IColumnDetector[] = [
         checker: (colName: string, values: any[]) =>
             detectTypeForValues(values, (value) => {
                 try {
-                    JSON.parse(value);
-                    return true;
+                    const parsed = JSON.parse(value);
+                    return (
+                        parsed && // to prevent null
+                        typeof parsed === 'object'
+                    );
                 } catch (e) {
                     return false;
                 }
@@ -30,6 +34,12 @@ const columnDetectors: IColumnDetector[] = [
         priority: 0.2,
         checker: (colName: string, values: any[]) =>
             detectTypeForValues(values, isValidUrl),
+    },
+    {
+        type: 'boolean',
+        priority: 0.5,
+        checker: (colName: string, values: any[]) =>
+            detectTypeForValues(values, isBoolean),
     },
     {
         type: 'number',
